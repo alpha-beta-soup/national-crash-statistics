@@ -193,10 +193,18 @@ class nztacrash:
             self.injuries = True
         elif self.crash_sev_cnt == 0 and self.crash_min_cnt == 0:
             self.injuries = False
+        if self.crash_sev_cnt > 0:
+            self.injuries_severe = True
+        elif self.crash_sev_cnt == 0:
+            self.injuries_severe = False
+        if self.crash_min_cnt > 0:
+            self.injuries_minor = True
+        elif self.crash_min_cnt == 0:
+            self.injuries_minor = False
 
     def __str__(self):
         '''Creates an HTML-readable summary of the nztacrash object.'''
-        text = 'The crash occured in %s on %s %s at %s.\n' % (str(self.tla_name), self.crash_dow, self.crash_date.strftime('%d %B, %Y'), str(self.crash_time)[:-3])
+        text = 'The crash occured in %s on <b>%s %s at %s</b>.\n' % (str(self.tla_name), self.crash_dow, self.crash_date.strftime('%d %B, %Y'), str(self.crash_time)[:-3])
         text += 'Crash ID: %s.\n' % self.crash_id
         text += 'Location: %s.\n' % self.crash_road
         text += 'Side road: %s.\n' % self.side_road
@@ -206,7 +214,7 @@ class nztacrash:
         else:
             text += 'It did not occur at an intersection.'
         if self.junc_type != None:
-            text += ': %s' % self.junc_type_decoded
+            text =  text.strip('.') + ': %s' % self.junc_type_decoded
         text += '\n'
         if self.road_wet == 'W':
             text += 'The road was wet.\n'
@@ -230,28 +238,28 @@ class nztacrash:
             if self.decodeMovement()[1] != None:
                 text += '- %s' % self.decodeMovement()[1]
         text += '.\n'
-        text += 'The key vehicle was a %s (it may or may not have been at fault).\n' % self.keyvehicle_decoded.lower()
+        text += '<b>Vehicle A was a %s</b> (it may or may not have been at fault).\n' % self.keyvehicle_decoded.lower()
         if self.keyvehiclemovement_decoded != None:
-            text += 'The key vehicle was moving %s.\n' % self.keyvehiclemovement_decoded.lower()
+            text += 'Vehicle A was moving %s.\n' % self.keyvehiclemovement_decoded.lower()
         if self.secondaryvehicles_decoded != None:
             party = grammar('party', 'parties', len(self.secondaryvehicles))
             text += 'Secondary %s: ' % party
             for v in self.secondaryvehicles_decoded:
-                text += '%s, ' % v
+                text += '<b>%s</b>, ' % v
             text = text.strip(', ')+'.\n'
         else:
             text += 'No other parties were involved.\n'
         if self.pers_age1 != None and self.secondaryvehicles != None:
             youngest = grammar('', ' youngest', len(self.secondaryvehicles))
-            text += 'The%s pedestrian was %d years old.\n' % (youngest, self.pers_age1)
+            text += '<b>The%s pedestrian was %d years old.</b>\n' % (youngest, self.pers_age1)
         if self.pers_age2 != None and self.secondaryvehicles != None:
             youngest = grammar('', ' youngest', len(self.secondaryvehicles))
-            text += 'The%s cyclist was %d years old.\n' % (youngest, self.pers_age2)
-        text += "<u>Causes</u>:\n<ol>"
+            text += '<b>The%s cyclist was %d years old.</b>\n' % (youngest, self.pers_age2)
+        text += "\n<u>Causes</u>:\n<ol>"
         for vehicle in list(string.ascii_uppercase): # 'A', 'B', ..., 'Z'
             if self.causesdict_decoded != None and vehicle in self.causesdict_decoded.keys():
                 for cause in self.causesdict_decoded[vehicle]:
-                    text += "\t<li>Vehicle %s: %s.</li>" % (vehicle, cause)
+                    text += "\t<li>Vehicle <b>%s</b>: %s.</li>" % (vehicle, cause)
         if self.causesdict_decoded != None and 'Environment' in self.causesdict_decoded.keys():
             for cause in self.causesdict_decoded['Environment']:
                 text += '\t<li>Environmental factor: %s.</li>' % cause
@@ -269,14 +277,14 @@ class nztacrash:
         text += '<center>'
         if self.crash_fatal_cnt > 0:
             person = grammar('person', 'people', self.crash_fatal_cnt)
-            text += 'Unfortunately, <b>%d %s died</b> as a result of this crash.\n'  % (self.crash_fatal_cnt, person)
+            text += '\nUnfortunately, <b>%d %s died</b> as a result of this crash.\n'  % (self.crash_fatal_cnt, person)
         if self.crash_sev_cnt > 0:
             person = grammar('person', 'people', self.crash_sev_cnt)
-            text += '<b>%d %s suffered serious injuries</b>.\n' % (self.crash_sev_cnt, person)
+            text += '\n<b>%d %s suffered serious injuries</b>.\n' % (self.crash_sev_cnt, person)
         if self.crash_min_cnt > 0:
             was = grammar('was', 'were', self.crash_min_cnt)
             injury = grammar('injury', 'injuries', self.crash_min_cnt)
-            text += 'There %s <b>%d minor %s</b>.\n' % (was, self.crash_min_cnt, injury)
+            text += '\nThere %s <b>%d minor %s</b>.\n' % (was, self.crash_min_cnt, injury)
         if self.fatal == False and self.injuries == False:
             text += '\nFortunately, there were <b>no deaths or injuries</b>.\n'
         text = text.strip() + '</center>'
@@ -661,15 +669,6 @@ class nztacrash:
                         decodedretdict[vehicle].append(causedecoded)
             return decodedretdict
 
-'''
-dbname = "nzta-crash"
-user = "postgres"
-conn = psycopg2.connect(dbname=dbname, user=user, password="postgres", host="localhost")
-cur = conn.cursor()
-cur.execute(
-    """CREATE DATABASE %s OWNER %s;""",
-    (dbname, user))
-'''
 def makeFolium(instances):
     '''
     Makes a Folium map with a list of crash instances to plot
@@ -677,10 +676,10 @@ def makeFolium(instances):
     # instantiate map
     # add points iteratively
     # save map
-    map_osm = folium.Map(location=[-41.17, 174.46], width='100%',height='100%',attr='My Data Attribution')
+    map_osm = folium.Map(location=[-41.17, 174.46], width='100%',height='100%',tiles='OpenStreetMap', zoom_start=6)
     for crash in instances:
         # Add a marker
-        desc, lat, lon, fatal, injuries = crash[0], crash[1][1], crash[1][0], crash[2], crash[3]
+        desc, lat, lon, fatal, injuries_severe, injuries_minor = crash[0], crash[1][1], crash[1][0], crash[2], crash[3], crash[4]
         # Handle jQuery special characters in the pop-up
         for sc in [':',',','\n','-', '\t']:
             if sc == '\n':
@@ -693,16 +692,28 @@ def makeFolium(instances):
             desc = desc.replace(sc,replace)
         #map_osm.simple_marker([lat, lon], popup=desc)
         if fatal:
+            # Death
             color = 'red'
-            radius = 60
-        elif injuries:
+            radius = 90
+            fill_opacity = 0.9
+        elif injuries_severe:
+            # Severe injuries
             color = 'orange'
+            radius = 60
+            fill_opacity = 0.8
+        elif injuries_minor:
+            # Minor injuries
+            color = 'purple'
             radius = 30
+            fill_opacity = 0.6
         else:
+            # No injuries
             color = 'blue'
             radius = 15
+            fill_opacity = 0.4
+        #fill_opacity = 0.8 # Override
         try:
-            map_osm.circle_marker([lat, lon], popup=desc, fill_color=color, radius=radius, line_color='black')
+            map_osm.circle_marker([lat, lon], popup=desc, fill_color=color, radius=radius, fill_opacity=fill_opacity, line_color=color)
         except UnicodeDecodeError:
             print desc
     map_osm.create_map(path='nzta-crash-analysis.html')
@@ -719,7 +730,7 @@ with open(data, 'rb') as crashcsv:
         Crash = nztacrash(crash, causedecoder)
         # Collect crash descriptions and locations into a list of tuples
         if Crash.hasLocation:
-            crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries))
+            crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries_severe, Crash.injuries_minor))
 
 # Make the map
 makeFolium(crashes)
