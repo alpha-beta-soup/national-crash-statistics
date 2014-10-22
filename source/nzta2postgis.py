@@ -10,12 +10,15 @@ Depends
 =======
 pyproj
 folium
+geojson
 '''
 
 # TODO Update docstring to reflect that this is not longer postgis
 
 import pyproj
 import folium
+import geojson
+import json
 import csv
 import datetime
 import string
@@ -166,7 +169,6 @@ class nztacrash:
             self.lat, self.lon = self.proj(self.easting, self.northing, inverse=True) # Lat/lon
         else:
             self.lat, self.lon = None, None
-        #self.pt_projected = self.projectedpt() # Accept default target projection
         
         # Output of causeDecoderCSV()
         self.causedecoder = causedecoder
@@ -185,6 +187,8 @@ class nztacrash:
         self.light_decoded = self.decodeLight()
         self.wthr_a_decoded = self.decodeWeather()
         self.junc_type_decoded = self.decodeJunction()
+        
+        # Some booleans (good for filters)
         if self.crash_fatal_cnt > 0:
             self.fatal = True
         elif self.crash_fatal_cnt == 0:
@@ -201,6 +205,26 @@ class nztacrash:
             self.injuries_minor = True
         elif self.crash_min_cnt == 0:
             self.injuries_minor = False
+        if self.fatal == False and self.injuries_severe == False and self.injuries_minor == False:
+            self.injuries_none = True
+        else:
+            self.injuries_none = False
+        
+        self.cyclist = False # Until shown otherwise
+        self.pedestrian = False # Until shown otherwise
+        if self.secondaryvehicles != None:
+            if ('E' or 'K' in self.secondaryvehicles) or (self.keyvehicle == 'E'):
+                # A pedestrian/skater was involved
+                self.pedestrian = True
+            if ('S' in self.secondaryvehicles) or (self.keyvehicle =='S'):
+                # A cyclist was involved
+                self.cyclist = True
+        elif self.keyvehicle == 'E':
+            self.pedestrian = True
+        elif self.keyvehicle == 'S':
+            self.cyclist == True
+        
+
 
     def __str__(self):
         '''Creates an HTML-readable summary of the nztacrash object.'''
@@ -294,6 +318,19 @@ class nztacrash:
             if 'None' not in l:
                 rettext += l + '\n'
         return rettext
+    
+    def __geo_interface__(self):
+        '''
+        Returns a geojson object representing the point.
+        '''
+        #return {'type': 'Point', 'coordinates': (self.lat, self.lon), }
+        if self.hasLocation is False:
+            return None
+        #gjfeat = geojson.Feature(geometry=geojson.Point((self.lat, self.lon)), properties={'label': 'test'})
+        return {'type': 'Feature',
+        'properties': {'description': self.__str__(), 'cyclist': self.cyclist, 'pedestrian': self.pedestrian, 'fatal': self.fatal, 'severe': self.injuries_severe, 'minor': self.injuries_minor, 'no_injuries': self.injuries_none},
+        'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
+        
         
     def decodeMovement(self):
         '''Decodes self.mvmt into a human-readable form.
@@ -669,9 +706,11 @@ class nztacrash:
                         decodedretdict[vehicle].append(causedecoded)
             return decodedretdict
 
-def makeFolium(instances):
+def makeFolium(instances, peds=True, cyclists=True, others=True):
     '''
-    Makes a Folium map with a list of crash instances to plot
+    Makes a Folium map with a list of crash instances to plot.
+    
+    Able to filter with peds, cyclists and others (Booleans)
     '''
     # instantiate map
     # add points iteratively
@@ -679,7 +718,15 @@ def makeFolium(instances):
     map_osm = folium.Map(location=[-41.17, 174.46], width='100%',height='100%',tiles='OpenStreetMap', zoom_start=6)
     for crash in instances:
         # Add a marker
-        desc, lat, lon, fatal, injuries_severe, injuries_minor = crash[0], crash[1][1], crash[1][0], crash[2], crash[3], crash[4]
+        desc, lat, lon, fatal, injuries_severe, injuries_minor, ped, cyc = crash[0], crash[1][1], crash[1][0], crash[2], crash[3], crash[4], crash[5], crash[6]
+        
+        # Data filtering
+        if peds == False and ped == True:
+            continue
+        if cyclists == False and cyc == True:
+            continue
+        if others == False and (cyc == False or ped == False):
+            continue
         # Handle jQuery special characters in the pop-up
         for sc in [':',',','\n','-', '\t']:
             if sc == '\n':
@@ -722,16 +769,22 @@ def makeFolium(instances):
 #data = "/home/richard/Documents/Projects/national-crash-statistics/data/subsets/data-2014-hutt-city.csv"
 data = "/home/richard/Documents/Projects/national-crash-statistics/data/crash-data-2014-partial.csv"
 with open(data, 'rb') as crashcsv:
-    crashreader = csv.reader(crashcsv, delimiter=',')
-    header = crashreader.next()
-    causedecoder = causeDecoderCSV()
-    crashes = []
-    for crash in crashreader:
-        Crash = nztacrash(crash, causedecoder)
-        # Collect crash descriptions and locations into a list of tuples
-        if Crash.hasLocation:
-            crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries_severe, Crash.injuries_minor))
+    with open('data.geojson', 'w') as outfile:
+        crashreader = csv.reader(crashcsv, delimiter=',')
+        header = crashreader.next()
+        causedecoder = causeDecoderCSV()
+        crashes = []
+        for crash in crashreader:
+            Crash = nztacrash(crash, causedecoder)
+            # Collect crash descriptions and locations into a list of tuples
+            if Crash.hasLocation:
+                # Append it to our list to map
+                crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries_severe, Crash.injuries_minor, Crash.pedestrian, Crash.cyclist))
+                # Write the GeoJSON too
+                json.dump(Crash.__geo_interface__(), outfile, indent=4)
 
 # Make the map
-makeFolium(crashes)
+#makeFolium(crashes, others=False)
+# Write the JSON file
+
 
