@@ -279,7 +279,7 @@ class nztacrash:
         if self.pers_age2 != None and self.secondaryvehicles != None:
             youngest = grammar('', ' youngest', len(self.secondaryvehicles))
             text += '<b>The%s cyclist was %d years old.</b>\n' % (youngest, self.pers_age2)
-        text += "\n<u>Causes</u>:\n<ol>"
+        text += "\n<u>Factors and roles</u>:\n<ol>"
         for vehicle in list(string.ascii_uppercase): # 'A', 'B', ..., 'Z'
             if self.causesdict_decoded != None and vehicle in self.causesdict_decoded.keys():
                 for cause in self.causesdict_decoded[vehicle]:
@@ -784,7 +784,7 @@ with open(data, 'rb') as crashcsv:
                 json.dump(Crash.__geo_interface__(), outfile, indent=4)
 
 # Make the map
-#makeFolium(crashes, others=False)
+makeFolium(crashes)
 # Write the JSON file
 
 
