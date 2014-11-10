@@ -224,99 +224,108 @@ class nztacrash:
         elif self.keyvehicle == 'S':
             self.cyclist == True
         
-
-
-    def __str__(self):
-        '''Creates an HTML-readable summary of the nztacrash object.'''
-        text = 'The crash occured in %s on <b>%s %s at %s</b>.\n' % (str(self.tla_name), self.crash_dow, self.crash_date.strftime('%d %B, %Y'), str(self.crash_time)[:-3])
-        text += 'Crash ID: %s.\n' % self.crash_id
-        text += 'Location: %s.\n' % self.crash_road
-        text += 'Side road: %s.\n' % self.side_road
-        text += '%sm to the %s.\n' % (str(self.crash_dist), self.crash_dirn)
+        # HTML text descriptions, used in self.__str__()
+        self.__crashloc = 'The crash occured in %s on <b>%s %s at %s</b>.' % (str(self.tla_name), self.crash_dow, self.crash_date.strftime('%d %B, %Y'), str(self.crash_time)[:-3])
+        self.__crashid = 'Crash ID: %s.' % self.crash_id
+        self.__location = 'Location: %s.' % self.crash_road
+        self.__sideroad = 'Side road: %s.' % self.side_road
+        self.__distdirn = '%sm to the %s.' % (str(self.crash_dist), self.crash_dirn)
         if self.crash_intsn == 'I':
-            text += 'It occurred at an intersection.'
+            self.__intersection = 'It occurred at an intersection.'
+            if self.junc_type != None:
+                self.__intersection = self.__intersection.strip('.') + ': %s' % self.junc_type_decoded
         else:
-            text += 'It did not occur at an intersection.'
-        if self.junc_type != None:
-            text =  text.strip('.') + ': %s' % self.junc_type_decoded
-        text += '\n'
+            self.__intersection = 'It did not occur at an intersection.'
         if self.road_wet == 'W':
-            text += 'The road was wet.\n'
-        if self.road_wet == 'D':
-            text += 'The road was dry.\n'
-        if self.road_wet == 'I':
-            text += 'There was snow or ice on the road.\n'
+            self.__roadwet = 'The road was wet.'
+        elif self.road_wet == 'D':
+            self.__roadwet = 'The road was dry.'
+        elif self.road_wet == 'I':
+            self.__roadwet = 'There was snow or ice on the road.'
+        else:
+            self.__roadwet = None
         if self.wthr_a != None:
-            text += 'Weather: %s' % self.wthr_a_decoded[0]
+            self.__wthr = 'Weather: %s' % self.wthr_a_decoded[0]
             if self.wthr_a_decoded[1] != None:
-                text += ' - %s' % self.wthr_a_decoded[1]
-            text += '.\n'
+                self.__wthr += ' - %s' % self.wthr_a_decoded[1]
         if self.light != None:
-            text += 'Lighting: %s' % self.light_decoded[0]
+            self.__light = 'Lighting: %s' % self.light_decoded[0]
             if self.light_decoded[1] != None:
-                text += ' - %s' % self.light_decoded[1]
-            text += '.\n'
-        
+                self.__light += ' - %s' % self.light_decoded[1]
         if self.decodeMovement() != None and self.decodeMovement()[0] != None:
-            text += 'Movement: %s' % self.decodeMovement()[0]
+            self.__movement = 'Movement: %s' % self.decodeMovement()[0]
             if self.decodeMovement()[1] != None:
-                text += '- %s' % self.decodeMovement()[1]
-        text += '.\n'
-        text += '<b>Vehicle A was a %s</b> (it may or may not have been at fault).\n' % self.keyvehicle_decoded.lower()
+                self.__movement += '- %s' % self.decodeMovement()[1]
+        else:
+            self.__movement = None
+        self.__atype = '<b>Vehicle A was a %s</b> (it may or may not have been at fault).' % self.keyvehicle_decoded.lower()
         if self.keyvehiclemovement_decoded != None:
-            text += 'Vehicle A was moving %s.\n' % self.keyvehiclemovement_decoded.lower()
+            self.__amovement = 'Vehicle A was moving %s.' % self.keyvehiclemovement_decoded.lower()
+        else:
+            self.__amovement = None
         if self.secondaryvehicles_decoded != None:
             party = grammar('party', 'parties', len(self.secondaryvehicles))
-            text += 'Secondary %s: ' % party
+            self.__secondary = 'Secondary %s: ' % party
             for v in self.secondaryvehicles_decoded:
-                text += '<b>%s</b>, ' % v
-            text = text.strip(', ')+'.\n'
+                self.__secondary += '<b>%s</b>, ' % v
+            self.__secondary = self.__secondary.strip(', ')
         else:
-            text += 'No other parties were involved.\n'
+            self.__secondary = 'No other parties were involved.'
         if self.pers_age1 != None and self.secondaryvehicles != None:
             youngest = grammar('', ' youngest', len(self.secondaryvehicles))
-            text += '<b>The%s pedestrian was %d years old.</b>\n' % (youngest, self.pers_age1)
+            self.__youngestped = '<b>The%s pedestrian was %d years old.</b>' % (youngest, self.pers_age1)
+        else:
+            self.__youngestped = None
         if self.pers_age2 != None and self.secondaryvehicles != None:
             youngest = grammar('', ' youngest', len(self.secondaryvehicles))
-            text += '<b>The%s cyclist was %d years old.</b>\n' % (youngest, self.pers_age2)
-        text += "\n<u>Factors and roles</u>:\n<ol>"
+            self.__youngestcyc = '<b>The%s cyclist was %d years old.</b>' % (youngest, self.pers_age2) 
+        else:
+            self.__youngestcyc = None
+        self.__factors = "<u>Factors and roles</u>:<ol>\n"
         for vehicle in list(string.ascii_uppercase): # 'A', 'B', ..., 'Z'
             if self.causesdict_decoded != None and vehicle in self.causesdict_decoded.keys():
                 for cause in self.causesdict_decoded[vehicle]:
-                    text += "\t<li>Vehicle <b>%s</b>: %s.</li>" % (vehicle, cause)
+                    self.__factors += "<li>Vehicle <b>%s</b>: %s.</li>" % (vehicle, cause)
         if self.causesdict_decoded != None and 'Environment' in self.causesdict_decoded.keys():
             for cause in self.causesdict_decoded['Environment']:
-                text += '\t<li>Environmental factor: %s.</li>' % cause
-        text += '</ol>'
-        
+                self.__factors += '<li>Environmental factor: %s.</li>' % cause
+        self.__factors += '</ol>'
         if len(self.objects_struck) > 0:
-            text += '<u>Stationary objects hit</u>:<ul>'
+            self.__objects = '<u>Stationary objects hit</u>:<ul>'
             for o in self.objects_struck_decoded:
-                text += '\t<li>%s</li>' % o.capitalize()
-            text += '</ul>'
+                self.__objects += '<li>%s</li>' % o.capitalize()
+            self.__objects += '</ul>'
         else:
-            text += 'No stationary objects were hit.'
-        text += '\n'
-        
-        text += '<center>'
+            self.__objects = 'No stationary objects were hit.'
+        self.__consequences = '<center>'
         if self.crash_fatal_cnt > 0:
             person = grammar('person', 'people', self.crash_fatal_cnt)
-            text += '\nUnfortunately, <b>%d %s died</b> as a result of this crash.\n'  % (self.crash_fatal_cnt, person)
+            self.__consequences += '\nUnfortunately, <b>%d %s died</b> as a result of this crash.'  % (self.crash_fatal_cnt, person)
         if self.crash_sev_cnt > 0:
             person = grammar('person', 'people', self.crash_sev_cnt)
-            text += '\n<b>%d %s suffered serious injuries</b>.\n' % (self.crash_sev_cnt, person)
+            self.__consequences += '\n<b>%d %s suffered serious injuries</b>.' % (self.crash_sev_cnt, person)
         if self.crash_min_cnt > 0:
             was = grammar('was', 'were', self.crash_min_cnt)
             injury = grammar('injury', 'injuries', self.crash_min_cnt)
-            text += '\nThere %s <b>%d minor %s</b>.\n' % (was, self.crash_min_cnt, injury)
+            self.__consequences += '\nThere %s <b>%d minor %s</b>.' % (was, self.crash_min_cnt, injury)
         if self.fatal == False and self.injuries == False:
-            text += '\nFortunately, there were <b>no deaths or injuries</b>.\n'
-        text = text.strip() + '</center>'
-        
+            self.__consequences = '\nFortunately, there were <b>no deaths or injuries</b>.'
+        self.__consequences = self.__consequences.strip() + '</center>'
+            
+    def __str__(self):
+        '''Creates an HTML-readable summary of the nztacrash object.'''
+        text = ''
+        for t in [self.__crashloc, self.__crashid, self.__location, self.__sideroad,
+        self.__distdirn, self.__intersection, self.__roadwet, self.__wthr, self.__light,
+        self.__movement, self.__atype, self.__amovement, self.__secondary,
+        self.__youngestped, self.__youngestcyc, self.__factors, self.__objects,
+        self.__consequences]:
+            if t != None:
+                text += t + '\n'
         rettext = ''
         for l in text.split('\n'):
             if 'None' not in l:
-                rettext += l + '\n'
+                rettext += l + '\n'    
         return rettext
     
     def __geo_interface__(self):
@@ -328,9 +337,32 @@ class nztacrash:
             return None
         #gjfeat = geojson.Feature(geometry=geojson.Point((self.lat, self.lon)), properties={'label': 'test'})
         return {'type': 'Feature',
-        'properties': {'description': self.__str__(), 'cyclist': self.cyclist, 'pedestrian': self.pedestrian, 'fatal': self.fatal, 'severe': self.injuries_severe, 'minor': self.injuries_minor, 'no_injuries': self.injuries_none},
+        'properties': {'crash_id': self.crash_id,
+        'crash_location_txt': self.__crashloc,
+        'crash_id_txt': self.__crashid,
+        'location_txt': self.__location,
+        'side_road_txt': self.__sideroad,
+        'distance_direction_txt': self.__distdirn,
+        'intersection_txt': self.__intersection,
+        'road_conditions_txt': self.__roadwet,
+        'weather_txt': self.__wthr,
+        'light_txt': self.__light,
+        'movement_txt': self.__movement,
+        'vehicle_a_txt': self.__atype,
+        'vehicle_a_movement_txt': self.__amovement,
+        'secondary_vehicles_txt': self.__secondary,
+        'youngest_pedestrian_txt': self.__youngestped,
+        'youngest_cyclist_txt': self.__youngestcyc,
+        'factors_txt': self.__factors,
+        'objects_txt': self.__objects,
+        'consequences_txt': self.__consequences,
+        'cyclist': self.cyclist,
+        'pedestrian': self.pedestrian,
+        'fatal': self.fatal,
+        'severe': self.injuries_severe,
+        'minor': self.injuries_minor,
+        'no_injuries': self.injuries_none},
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
-        
         
     def decodeMovement(self):
         '''Decodes self.mvmt into a human-readable form.
@@ -769,22 +801,28 @@ def makeFolium(instances, peds=True, cyclists=True, others=True):
 #data = "/home/richard/Documents/Projects/national-crash-statistics/data/subsets/data-2014-hutt-city.csv"
 data = "/home/richard/Documents/Projects/national-crash-statistics/data/crash-data-2014-partial.csv"
 with open(data, 'rb') as crashcsv:
+    crashreader = csv.reader(crashcsv, delimiter=',')
+    header = crashreader.next()
+    causedecoder = causeDecoderCSV()
+    crashes = []
+    # Empty feature collection, ready for geojson-ing
+    feature_collection = {"type": "FeatureCollection",
+                          "features": []}
+    for crash in crashreader:
+        Crash = nztacrash(crash, causedecoder)
+        # Collect crash descriptions and locations into a list of tuples
+        if Crash.hasLocation:
+            # Append it to our list to map
+            crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries_severe, Crash.injuries_minor, Crash.pedestrian, Crash.cyclist))
+            
+            # Add to the GeoJSON feature collection
+            feature_collection["features"].append(Crash.__geo_interface__())
+
+    # Write the geojson output
     with open('data.geojson', 'w') as outfile:
-        crashreader = csv.reader(crashcsv, delimiter=',')
-        header = crashreader.next()
-        causedecoder = causeDecoderCSV()
-        crashes = []
-        for crash in crashreader:
-            Crash = nztacrash(crash, causedecoder)
-            # Collect crash descriptions and locations into a list of tuples
-            if Crash.hasLocation:
-                # Append it to our list to map
-                crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries_severe, Crash.injuries_minor, Crash.pedestrian, Crash.cyclist))
-                # Write the GeoJSON too
-                json.dump(Crash.__geo_interface__(), outfile, indent=4)
+        outfile.write(json.dumps(feature_collection))
 
 # Make the map
 makeFolium(crashes)
-# Write the JSON file
 
 
