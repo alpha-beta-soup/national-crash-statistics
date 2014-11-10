@@ -1,0 +1,8 @@
+# Custom properties of the HTML after Folium has generated it
+
+var map = L.map('map').setView([-41.17, 174.46], 6);
+
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 20,
+    attribution: '2014 crash data <a href="http://www.nzta.govt.nz/resources/crash-analysis-system-data/index.html">New Zealand Transport Agency</a> \| Basemap (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors \| Map is in beta\: feedback to Richard Law <a href="https://twitter.com/alphabeta_soup">\@alphabeta\_soup</a>'
+}).addTo(map);
