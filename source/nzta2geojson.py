@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-`nzta2postgis.py`
+`nzta2geojson.py`
 =================
 A Python script to read the New Zealand Transport Agency crash data into a
-Postgres database (extended with PostGIS) database.
+GeoJSON, to be styled and filtered for presentation in a Leaflet map.
 
 Depends
 =======
@@ -12,8 +12,6 @@ pyproj
 folium
 geojson
 '''
-
-# TODO Update docstring to reflect that this is not longer postgis
 
 import pyproj
 import folium
