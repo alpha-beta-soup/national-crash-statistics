@@ -79,7 +79,6 @@ def formatNiceRoad(road, decoder):
             linref = [linref[0],' at ',linref[1]]
             for i, r in enumerate(linref):
                 if '/' in r:
-                    print r, linref, i
                     linref[i] = "State Highway %s" % r.split('/')[0]
             return ' '.join(linref)
     road = striplinearref(road).split(" ")

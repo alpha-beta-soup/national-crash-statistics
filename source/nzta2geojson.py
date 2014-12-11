@@ -298,8 +298,8 @@ class nztacrash:
         'crash_time': genFunc.formatNiceTime(self.crash_time),
         'streetview': self.__streetview__(),
         'crash_road': genFunc.formatNiceRoad(crashroad,self.streetdecoder),
+        'weather_icon': self.weatherIcon(),
         'road_conditions_txt': self.__roadwet,
-        'weather_txt': self.__wthr,
         'light_txt': self.__light,
         'movement_txt': self.__movement,
         'vehicle_a_txt': self.__atype,
@@ -503,15 +503,47 @@ class nztacrash:
         the weather.'''
         if self.light[0] in ['T', 'D']: 
             # If not daytime
-            night = True
-        decoder1 = {'F': {'Night': 'Weather-Sun-icon.png', 'Day': 'Weather-Moon-icon.png'},
+            light = 'Night'
+        else:
+            light = 'Day'
+        decoder1 = {'F': {'Night': 'Weather-Moon-icon.png', 'Day': 'Weather-Sun-icon.png'},
                     'M': {'Night': 'Weather-Fog-Night-icon.png', 'Day': 'Weather-Fog-Day-icon.png'},
                     'L': 'Weather-Little-Rain-icon.png',
                     'H': 'Weather-Downpour-icon.png',
                     'S': 'Weather-Snow-icon.png',
                     ' ': None}
-        decoder2 = {'F': '
-    
+        decoder2 = {'F': 'Temperature-2-icon.png',
+                    'S': '05-strong-wind-weather-icon.png',
+                    ' ': None}
+        w1 = self.wthr_a[0]
+        if w1 != ' ':
+            # Get the appropriate icon
+            if w1 in ['F','M']:
+                # Also need the light parameter
+                icon1 = decoder1[w1][light]
+            else:
+                icon1 = decoder1[w1]
+        else:
+            icon1 = None
+        w2 = self.wthr_a[1]
+        if w2 != ' ':
+            # Get the appropriate secondary icon
+            icon2 = decoder2[w2]
+        else:
+            icon2 = None
+        
+        ret = ''
+        h,w = 30,30
+        base = '/icons'
+        if icon1 == None and icon2 == None:
+            # No weather data at all
+            return None
+        if icon1 != None:
+            ret += '<img src="%s/%s" height="%d" width="%d">' % (base,icon1,h,w)
+        if icon2 != None:
+            ret += '<img src="%s/%s" height="%d" width="%d">' % (base,icon2,h,w)
+        return ret
+        
     def decodeJunction(self):
         '''Takes self.junc_type (a single-character string) and applies a decoder to
         it, returning a human-readable string.
@@ -823,7 +855,7 @@ def main(data,causes,streets):
             outfile.write(json.dumps(feature_collection))
 
     # Make the map
-    makeFolium(crashes)
+    #makeFolium(crashes)
 
 if __name__ == '__main__':
     data = '/home/richard/Documents/Projects/national-crash-statistics/data/crash-data-2014-partial.csv'

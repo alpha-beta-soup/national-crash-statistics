@@ -192,6 +192,12 @@
             color: rgb(255,26,26);
         }
         
+        /* class for weather icons */
+        .weather-icons {
+            display:table;
+            margin:0 auto;
+        }
+        
         </style>
     
     </head>
@@ -226,9 +232,9 @@
 
                             <p>Traffic <span class="red">crashes</span> reports provide essential information to a wide range of road safety and road construction partners who are engaged in the constant fight to reduce the approximately 2000 deaths and severe injuries recorded each year. </p>
 
-                            <p>These data are from the NZ Transport Agency’s <span class="red">crashes</span> analysis system (CAS).</p>
+                            <p>These data are from the NZ Transport Agency’s <span class="red">Crash</span> Analysis System (CAS).</p>
 
-                            <p class="bold"><a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">More information</a></p>
+                            <!-- <p class="bold"><a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">More information</a></p> -->
                             
                             <!-- need to add stuff about us here -->
 
@@ -257,6 +263,7 @@
 
             //where, initial zoom level and remove zoom buttons
             var map = L.map('map', {zoomControl: false}).setView([-41.17, 174.46], 6);
+            
 
             //base map tiles, zoom and attribution
             L.tileLayer(
@@ -265,7 +272,7 @@
                 , {
                 maxZoom: 18,
                 minZoom: 5,
-                attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+                attribution: 'Crash data from <a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">NZTA</a>, under <a href="https://creativecommons.org/licenses/by/3.0/nz/">CC BY 3.0 NZ</a>, presented with changes | Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> | Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
             
             }).addTo(map);
 
@@ -320,12 +327,12 @@
 
                 return '<span class="crash-location">' + row.properties.tla_name + "</span><br>" +
                        '<span class="date">' + row.properties.crash_dow + ", " + row.properties.crash_date + "</span><br>" +
-                       '<span class="time">' + row.properties.crash_time + "</span><br>" + 
+                       '<span class="time">' + row.properties.crash_time + '</span><br>' +
+                       '<span class="weather-icons">' + row.properties.weather_icon + '</span><br>' +
                        '<span class="road">' + row.properties.crash_road + "</span><br>" +
-                        row.properties.streetview + "<br>" + 
-                        row.properties.weather_txt + "<br>" +
-                        row.properties.light_txt + "<br>" +
-                        "Road conditions: " + row.properties.road_conditions_txt + "<br>" + "<br>" +
+                        row.properties.streetview + "<br>" +
+                        //row.properties.light_txt + "<br>" +
+                        //"Road conditions: " + row.properties.road_conditions_txt + "<br>" + "<br>" +
                         row.properties.vehicle_a_txt + "<br>" + "<br>" + 
                         row.properties.secondary_vehicles_txt + "<br>" + "<br>" +
                         row.properties.factors_txt +
@@ -355,11 +362,13 @@
 
             //add layer title to the map
             map.addControl(new layerTitle());            
-
+            
+            //path to the crash geojson from nzta2geojson.py
+            var crashes = "./data/data.geojson"
 
             //create layers, bind popups and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
             var layers = {};
-            layers["Fatal"] = new L.GeoJSON.AJAX("./data/data.geojson",{
+            layers["Fatal"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -381,7 +390,7 @@
 
             })//.addTo(map);
 
-            layers["Severe"] = new L.GeoJSON.AJAX("./data/data.geojson",{
+            layers["Severe"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -403,7 +412,7 @@
 
             })//.addTo(map);
 
-            layers["Minor injury"] = new L.GeoJSON.AJAX("./data/data.geojson",{
+            layers["Minor injury"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -425,7 +434,7 @@
 
             })//.addTo(map);
 
-            layers["No injuries"] = new L.GeoJSON.AJAX("./data/data.geojson",{
+            layers["No injuries"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -447,7 +456,7 @@
 
             })//.addTo(map);   
 
-            layers["Pedestrian involved"] = new L.GeoJSON.AJAX("./data/data.geojson",{
+            layers["Pedestrian involved"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -469,7 +478,7 @@
 
             })//.addTo(map);                  
 
-            layers["Cyclist involved"] = new L.GeoJSON.AJAX("./data/data.geojson",{
+            layers["Cyclist involved"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -533,7 +542,7 @@
 
             // $.ajax({
             // dataType: "json",
-            // url: "./data/data.geojson",
+            // url: ""data.geojson"",
             // //type: "GET",
             // //data: { fatal: true },
                 
