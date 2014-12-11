@@ -534,7 +534,7 @@ class nztacrash:
         
         ret = ''
         h,w = 30,30
-        base = '/icons'
+        base = './icons'
         if icon1 == None and icon2 == None:
             # No weather data at all
             return None
