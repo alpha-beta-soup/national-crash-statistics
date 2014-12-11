@@ -258,7 +258,8 @@ class nztacrash:
         involved in the accident. Returns None if this information cannot be obtained'''
         retdict = {self.keyvehicle: 1} # Initialise
         if self.secondaryvehicles == None:
-            return None
+            # No more vehicles to add
+            return retdict
         for v in self.secondaryvehicles:
             if v not in retdict.keys():
                 retdict[v] = 1
@@ -304,13 +305,13 @@ class nztacrash:
         '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
             return None
-        h = 300
+        h = 200
         w = 300
         fov = 90
         heading = 235
-        pitch = 10
+        pitch = 5
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
-        return '<a href="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,h,w,self.lon,self.lat,pitch,self.api)
+        return '<a href="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,w,h,self.lon,self.lat,pitch,self.api)
         
             
     def __str__(self):
