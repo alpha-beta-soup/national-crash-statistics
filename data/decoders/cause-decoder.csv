@@ -1,0 +1,432 @@
+Raw,space_pos,space_ascii,code,decode
+100 Alcohol or drugs,4,TRUE,100,Alcohol or drugs
+101 Alcohol suspected,4,TRUE,101,Alcohol suspected
+102 Alcohol test below limit,4,TRUE,102,Alcohol test below limit
+103 Alcohol test above limit or test refused,4,TRUE,103,Alcohol test above limit or test refused
+104 Alcohol test result unknown,4,TRUE,104,Alcohol test result unknown
+105 Intoxicated non-driver (pedestrian / cyclist / passenger),4,TRUE,105,Intoxicated non-driver (pedestrian / cyclist / passenger)
+"106 (MOT only) dead driver not suspect, tested neg",4,TRUE,106,"(MOT only) dead driver not suspect, tested neg"
+107 Drug test result unknown,4,TRUE,107,Drug test result unknown
+108 Drugs suspected,4,TRUE,108,Drugs suspected
+109 Drugs proven,4,TRUE,109,Drugs proven
+110 Too fast for conditions,4,TRUE,110,Too fast for conditions
+111 Cornering,4,TRUE,111,Cornering
+112 On straight,4,TRUE,112,On straight
+113 To give way at intersection,4,TRUE,113,To give way at intersection
+114 Approaching railway crossing,4,TRUE,114,Approaching railway crossing
+115 When passing stationary school bus,4,TRUE,115,When passing stationary school bus
+116 At temporary speed limit,4,TRUE,116,At temporary speed limit
+117 At crash or emergency,4,TRUE,117,At crash or emergency
+120 Failed to keep left,4,TRUE,120,Failed to keep left
+121 Swung wide on bend,4,TRUE,121,Swung wide on bend
+122 Swung wide at intersection,4,TRUE,122,Swung wide at intersection
+123 Cutting corner on bend,4,TRUE,123,Cutting corner on bend
+124 Cutting corner at intersection,4,TRUE,124,Cutting corner at intersection
+125 On straight section,4,TRUE,125,On straight section
+126 Vehicle crossed raised median,4,TRUE,126,Vehicle crossed raised median
+127 Driving or riding abreast (cyclists more than 2 abreast),4,TRUE,127,Driving or riding abreast (cyclists more than 2 abreast)
+128 Wandering or wobbling,4,TRUE,128,Wandering or wobbling
+129 Too far left / right,4,TRUE,129,Too far left / right
+130 Lost control,4,TRUE,130,Lost control
+131 When turning,4,TRUE,131,When turning
+132 Under heavy braking,4,TRUE,132,Under heavy braking
+133 Under heavy acceleration,4,TRUE,133,Under heavy acceleration
+134 While returning to seal from unsealed shoulder,4,TRUE,134,While returning to seal from unsealed shoulder
+135 Due to road conditions (requires road series code),4,TRUE,135,Due to road conditions (requires road series code)
+136 Due to vehicle fault (requires vehicle series code),4,TRUE,136,Due to vehicle fault (requires vehicle series code)
+"137 Avoiding another vehicle, pedestrian, party or obstacle on roadway",4,TRUE,137,"Avoiding another vehicle, pedestrian, party or obstacle on roadway"
+138 On unsealed road,4,TRUE,138,On unsealed road
+139 End of seal,4,TRUE,139,End of seal
+140 Failed to signal in time,4,TRUE,140,Failed to signal in time
+"141 When moving to left, pulling over to left",4,TRUE,141,"When moving to left, pulling over to left"
+142 When turning left,4,TRUE,142,When turning left
+143 When pulling out or moving to the right,4,TRUE,143,When pulling out or moving to the right
+144 When turning right,4,TRUE,144,When turning right
+145 Incorrect Signal,4,TRUE,145,Incorrect Signal
+150 Overtaking,4,TRUE,150,Overtaking
+151 Overtaking line of traffic or queue,4,TRUE,151,Overtaking line of traffic or queue
+152 Deliberately in the face of oncoming traffic,4,TRUE,152,Deliberately in the face of oncoming traffic
+153 Failed to notice oncoming traffic,4,TRUE,153,Failed to notice oncoming traffic
+154 Misjudged speed or distance of oncoming traffic,4,TRUE,154,Misjudged speed or distance of oncoming traffic
+155 At no passing line,4,TRUE,155,At no passing line
+156 With insufficient visibility,4,TRUE,156,With insufficient visibility
+157 At an intersection without due care,4,TRUE,157,At an intersection without due care
+158 On left without due care,4,TRUE,158,On left without due care
+159 Cut in after overtaking,4,TRUE,159,Cut in after overtaking
+160 Vehicle signalling right turn,4,TRUE,160,Vehicle signalling right turn
+161 Without care at a pedestrian crossing,4,TRUE,161,Without care at a pedestrian crossing
+170 Wrong lane or turned from wrong position,4,TRUE,170,Wrong lane or turned from wrong position
+171 Turned right from incorrect lane,4,TRUE,171,Turned right from incorrect lane
+172 Turned left from incorrect lane,4,TRUE,172,Turned left from incorrect lane
+173 Travelled straight ahead from turning lane or flush median,4,TRUE,173,Travelled straight ahead from turning lane or flush median
+174 Turned right from left side of road,4,TRUE,174,Turned right from left side of road
+175 Turned left from near centre line,4,TRUE,175,Turned left from near centre line
+176 Turned into incorrect lane,4,TRUE,176,Turned into incorrect lane
+177 Weaving or cut in on multi-lane roads,4,TRUE,177,Weaving or cut in on multi-lane roads
+178 Moved left to avoid slow vehicle,4,TRUE,178,Moved left to avoid slow vehicle
+179 Long vehicle tracked outside lane,4,TRUE,179,Long vehicle tracked outside lane
+180 In line of traffic,4,TRUE,180,In line of traffic
+181 Following too closely,4,TRUE,181,Following too closely
+182 Travelling unreasonably slowly,4,TRUE,182,Travelling unreasonably slowly
+183 Motorist crowded cyclist,4,TRUE,183,Motorist crowded cyclist
+184 Incorrect merging /diverging manoeuvre,4,TRUE,184,Incorrect merging /diverging manoeuvre
+190 Sudden action,4,TRUE,190,Sudden action
+191 Braked,4,TRUE,191,Braked
+192 Turned left,4,TRUE,192,Turned left
+193 Turned right,4,TRUE,193,Turned right
+194 Swerved to avoid pedestrian,4,TRUE,194,Swerved to avoid pedestrian
+195 Swerved to avoid animal,4,TRUE,195,Swerved to avoid animal
+196 Swerved to avoid crash or broken down vehicle,4,TRUE,196,Swerved to avoid crash or broken down vehicle
+197 Swerved to avoid vehicle,4,TRUE,197,Swerved to avoid vehicle
+198 Swerved to avoid object or for unknown reason,4,TRUE,198,Swerved to avoid object or for unknown reason
+199 Avoiding approaching emergency vehicle,4,TRUE,199,Avoiding approaching emergency vehicle
+200 Forbidden movements,4,TRUE,200,Forbidden movements
+"201 Wrong way in one way street, motorway or roundabout",4,TRUE,201,"Wrong way in one way street, motorway or roundabout"
+202 When turning or U turning contrary to a sign,4,TRUE,202,When turning or U turning contrary to a sign
+203 Contrary to ‘in’ or ‘out’ only driveway sign,4,TRUE,203,Contrary to ‘in’ or ‘out’ only driveway sign
+204 Driving or riding on footpath,4,TRUE,204,Driving or riding on footpath
+"205 On incorrect side of road, island or median",4,TRUE,205,"On incorrect side of road, island or median"
+206 Contrary to no entry sign,4,TRUE,206,Contrary to no entry sign
+207 In Car Park,4,TRUE,207,In Car Park
+208 Motor vehicle in cycle lane,4,TRUE,208,Motor vehicle in cycle lane
+209 Bus / Transit lane,4,TRUE,209,Bus / Transit lane
+210 Cyclist riding on ped-xing / ped signals,4,TRUE,210,Cyclist riding on ped-xing / ped signals
+300 Failed to give way,4,TRUE,300,Failed to give way
+301 At Stop sign,4,TRUE,301,At Stop sign
+302 At Give Way sign,4,TRUE,302,At Give Way sign
+303 When turning to non-turning traffic,4,TRUE,303,When turning to non-turning traffic
+"304 When deemed turning by markings, not geometry",4,TRUE,304,"When deemed turning by markings, not geometry"
+"305 When turning left, to opposing right turning traffic (NOT",4,TRUE,305,"When turning left, to opposing right turning traffic (NOT"
+for crashes occurring after 5am 25 th March 2012),4,TRUE,for,crashes occurring after 5am 25 th March 2012)
+306 To pedestrian on a crossing,4,TRUE,306,To pedestrian on a crossing
+307 When turning at signals to pedestrians,4,TRUE,307,When turning at signals to pedestrians
+308 When entering roadway from driveway,4,TRUE,308,When entering roadway from driveway
+309 To traffic approaching or crossing from the right,4,TRUE,309,To traffic approaching or crossing from the right
+310 Failed to give way at one lane bridge / road,4,TRUE,310,Failed to give way at one lane bridge / road
+311 Failed to give way to pedestrian on footpath or verge,4,TRUE,311,Failed to give way to pedestrian on footpath or verge
+312 Entering roadway not from driveway or intersection,4,TRUE,312,Entering roadway not from driveway or intersection
+313 To emergency vehicle,4,TRUE,313,To emergency vehicle
+314 Driver waved through,4,TRUE,314,Driver waved through
+315 When turning right to opposing left turning traffic (for crashes occurring after 5am 25 th March 2012),4,TRUE,315,When turning right to opposing left turning traffic (for crashes occurring after 5am 25 th March 2012)
+316 To traffic approaching or crossing from the left. (for crashes occurring after 5am 25 th March 2012),4,TRUE,316,To traffic approaching or crossing from the left. (for crashes occurring after 5am 25 th March 2012)
+320 Did not stop,4,TRUE,320,Did not stop
+321 At stop sign,4,TRUE,321,At stop sign
+322 At steady red light,4,TRUE,322,At steady red light
+323 At steady red arrow,4,TRUE,323,At steady red arrow
+324 At steady amber light,4,TRUE,324,At steady amber light
+325 At steady amber arrow,4,TRUE,325,At steady amber arrow
+"326 At flashing red lights (Rail Xing, Fire Stn etc)",4,TRUE,326,"At flashing red lights (Rail Xing, Fire Stn etc)"
+327 For police or flag-person,4,TRUE,327,For police or flag-person
+328 For school patrol / kea crossing,4,TRUE,328,For school patrol / kea crossing
+330 Inattentive: failed to notice,4,TRUE,330,Inattentive: failed to notice
+"331 Vehicle slowing, stopping or stationary in front",4,TRUE,331,"Vehicle slowing, stopping or stationary in front"
+332 Bend in road,4,TRUE,332,Bend in road
+333 Indication of vehicle in front,4,TRUE,333,Indication of vehicle in front
+334 Traffic lights,4,TRUE,334,Traffic lights
+335 Intersection or its Stop / Give Way control,4,TRUE,335,Intersection or its Stop / Give Way control
+336 Other regulatory sign / markings,4,TRUE,336,Other regulatory sign / markings
+337 Warning sign,4,TRUE,337,Warning sign
+"338 Direction, information signs / markings",4,TRUE,338,"Direction, information signs / markings"
+339 Road-works signs,4,TRUE,339,Road-works signs
+340 Lane use arrows / markings?,4,TRUE,340,Lane use arrows / markings?
+341 Obstructions on Roadway,4,TRUE,341,Obstructions on Roadway
+350 Attention diverted by:,4,TRUE,350,Attention diverted by:
+351 Passengers,4,TRUE,351,Passengers
+352 Scenery or persons outside vehicle,4,TRUE,352,Scenery or persons outside vehicle
+353 Other traffic,4,TRUE,353,Other traffic
+354 Animal or insect in vehicle,4,TRUE,354,Animal or insect in vehicle
+"355 Trying to find intersection, house number, destination",4,TRUE,355,"Trying to find intersection, house number, destination"
+356 Advertising or signs,4,TRUE,356,Advertising or signs
+357 Emotionally upset /road rage,4,TRUE,357,Emotionally upset /road rage
+"358 Cigarette, radio, heater, AC, glove box, obj under drivers feet/pedals etc",4,TRUE,358,"Cigarette, radio, heater, AC, glove box, obj under drivers feet/pedals etc"
+359 Cell phone,4,TRUE,359,Cell phone
+360 NULL,4,TRUE,360,NULL
+361 Navigation device,4,TRUE,361,Navigation device
+362 CB radio/ non cell comms device,4,TRUE,362,CB radio/ non cell comms device
+363 Driver dazzled,4,TRUE,363,Driver dazzled
+370 Did not see or look for another party until too late,4,TRUE,370,Did not see or look for another party until too late
+371 Behind when reversing / manoeuvring,4,TRUE,371,Behind when reversing / manoeuvring
+372 Behind when changing lanes position or direction (includes U-turns),4,TRUE,372,Behind when changing lanes position or direction (includes U-turns)
+373 Behind when pulling out from parked position,4,TRUE,373,Behind when pulling out from parked position
+374 Behind when opening door or leaving vehicle,4,TRUE,374,Behind when opening door or leaving vehicle
+375 When required to give way to traffic from another direction,4,TRUE,375,When required to give way to traffic from another direction
+376 When required to give way to pedestrians.,4,TRUE,376,When required to give way to pedestrians.
+377 When visibility obstructed by other vehicles,4,TRUE,377,When visibility obstructed by other vehicles
+378 When visibility limited by roadside features,4,TRUE,378,When visibility limited by roadside features
+379 When first in queue on receiving green light,4,TRUE,379,When first in queue on receiving green light
+"380 Misjudged speed, distance, size or position of:",4,TRUE,380,"Misjudged speed, distance, size or position of:"
+381 Other vehicle coming from behind or alongside,4,TRUE,381,Other vehicle coming from behind or alongside
+382 Other vehicle coming from another direction with right of way,4,TRUE,382,Other vehicle coming from another direction with right of way
+383 Pedestrian movement or intention,4,TRUE,383,Pedestrian movement or intention
+"384 Towed vehicle, or while towing a vehicle",4,TRUE,384,"Towed vehicle, or while towing a vehicle"
+385 Size or position of fixed object or obstacle,4,TRUE,385,Size or position of fixed object or obstacle
+386 Of own vehicle,4,TRUE,386,Of own vehicle
+387 Misjudged intentions of another party,4,TRUE,387,Misjudged intentions of another party
+400 Inexperience,4,TRUE,400,Inexperience
+"401 In driving in fast, complex or heavy traffic",4,TRUE,401,"In driving in fast, complex or heavy traffic"
+402 New driver showed inexperience,4,TRUE,402,New driver showed inexperience
+403 Driving unfamiliar vehicle,4,TRUE,403,Driving unfamiliar vehicle
+404 Overseas / migrant driver fails to adjust to NZ road rules,4,TRUE,404,Overseas / migrant driver fails to adjust to NZ road rules
+and road conditions,4,TRUE,and,road conditions
+405 Driver under instruction,4,TRUE,405,Driver under instruction
+406 At towing trailer / other vehicle,4,TRUE,406,At towing trailer / other vehicle
+407 Driver over-reacted,4,TRUE,407,Driver over-reacted
+408 Unsupervised cyclist,4,TRUE,408,Unsupervised cyclist
+"410 Fatigue (drowsy, tired, fell asleep)",4,TRUE,410,"Fatigue (drowsy, tired, fell asleep)"
+411 Long trip,4,TRUE,411,Long trip
+412 Lack of sleep,4,TRUE,412,Lack of sleep
+413 Exhaust fumes,4,TRUE,413,Exhaust fumes
+414 Worked long hours before driving,4,TRUE,414,Worked long hours before driving
+415 Exceeded driving hours,4,TRUE,415,Exceeded driving hours
+420 Incorrect use of vehicle controls,4,TRUE,420,Incorrect use of vehicle controls
+421 Started in gear,4,TRUE,421,Started in gear
+422 Stalled engine,4,TRUE,422,Stalled engine
+423 Wrong pedal,4,TRUE,423,Wrong pedal
+"424 Footrest, stand",4,TRUE,424,"Footrest, stand"
+425 Ignition turned off (steering locked),4,TRUE,425,Ignition turned off (steering locked)
+426 Lights not switched on,4,TRUE,426,Lights not switched on
+427 Foot slipped or caught under pedal,4,TRUE,427,Foot slipped or caught under pedal
+428 Parking brake not fully applied,4,TRUE,428,Parking brake not fully applied
+429 Trailer coupling or safety chain not secured,4,TRUE,429,Trailer coupling or safety chain not secured
+430 Showing off,4,TRUE,430,Showing off
+431 Racing,4,TRUE,431,Racing
+432 Playing chicken,4,TRUE,432,Playing chicken
+433 Wheel spins / wheelies / doughnuts / drifting,4,TRUE,433,Wheel spins / wheelies / doughnuts / drifting
+434 Intimidating driving,4,TRUE,434,Intimidating driving
+440 Parked or stopped,4,TRUE,440,Parked or stopped
+441 Inadequately lit at night: (not lit by street lights or park lights off),4,TRUE,441,Inadequately lit at night: (not lit by street lights or park lights off)
+442 At point of limited visibility,4,TRUE,442,At point of limited visibility
+443 Not as close as practicable to side of road,4,TRUE,443,Not as close as practicable to side of road
+444 On incorrect side of road,4,TRUE,444,On incorrect side of road
+445 Double parked,4,TRUE,445,Double parked
+446 In 'No Stopping' area,4,TRUE,446,In 'No Stopping' area
+447 Not clear of rail crossing,4,TRUE,447,Not clear of rail crossing
+448 In cycle or Transit lane,4,TRUE,448,In cycle or Transit lane
+500 Illness and disability,4,TRUE,500,Illness and disability
+"501 Illness with no warning (e.g. heart attack, unexpected epilepsy)",4,TRUE,501,"Illness with no warning (e.g. heart attack, unexpected epilepsy)"
+502 Physically disabled,4,TRUE,502,Physically disabled
+503 Defective vision,4,TRUE,503,Defective vision
+"504 Medical illness (not sudden) flu, diabetes",4,TRUE,504,"Medical illness (not sudden) flu, diabetes"
+"505 Mental illness (depression, psychosis)",4,TRUE,505,"Mental illness (depression, psychosis)"
+506 Suicidal (but not successful),4,TRUE,506,Suicidal (but not successful)
+507 Impaired ability due to old age,4,TRUE,507,Impaired ability due to old age
+510 Intentional or criminal,4,TRUE,510,Intentional or criminal
+511 Deliberate homicide (only if succeeded),4,TRUE,511,Deliberate homicide (only if succeeded)
+512 Intentional collision,4,TRUE,512,Intentional collision
+513 Committed suicide (only if succeeded),4,TRUE,513,Committed suicide (only if succeeded)
+514 Evading enforcement,4,TRUE,514,Evading enforcement
+515 Object deliberately thrown at or dropped on vehicle / shot at,4,TRUE,515,Object deliberately thrown at or dropped on vehicle / shot at
+516 Object thrown from vehicle,4,TRUE,516,Object thrown from vehicle
+517 Stolen vehicle,4,TRUE,517,Stolen vehicle
+"520 Driver or passenger, boarding, leaving, in vehicle",4,TRUE,520,"Driver or passenger, boarding, leaving, in vehicle"
+521 Boarding moving vehicle,4,TRUE,521,Boarding moving vehicle
+522 Intentionally leaving moving vehicle,4,TRUE,522,Intentionally leaving moving vehicle
+523 Riding in insecure position,4,TRUE,523,Riding in insecure position
+524 Interfered with driver,4,TRUE,524,Interfered with driver
+525 Opened door inadvertently,4,TRUE,525,Opened door inadvertently
+526 Overloaded vehicle (with passengers),4,TRUE,526,Overloaded vehicle (with passengers)
+527 Child playing in parked vehicle,4,TRUE,527,Child playing in parked vehicle
+530 Miscellaneous person,4,TRUE,530,Miscellaneous person
+531 Casualty drowned,4,TRUE,531,Casualty drowned
+532 Casualty thrown from vehicle,4,TRUE,532,Casualty thrown from vehicle
+533 Equestrian not keeping to verge,4,TRUE,533,Equestrian not keeping to verge
+534 Cyclist or M/cyclist wearing dark clothing,4,TRUE,534,Cyclist or M/cyclist wearing dark clothing
+600 Lights and reflectors at fault or dirty,4,TRUE,600,Lights and reflectors at fault or dirty
+601 Dazzling headlights,4,TRUE,601,Dazzling headlights
+602 Headlights inadequate or no headlights,4,TRUE,602,Headlights inadequate or no headlights
+603 Headlights failed suddenly,4,TRUE,603,Headlights failed suddenly
+604 Brake-lights or indicators faulty or not fitted,4,TRUE,604,Brake-lights or indicators faulty or not fitted
+605 Tail-lights inadequate or no tail-lights,4,TRUE,605,Tail-lights inadequate or no tail-lights
+606 Reflectors inadequate or no reflectors,4,TRUE,606,Reflectors inadequate or no reflectors
+607 Lights or reflectors obscured,4,TRUE,607,Lights or reflectors obscured
+610 Brakes,4,TRUE,610,Brakes
+611 Parking brake failed,4,TRUE,611,Parking brake failed
+612 Parking brake defective,4,TRUE,612,Parking brake defective
+613 Service brake failed,4,TRUE,613,Service brake failed
+614 Service brake defective,4,TRUE,614,Service brake defective
+615 Jack-knifed,4,TRUE,615,Jack-knifed
+620 Steering,4,TRUE,620,Steering
+621 Defective,4,TRUE,621,Defective
+622 Failed suddenly,4,TRUE,622,Failed suddenly
+630 Tyres,4,TRUE,630,Tyres
+631 Puncture or blow-out,4,TRUE,631,Puncture or blow-out
+632 Worn tread on tyre,4,TRUE,632,Worn tread on tyre
+633 Incorrect tyre type,4,TRUE,633,Incorrect tyre type
+634 Mixed treads / space savers,4,TRUE,634,Mixed treads / space savers
+640 Windscreen or mirror,4,TRUE,640,Windscreen or mirror
+641 Shattered windscreen,4,TRUE,641,Shattered windscreen
+642 Windscreen or rear window dirty,4,TRUE,642,Windscreen or rear window dirty
+643 Rear vision mirror not adjusted correctly,4,TRUE,643,Rear vision mirror not adjusted correctly
+644 No rear vision mirror,4,TRUE,644,No rear vision mirror
+645 Windscreen or rear window misted/frosted,4,TRUE,645,Windscreen or rear window misted/frosted
+646 Inadequate or no sun-visors,4,TRUE,646,Inadequate or no sun-visors
+647 Inadequate or no windscreen wipers,4,TRUE,647,Inadequate or no windscreen wipers
+"648 Cycle / Motorcycle visor, glasses, goggles or screen",4,TRUE,648,"Cycle / Motorcycle visor, glasses, goggles or screen"
+650 Mechanical,4,TRUE,650,Mechanical
+651 Engine failure,4,TRUE,651,Engine failure
+652 Transmission failure (including chains and gears),4,TRUE,652,Transmission failure (including chains and gears)
+653 Accelerator or throttle jammed,4,TRUE,653,Accelerator or throttle jammed
+660 Body or chassis,4,TRUE,660,Body or chassis
+"661 Body, chassis or frame (cycle, m/c) failure",4,TRUE,661,"Body, chassis or frame (cycle, m/c) failure"
+662 Suspension failure,4,TRUE,662,Suspension failure
+663 Failure of door catch or door not shut,4,TRUE,663,Failure of door catch or door not shut
+664 Inadequate mudguards,4,TRUE,664,Inadequate mudguards
+665 Inadequate tow coupling,4,TRUE,665,Inadequate tow coupling
+666 Inadequate or no safety chain,4,TRUE,666,Inadequate or no safety chain
+667 Bonnet catch failed,4,TRUE,667,Bonnet catch failed
+668 Wheel off,4,TRUE,668,Wheel off
+669 Broken axle,4,TRUE,669,Broken axle
+670 Inconspicuous colour,4,TRUE,670,Inconspicuous colour
+671 Blind spot,4,TRUE,671,Blind spot
+672 Seat belt / restraint failed,4,TRUE,672,Seat belt / restraint failed
+673 Air-bag failed to inflate (fully),4,TRUE,673,Air-bag failed to inflate (fully)
+680 Load,4,TRUE,680,Load
+681 Load interferes with driver,4,TRUE,681,Load interferes with driver
+682 Not well secured or load moved,4,TRUE,682,Not well secured or load moved
+683 Over-hanging,4,TRUE,683,Over-hanging
+684 Load obscured vision,4,TRUE,684,Load obscured vision
+685 Excess dimensions not adequately indicated,4,TRUE,685,Excess dimensions not adequately indicated
+686 Over dimension vehicle or load,4,TRUE,686,Over dimension vehicle or load
+687 Load too heavy,4,TRUE,687,Load too heavy
+688 Towed vehicle or trailer too heavy or incompatible,4,TRUE,688,Towed vehicle or trailer too heavy or incompatible
+690 Miscellaneous vehicle,4,TRUE,690,Miscellaneous vehicle
+691 Emergency Vehicle attending emergency,4,TRUE,691,Emergency Vehicle attending emergency
+692 Vehicle caught fire,4,TRUE,692,Vehicle caught fire
+693 Being towed,4,TRUE,693,Being towed
+694 Air-bag contributed to crash or injury,4,TRUE,694,Air-bag contributed to crash or injury
+695 Seatbelt / restraint absent or unusable,4,TRUE,695,Seatbelt / restraint absent or unusable
+696 Dangerous goods,4,TRUE,696,Dangerous goods
+700 Walking along road,4,TRUE,700,Walking along road
+701 Not keeping to footpath,4,TRUE,701,Not keeping to footpath
+702 Not keeping to side of road,4,TRUE,702,Not keeping to side of road
+703 Not facing oncoming traffic,4,TRUE,703,Not facing oncoming traffic
+704 Not on outside of blind curve,4,TRUE,704,Not on outside of blind curve
+705 Wheeled ped inconsiderate or dangerous on footpath,4,TRUE,705,Wheeled ped inconsiderate or dangerous on footpath
+710 Crossing road,4,TRUE,710,Crossing road
+711 Walking heedless of traffic,4,TRUE,711,Walking heedless of traffic
+712 Stepping out from behind vehicles,4,TRUE,712,Stepping out from behind vehicles
+713 Running heedless of traffic,4,TRUE,713,Running heedless of traffic
+714 Failed to use pedestrian crossing when one within 20 metres,4,TRUE,714,Failed to use pedestrian crossing when one within 20 metres
+715 Waiting on roadway for moving traffic,4,TRUE,715,Waiting on roadway for moving traffic
+716 Confused by traffic or stepped back,4,TRUE,716,Confused by traffic or stepped back
+717 Suddenly stepped onto pedestrian crossing,4,TRUE,717,Suddenly stepped onto pedestrian crossing
+718 Not complying with traffic signals or school patrols,4,TRUE,718,Not complying with traffic signals or school patrols
+719 Misjudged speed and / or distance of vehicle,4,TRUE,719,Misjudged speed and / or distance of vehicle
+720 Miscellaneous,4,TRUE,720,Miscellaneous
+"721 Pushing, working on or unloading vehicle",4,TRUE,721,"Pushing, working on or unloading vehicle"
+722 Playing on road or unnecessarily on road,4,TRUE,722,Playing on road or unnecessarily on road
+723 Working on road,4,TRUE,723,Working on road
+724 Wearing dark clothing,4,TRUE,724,Wearing dark clothing
+725 Vision obscured by umbrella or clothing,4,TRUE,725,Vision obscured by umbrella or clothing
+726 Child escaped from supervision,4,TRUE,726,Child escaped from supervision
+727 Unsupervised child,4,TRUE,727,Unsupervised child
+728 Sitting / lying on road,4,TRUE,728,Sitting / lying on road
+729 Pedestrian to /from school bus,4,TRUE,729,Pedestrian to /from school bus
+730 Pedestrian behind reversing / manoeuvring vehicle,4,TRUE,730,Pedestrian behind reversing / manoeuvring vehicle
+731 Overseas pedestrian,4,TRUE,731,Overseas pedestrian
+"732 Pedestrian attention diverted e.g. cigarette, cell phone, music player",4,TRUE,732,"Pedestrian attention diverted e.g. cigarette, cell phone, music player"
+800 Slippery,4,TRUE,800,Slippery
+801 Rain,4,TRUE,801,Rain
+802 Frost or ice,4,TRUE,802,Frost or ice
+803 Snow or hail,4,TRUE,803,Snow or hail
+804 Loose material on seal,4,TRUE,804,Loose material on seal
+805 Mud,4,TRUE,805,Mud
+806 Oil / Diesel / Fuel,4,TRUE,806,Oil / Diesel / Fuel
+807 Painted markings,4,TRUE,807,Painted markings
+808 Recently graded,4,TRUE,808,Recently graded
+809 Surface bleeding / defective,4,TRUE,809,Surface bleeding / defective
+810 Surface,4,TRUE,810,Surface
+811 Potholed,4,TRUE,811,Potholed
+812 Uneven,4,TRUE,812,Uneven
+813 Deep loose metal,4,TRUE,813,Deep loose metal
+814 High crown,4,TRUE,814,High crown
+815 Curve not well banked,4,TRUE,815,Curve not well banked
+816 Edge badly defined or gave way,4,TRUE,816,Edge badly defined or gave way
+817 Under construction or maintenance,4,TRUE,817,Under construction or maintenance
+818 Unusually narrow,4,TRUE,818,Unusually narrow
+819 Broken glass,4,TRUE,819,Broken glass
+820 Obstructed,4,TRUE,820,Obstructed
+821 Fallen tree or branch,4,TRUE,821,Fallen tree or branch
+822 Slip or subsidence,4,TRUE,822,Slip or subsidence
+"823 Flood waters, large puddles, ford",4,TRUE,823,"Flood waters, large puddles, ford"
+824 Road works not adequately lighted,4,TRUE,824,Road works not adequately lighted
+825 Road works not adequately signposted,4,TRUE,825,Road works not adequately signposted
+826 Roadside object fell on vehicle,4,TRUE,826,Roadside object fell on vehicle
+827 Object flicked up by vehicle,4,TRUE,827,Object flicked up by vehicle
+830 Visibility limited,4,TRUE,830,Visibility limited
+831 Curve,4,TRUE,831,Curve
+832 Crest,4,TRUE,832,Crest
+833 Building,4,TRUE,833,Building
+834 Trees,4,TRUE,834,Trees
+835 Hedge or fence,4,TRUE,835,Hedge or fence
+836 Scrub or long grass,4,TRUE,836,Scrub or long grass
+837 Bank,4,TRUE,837,Bank
+"838 Temporary obstruction, dust or smoke",4,TRUE,838,"Temporary obstruction, dust or smoke"
+839 Parked vehicle,4,TRUE,839,Parked vehicle
+840 Signs and signals,4,TRUE,840,Signs and signals
+"841 Damaged, removed or malfunction",4,TRUE,841,"Damaged, removed or malfunction"
+842 Badly located,4,TRUE,842,Badly located
+843 Ineffective or inadequate,4,TRUE,843,Ineffective or inadequate
+844 Necessary,4,TRUE,844,Necessary
+845 Signals turned off,4,TRUE,845,Signals turned off
+850 Markings,4,TRUE,850,Markings
+851 Faded,4,TRUE,851,Faded
+852 Difficult to see under weather conditions,4,TRUE,852,Difficult to see under weather conditions
+853 Markings necessary,4,TRUE,853,Markings necessary
+854 Not visible due to geometry or vehicles,4,TRUE,854,Not visible due to geometry or vehicles
+855 Old markings not adequately removed,4,TRUE,855,Old markings not adequately removed
+860 Street lighting,4,TRUE,860,Street lighting
+861 Failed,4,TRUE,861,Failed
+862 Inadequate,4,TRUE,862,Inadequate
+863 Glare on wet road,4,TRUE,863,Glare on wet road
+864 Pedestrian crossing not adequately lighted,4,TRUE,864,Pedestrian crossing not adequately lighted
+870 Raised islands and roundabouts,4,TRUE,870,Raised islands and roundabouts
+871 Traffic island(s) difficult to see,4,TRUE,871,Traffic island(s) difficult to see
+"872 Traffic island(s) Ineffective, badly located or designed",4,TRUE,872,"Traffic island(s) Ineffective, badly located or designed"
+873 Cyclist squeeze point,4,TRUE,873,Cyclist squeeze point
+900 Weather,4,TRUE,900,Weather
+901 Heavy rain,4,TRUE,901,Heavy rain
+902 Dazzling sun,4,TRUE,902,Dazzling sun
+903 Strong wind,4,TRUE,903,Strong wind
+904 Fog or mist,4,TRUE,904,Fog or mist
+"905 Snow, sleet or hail",4,TRUE,905,"Snow, sleet or hail"
+910 Animals,4,TRUE,910,Animals
+911 Household pet rushed out or playing,4,TRUE,911,Household pet rushed out or playing
+912 Farm animal straying,4,TRUE,912,Farm animal straying
+"913 Farm animal attended, but inadequate warning or unexpected",4,TRUE,913,"Farm animal attended, but inadequate warning or unexpected"
+"914 Farm animal attended, but out of control",4,TRUE,914,"Farm animal attended, but out of control"
+915 Wild animal,4,TRUE,915,Wild animal
+920 Entering or leaving land use,4,TRUE,920,Entering or leaving land use
+921 Roadside stall,4,TRUE,921,Roadside stall
+922 Service station,4,TRUE,922,Service station
+923 Specialised liquor outlet,4,TRUE,923,Specialised liquor outlet
+924 Take away foods,4,TRUE,924,Take away foods
+925 Shopping complex,4,TRUE,925,Shopping complex
+926 Car parking building / area,4,TRUE,926,Car parking building / area
+927 Other commercial,4,TRUE,927,Other commercial
+928 Industrial site,4,TRUE,928,Industrial site
+929 Private house / farm,4,TRUE,929,Private house / farm
+930 Other non-commercial,4,TRUE,930,Other non-commercial
+931 Mobile shop or vendor,4,TRUE,931,Mobile shop or vendor
+970 Unconverted old codes,4,TRUE,970,Unconverted old codes
+977 Old 920: Equestrian,4,TRUE,977,Old 920: Equestrian
+978 Old 950: Miscellaneous,4,TRUE,978,Old 950: Miscellaneous
+979 Old 960: Special Codes,4,TRUE,979,Old 960: Special Codes
+981 Old 131: Swinging wide on bend or intersection,4,TRUE,981,Old 131: Swinging wide on bend or intersection
+982 Old 138: Lost control - head on collision,4,TRUE,982,Old 138: Lost control - head on collision
+983 Old 147: When changing lanes,4,TRUE,983,Old 147: When changing lanes
+984 Old 157: Cut in,4,TRUE,984,Old 157: Cut in
+985 Old 188: At steady red/amber arrows,4,TRUE,985,Old 188: At steady red/amber arrows
+986 Old 225: Wrong way in one way street or other forbidden movement,4,TRUE,986,Old 225: Wrong way in one way street or other forbidden movement
+987 Old 235: Misjudged speed of other vehicle,4,TRUE,987,Old 235: Misjudged speed of other vehicle
+"988 Old 236: Misjudged distance, size or position of vehicle",4,TRUE,988,"Old 236: Misjudged distance, size or position of vehicle"
+989 Old 238: In controlling skid,4,TRUE,989,Old 238: In controlling skid
+990 Old 273: Defective vision or illness (not sudden),4,TRUE,990,Old 273: Defective vision or illness (not sudden)
+991 Old 503: In face of traffic,4,TRUE,991,Old 503: In face of traffic
+992 Old 504: Opened door in path of another party,4,TRUE,992,Old 504: Opened door in path of another party
+993 Old 512: Interfered with driver or overloaded vehicle,4,TRUE,993,Old 512: Interfered with driver or overloaded vehicle
+994 Old 737: Physical defect or old age,4,TRUE,994,Old 737: Physical defect or old age
+995 Old 738: Unattended child,4,TRUE,995,Old 738: Unattended child
+996 Old 952: Suicide,4,TRUE,996,Old 952: Suicide
+997 Old 400: Specific cyclist faults,4,TRUE,997,Old 400: Specific cyclist faults
+998 Old 930: Bicycle faults,4,TRUE,998,Old 930: Bicycle faults
