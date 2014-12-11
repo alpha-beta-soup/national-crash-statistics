@@ -81,6 +81,9 @@ class nztacrash:
         # Output of streetDecoderCSV()
         self.streetdecoder = streetdecoder
         
+        # Google Streetview API key
+        self.api = open('google-streetview-api-key','r').read()
+        
         # Derived and associated data
         self.keyvehicle = self.getKeyVehicle(decode=False)
         self.keyvehicle_decoded = self.getKeyVehicle(decode=True)
@@ -250,6 +253,53 @@ class nztacrash:
             pedestrian = True
         return pedestrian
         
+    def get_number_of_vehicles(self):
+        '''Returns integers representing the numbers of the different types of vehicles
+        involved in the accident. Returns None if this information cannot be obtained'''
+        retdict = {self.keyvehicle: 1} # Initialise
+        if self.secondaryvehicles == None:
+            return None
+        for v in self.secondaryvehicles:
+            if v not in retdict.keys():
+                retdict[v] = 1
+            else:
+                retdict[v] = retdict[v] + 1
+        return retdict
+    
+    def __vehicle_icons__(self):
+        '''Returns a series of <img> tags and paths representing icons of the 
+        vehicles and people involved in the accident.'''
+        vehicles = self.get_number_of_vehicles()
+        if vehicles in [None,'',' ']:
+            return None
+        base = './icons/transport'
+        h,w = 30,30
+        hspace = 10
+        default = 'Car-2-icon.png'
+        other = ['Skateboard-icon.png']
+        decoder = {'C': [default, 'Car'],
+                   'V': ['Transport-Bus-2-icon.png', 'Van or Ute'],
+                   'X': ['Taxi-2-icon.png', 'Taxi or Taxi Van'],
+                   'B': ['Bus-2-icon.png', 'Bus'],
+                   'L': ['Transport-Bus-icon.png', 'School Bus'],
+                   '4': [default, '4X4 or SUV'],
+                   'T': ['Transport-Truck-icon.png', 'Truck'],
+                   'M': [default, 'Motorcycle'],
+                   'P': [default, 'Moped'],
+                   'S': ['Bicycle-icon.png', 'Bicycle'],
+                   'O': [other, 'Miscellaneous Vehicle'],
+                   'E': ['Sports-Walking-icon.png', 'Pedestrian'],
+                   'K': [other, 'Skateboard, inline skater, etc.'],
+                   'Q': ['horse-icon.png', 'equestrian'],
+                   'H': ['wheelchair-icon.png', 'Wheeled Pedestrian']}
+        ret = ''
+        for v in vehicles.keys():
+            icon = decoder[v][0]
+            alt = decoder[v][1]
+            multiplier = vehicles[v]
+            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,alt,h,w,hspace) * multiplier
+        return ret
+        
     def __streetview__(self):
         '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
@@ -260,7 +310,7 @@ class nztacrash:
         heading = 235
         pitch = 10
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
-        return '<a href="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s"></a>' % (link,h,w,self.lon,self.lat,pitch)
+        return '<a href="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,h,w,self.lon,self.lat,pitch,self.api)
         
             
     def __str__(self):
@@ -299,6 +349,7 @@ class nztacrash:
         'streetview': self.__streetview__(),
         'crash_road': genFunc.formatNiceRoad(crashroad,self.streetdecoder),
         'weather_icon': self.weatherIcon(),
+        'vehicle_icons': self.__vehicle_icons__(),
         'road_conditions_txt': self.__roadwet,
         'light_txt': self.__light,
         'movement_txt': self.__movement,
@@ -506,42 +557,49 @@ class nztacrash:
             light = 'Night'
         else:
             light = 'Day'
-        decoder1 = {'F': {'Night': 'Weather-Moon-icon.png', 'Day': 'Weather-Sun-icon.png'},
-                    'M': {'Night': 'Weather-Fog-Night-icon.png', 'Day': 'Weather-Fog-Day-icon.png'},
-                    'L': 'Weather-Little-Rain-icon.png',
-                    'H': 'Weather-Downpour-icon.png',
-                    'S': 'Weather-Snow-icon.png',
+        decoder1 = {'F': {'Night': ['Weather-Moon-icon.png','Clear Night'], 'Day': ['Weather-Sun-icon.png','Clear Day']},
+                    'M': {'Night': ['Weather-Fog-Night-icon.png','Night Fog'], 'Day': ['Weather-Fog-Day-icon.png','Day Fog']},
+                    'L': ['Weather-Little-Rain-icon.png','Light Rain'],
+                    'H': ['Weather-Downpour-icon.png','Heavy Rain'],
+                    'S': ['parnell-snow.png','Snow'],
                     ' ': None}
-        decoder2 = {'F': 'Temperature-2-icon.png',
-                    'S': '05-strong-wind-weather-icon.png',
+        decoder2 = {'F': ['Temperature-2-icon.png','Frost'],
+                    'S': ['parnell-wind.png','Strong Winds'],
                     ' ': None}
+        if len(self.wthr_a) > 2:
+            raise Exception # More than 2 weather indicators are not permitted
         w1 = self.wthr_a[0]
         if w1 != ' ':
             # Get the appropriate icon
             if w1 in ['F','M']:
                 # Also need the light parameter
-                icon1 = decoder1[w1][light]
+                icon = decoder1[w1][light]
             else:
-                icon1 = decoder1[w1]
+                icon = decoder1[w1]
+            icon1 = icon[0]
+            alt1 = icon[1]
         else:
             icon1 = None
+            alt1 = None
         w2 = self.wthr_a[1]
         if w2 != ' ':
             # Get the appropriate secondary icon
-            icon2 = decoder2[w2]
+            icon = decoder2[w2]
+            icon2 = icon[0]
+            alt2 = icon[1]
         else:
             icon2 = None
-        
+            alt2 = None
         ret = ''
         h,w = 30,30
         base = './icons'
         if icon1 == None and icon2 == None:
             # No weather data at all
-            return None
+            return ''
         if icon1 != None:
-            ret += '<img src="%s/%s" height="%d" width="%d">' % (base,icon1,h,w)
+            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d">' % (base,icon1,alt1,alt1,h,w)
         if icon2 != None:
-            ret += '<img src="%s/%s" height="%d" width="%d">' % (base,icon2,h,w)
+            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d">' % (base,icon2,alt2,alt2,h,w)
         return ret
         
     def decodeJunction(self):
@@ -619,6 +677,14 @@ class nztacrash:
         limitations on the report.'''
         
         # Miscellaneous lookup information
+        majorcauses_lookup = {(100, 210): 'Driver control',
+        (300, 387): 'Vehicle conflicts',
+        (400, 448): 'General driver',
+        (500, 534): 'General person',
+        (600, 696): 'Vehicles',
+        (700, 732): 'Pedestrians',
+        (800, 873): 'Road',
+        (900, 998): 'Miscellaneous'}
         majorcauses_lookup = {(100, 210): 'Driver control',
         (300, 387): 'Vehicle conflicts',
         (400, 448): 'General driver',
