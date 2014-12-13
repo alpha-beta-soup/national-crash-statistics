@@ -370,7 +370,8 @@ class nztacrash:
         heading = 235
         pitch = 5
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
-        return '<a href="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,w,h,self.lon,self.lat,pitch,self.api)
+        alt = 'Click to go to Google Streetview'
+        return '<a href="%s" alt="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,alt,alt,w,h,self.lon,self.lat,pitch,self.api)
         
             
     def __str__(self):
