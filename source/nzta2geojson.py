@@ -20,6 +20,7 @@ import json
 import csv
 import string
 import generalFunctions as genFunc
+import re
      
 class nztacrash:
     '''A crash recorded by NZTA'''
@@ -208,7 +209,11 @@ class nztacrash:
     def get_crash_road(self):
         crash_road = genFunc.formatString(self.row[1])
         if crash_road != None and crash_road[0:3] != 'SH ':
-            crash_road = crash_road.title()
+            if len(crash_road) == 2 and crash_road != 'TE':
+                crash_road = crash_road # Acronym, don't apply title()
+            else:
+                crash_road = crash_road.title()
+        crash_road = genFunc.check_offroad(crash_road)
         return crash_road
         
     def get_crash_dow(self):
@@ -228,7 +233,11 @@ class nztacrash:
     def get_side_road(self):
         side_road = genFunc.formatString(self.row[5])
         if side_road != None and side_road[0:3] != 'SH ':
-            side_road = side_road.title()
+            if len(side_road) == 2 and side_road != 'TE':
+                side_road = side_road # Acronym, don't apply title()
+            else:
+                side_road = side_road.title()
+        side_road = genFunc.check_offroad(side_road)
         return side_road
         
     def get_cyclist(self):
@@ -317,8 +326,7 @@ class nztacrash:
     def __str__(self):
         '''Creates an HTML-readable summary of the nztacrash object.'''
         text = ''
-        for t in [self.tla_name, self.crash_dow, self.crash_road, self.side_road,
-        self.__roadwet, self.__wthr, self.__light,
+        for t in [self.tla_name,
         self.__movement, self.__atype, self.__amovement, self.__secondary,
         self.__youngestped, self.__youngestcyc, self.__factors, self.__objects,
         self.__consequences]:
@@ -341,6 +349,8 @@ class nztacrash:
             crashroad = self.crash_road + ' at ' + self.side_road
         else:
             crashroad = self.crash_road
+        #if 'cpk' in crashroad.lower():
+        #    print crashroad, self.__str__()
         return {'type': 'Feature',
         'properties': {'crash_id': self.crash_id,
         'tla_name': self.tla_name,

@@ -60,11 +60,41 @@ def formatCrashTime(crashtime, dateobj):
         return None
     return datetime.datetime.strptime(str(dateobj)+" "+'0'*(4-len(crashtime))+crashtime,'%Y-%m-%d %H%M').time()
 
+def check_offroad(crash_road):
+    '''Applies a check for 'Z': the flat for offroad indicator, and corrects
+    strings representing these places so that they're a bit nicer to read.'''
+    if 'Z' in crash_road.split(' '):
+        # The crash was off-road
+        # Apply some special formatting to make this read nicely
+        # 1. Remove the now-superfluous 'Z'
+        crash_road = crash_road.split(' ')
+        crash_road.remove('Z')
+        # 2. Special exception for the use of 'Beach' at the beginning of some locations
+        if crash_road[0] == 'Beach' and len(crash_road) > 1:
+            crash_road = crash_road[1:] + [crash_road[0]]
+        #. 3. Expand the off-road abbreviations
+        patterns = {'CPK': 'Carpark',
+                    'BCH': 'Beach',
+                    'DWY': 'Driveway',
+                    'DWAY': 'Driveway',
+                    'FCT': 'Forecourt'}
+        for i, r in enumerate(crash_road):
+            if r.upper() in patterns.keys():
+                crash_road = crash_road[:i] + crash_road[i+1:] + [patterns[r.upper()], '(Off-roadway)']
+                break
+        # Join it back up to a proper description
+        crash_road = ' '.join(crash_road)
+    return crash_road
+
 def formatNiceRoad(road, decoder):
     '''Takes a location expressed as a road, or a street or a highway... and
     makes some cosmetic changes. Minor ones are "St" >> "Street" and "Rd" >>> "Road"
     More major ones are taking State Highway linear references and returning something
-    understandavble to people.'''
+    understandavble to people.
+    CPK = car park
+    BCH = beach
+    DWY = driveway
+    DWAY = driveway'''
     def striplinearref(linref):
         '''Fixes references to State Highways, by removing the linear referencing information'''
         if '/' not in linref:
@@ -82,6 +112,27 @@ def formatNiceRoad(road, decoder):
                     linref[i] = "State Highway %s" % r.split('/')[0]
             return ' '.join(linref)
     road = striplinearref(road).split(" ")
+    knownAcronyms = ['BP', 'VTNZ'] # Ensure acronyms stay acronyms
+    knownErrors = {'Coun': 'Countdown',
+                   'C/Down': 'Countdown',
+                   'Reserv': 'Reserve',
+                   'Stn': 'Station'}
+    for i, r in enumerate(road):
+        if r.upper() in knownAcronyms:
+            road[i] = r.upper()
+        if r.title() in knownErrors.keys():
+            road[i] = knownErrors[r.title()]
+        if '/' in r:
+            print road
+            check = r.split('/')
+            for j, c in enumerate(check):
+                if c in knownErrors:
+                    check[j] = knownErrors[c]
+                if c in knownAcronyms:
+                    check[j] = knownAcronyms[c]
+            check = '/'.join(check)
+            road[i] = check
+
     for i, elem in enumerate(road):
         if elem in decoder.keys():
             road[i] = decoder[elem]
