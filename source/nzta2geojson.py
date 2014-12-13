@@ -122,6 +122,9 @@ class nztacrash:
             self.injuries_none = False
         self.cyclist = self.get_cyclist()
         self.pedestrian = self.get_pedestrian()
+        self.tourist = self.get_tourist()
+        self.alcohol = self.get_alcohol()
+        self.drugs = self.get_drugs()
         
         # HTML text descriptions, used in self.__str__()
         if self.road_wet == 'W':
@@ -250,6 +253,53 @@ class nztacrash:
         elif self.keyvehicle == 'S':
             cyclist == True
         return cyclist
+        
+    def get_tourist(self):
+        '''Returns a Boolean indicating whether or not factor/role 404 is cited to
+        explain the accident.
+        404: Overseas/migrant driver fails to adjust to NZ road rules and road
+             conditions
+        '''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c == '404':
+                return True
+            else:
+                pass
+        return False
+    
+    def get_alcohol(self):
+        '''Returns a Boolean indicating whether or not factors/roles 101,102,103,104,105
+        are cited to explain the accident.
+        101: Alcohol suspected
+        102: Alcohol test below limit
+        103: Alcohol test above limit or test refused
+        104: Alcohol test result unknown
+        105: Intoxicated non-driver (pedestrian / cyclist / passenger)'''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c in ['101','102','103','104','105']:
+                return True
+            else:
+                pass
+        return False
+        
+    def get_drugs(self):
+        '''Returns a Boolean indicating whether or not factors/roles 107,108,109
+        are cited to explain the accident.
+        107: Drug test result unknown
+        108: Drugs suspected
+        109: Drugs proven'''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c in ['107','108','109']:
+                return True
+            else:
+                pass
+        return False
     
     def get_pedestrian(self):
         '''Returns a Boolean indicating whether or not a pedestrian was an involved party'''
@@ -374,6 +424,9 @@ class nztacrash:
         'consequences_txt': self.__consequences,
         'cyclist': self.cyclist,
         'pedestrian': self.pedestrian,
+        'tourist': self.tourist,
+        'alcohol': self.alcohol,
+        'drugs': self.drugs,
         'fatal': self.fatal,
         'severe': self.injuries_severe,
         'minor': self.injuries_minor,
@@ -648,7 +701,7 @@ class nztacrash:
     def getCauses(self, decode=False):
         '''Returns the causes of the crash, and the vehicle to which the (in)action
         is ascribed to as a dictionary in the following structure:
-        {'A': ['Cause1', 'Cause2',],
+        {'A': ['Cause1', 'Cause2'],
          'B': ['Cause3'],
          'Environment': ['Cause4']}
          

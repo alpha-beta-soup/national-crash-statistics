@@ -397,7 +397,7 @@
 
             })//.addTo(map);
 
-            layers["Severe"] = new L.GeoJSON.AJAX(crashes,{
+            layers["Severe injuries"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -419,7 +419,7 @@
 
             })//.addTo(map);
 
-            layers["Minor injury"] = new L.GeoJSON.AJAX(crashes,{
+            layers["Minor injuries"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -461,9 +461,75 @@
 
                 }
 
-            })//.addTo(map);   
+            })//.addTo(map);
+            
+            layers["Tourist / recent migrant"] = new L.GeoJSON.AJAX(crashes,{
+                
+                pointToLayer: function(feature, latlng) {
+                        
+                    return new L.CircleMarker(latlng, injury(feature))
 
-            layers["Pedestrian involved"] = new L.GeoJSON.AJAX(crashes,{
+                },
+                
+                onEachFeature: function(feature, layer) {
+                    
+                    layer.bindPopup(popUpText(feature))
+                
+                },
+
+                filter: function(feature, layer) {
+
+                    return feature.properties.tourist
+
+                }
+
+            })//.addTo(map);  
+            
+            layers["Alcohol"] = new L.GeoJSON.AJAX(crashes,{
+                
+                pointToLayer: function(feature, latlng) {
+                        
+                    return new L.CircleMarker(latlng, injury(feature))
+
+                },
+                
+                onEachFeature: function(feature, layer) {
+                    
+                    layer.bindPopup(popUpText(feature))
+                
+                },
+
+                filter: function(feature, layer) {
+
+                    return feature.properties.alcohol
+
+                }
+
+            })//.addTo(map);
+            
+            layers["Drugs"] = new L.GeoJSON.AJAX(crashes,{
+                
+                pointToLayer: function(feature, latlng) {
+                        
+                    return new L.CircleMarker(latlng, injury(feature))
+
+                },
+                
+                onEachFeature: function(feature, layer) {
+                    
+                    layer.bindPopup(popUpText(feature))
+                
+                },
+
+                filter: function(feature, layer) {
+
+                    return feature.properties.drugs
+
+                }
+
+            })//.addTo(map);
+
+            layers["Pedestrian"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
@@ -485,7 +551,7 @@
 
             })//.addTo(map);                  
 
-            layers["Cyclist involved"] = new L.GeoJSON.AJAX(crashes,{
+            layers["Cyclist"] = new L.GeoJSON.AJAX(crashes,{
                 
                 pointToLayer: function(feature, latlng) {
                         
