@@ -36,12 +36,13 @@ def formatDate(datestring):
     if empty(datestring):
         return None
     return datetime.datetime.strptime(datestring, "%d/%m/%Y").date()
-    
+
+def ordinal(n):
+    return str(n)+("th" if 4<=n%100<=20 else {1:"st",2:"nd",3:"rd"}.get(n%10, "th"))
+
 def formatNiceDate(datetime):
     '''Takes a datetime.datetime (e.g. datetime(2014,1,1)) and returns a nice
     string representation (e.g. "1st of January 2014"'''
-    def ordinal(n):
-        return str(n)+("th" if 4<=n%100<=20 else {1:"st",2:"nd",3:"rd"}.get(n%10, "th"))
     return ordinal(datetime.day) + " %s %d" % (datetime.strftime("%B"), datetime.year)
 
 def formatNiceTime(time):
@@ -100,30 +101,49 @@ def formatNiceRoad(road, decoder):
         if '/' not in linref:
             # Not a SH
             return linref
+        elif '/' in linref:
+            try:
+                int(linref[0])
+            except:
+                # Not a SH, just has a slash
+                return linref
+        # Remaining are State Highways
+        if len(linref.split(' ')) > 1 and ' at ' not in linref:
+            # There is other location information included
+            linref = linref.split(' ')[0] + ' (%s)' % ' '.join(linref.split(' ')[1:]).replace(' SH ',' State Highway ')
         if ' at ' not in linref:
-            # A SH
-            return "State Highway %s" % linref.split('/')[0] # Strip away the linear reference
+            # SH without an intersection
+            SH = linref.split(' ')
+            SH = "State Highway %s " % SH[0].split('/')[0] + ' '.join(SH[1:])
         else:
-            # A SH with an intersection
+            # SH with an intersection
             linref = linref.split(' at ')
-            linref = [linref[0],' at ',linref[1]]
+            linref = [linref[0],'at',linref[1]]
             for i, r in enumerate(linref):
                 if '/' in r:
                     linref[i] = "State Highway %s" % r.split('/')[0]
-            return ' '.join(linref)
+            SH = ' '.join(linref)
+        return SH
+
     road = striplinearref(road).split(" ")
     knownAcronyms = ['BP', 'VTNZ'] # Ensure acronyms stay acronyms
     knownErrors = {'Coun': 'Countdown',
                    'C/Down': 'Countdown',
                    'Reserv': 'Reserve',
-                   'Stn': 'Station'}
+                   'Stn': 'Station',
+                   'Roa': 'Road',
+                   'S': 'South',
+                   'E': 'East',
+                   'W': 'West',
+                   'N': 'North'}
     for i, r in enumerate(road):
         if r.upper() in knownAcronyms:
             road[i] = r.upper()
         if r.title() in knownErrors.keys():
             road[i] = knownErrors[r.title()]
         if '/' in r:
-            print road
+            # Split the linear ref: the SH is the side road
+            r = striplinearref(r)
             check = r.split('/')
             for j, c in enumerate(check):
                 if c in knownErrors:

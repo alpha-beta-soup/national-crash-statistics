@@ -204,6 +204,19 @@
             margin:0 auto;
         }
         
+        /* class for vehicle icons */
+        .injury-icons {
+            display:table;
+            margin:0 auto;
+        }
+        
+        /* class for the popup crash date text */
+        .causes-text {
+            align:'left'
+            font-weight: normal;
+            font-size: 10px;
+        }
+        
         </style>
     
     </head>
@@ -327,10 +340,7 @@
             }
 
             //pop-up text function different if other parties involved. Bound to when events are retrieved from data
-            function popUpText (row, layer) {
-                
-                //if (row.properties.secondary_vehicles_txt != "No other parties were involved.") {
-
+            function popUpText (row, layer) {      
                 return '<span class="crash-location">' + row.properties.tla_name + "</span><br>" +
                        '<span class="date">' + row.properties.crash_dow + ", " + row.properties.crash_date + "</span><br>" +
                        '<span class="time">' + row.properties.crash_time + '</span><br>' +
@@ -338,13 +348,9 @@
                        '<span class="road">' + row.properties.crash_road + "</span><br>" +
                         row.properties.streetview + "<br>" +
                        '<span class="vehicle-icons">' + row.properties.vehicle_icons + '</span><br>' +
-                        //row.properties.light_txt + "<br>" +
-                        //"Road conditions: " + row.properties.road_conditions_txt + "<br>" + "<br>" +
-                        //row.properties.vehicle_a_txt + "<br>" + "<br>" + 
-                        //row.properties.secondary_vehicles_txt + "<br>" + "<br>" +
-                        row.properties.factors_txt +
-                        row.properties.consequences_txt
-            };           
+                       '<span class="injury-icons">' + row.properties.injury_icons + '</span><br>' + 
+                       '<span class="causes-text">' + row.properties.causes + '</span>'
+            };
 
             //create div that appears above the layer selector for explanation and clarity
             var layerTitle = L.Control.extend({
@@ -545,11 +551,11 @@
 
                 filter: function(feature, layer) {
 
-                    return feature.properties.youngest_pedestrian_txt != null
+                    return feature.properties.pedestrian
 
                 }
 
-            })//.addTo(map);                  
+            })//.addTo(map);                 
 
             layers["Cyclist"] = new L.GeoJSON.AJAX(crashes,{
                 

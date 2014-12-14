@@ -133,6 +133,7 @@ class nztacrash:
             return False
         else:
             return True
+    
             
     def get_crash_road(self):
         crash_road = genFunc.formatString(self.row[1])
@@ -230,7 +231,7 @@ class nztacrash:
         '''Returns a Boolean indicating whether or not a pedestrian was an involved party'''
         pedestrian = False # Until shown otherwise
         if self.secondaryvehicles != None:
-            if ('E' or 'K' in self.secondaryvehicles) or (self.keyvehicle == 'E'):
+            if ('E' in self.secondaryvehicles) or ('K' in self.secondaryvehicles) or (self.keyvehicle == 'E'):
                 # A pedestrian/skater was involved
                 pedestrian = True
         elif self.keyvehicle == 'E':
@@ -261,7 +262,7 @@ class nztacrash:
         h,w = 30,30
         hspace = 10
         default = 'Car-2-icon.png'
-        other = ['Skateboard-icon.png']
+        other = 'Skateboard-icon.png'
         decoder = {'C': [default, 'Car'],
                    'V': ['Transport-Bus-2-icon.png', 'Van or Ute'],
                    'X': ['Taxi-2-icon.png', 'Taxi or Taxi Van'],
@@ -285,6 +286,22 @@ class nztacrash:
             ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,alt,h,w,hspace) * multiplier
         return ret
         
+    def get_injury_icons(self):
+        base = './icons/injuries'
+        h,w = 30,30
+        hspace = 10
+        icons = {'fatal': 'skull.png',
+                 'severe': 'broken-leg.png',
+                 'minor': 'broken-arm.png'}
+        ret = ''
+        def add_img(alt,title,icon,multiplier):
+            return '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,alt,h,w,hspace) * multiplier
+        ret += add_img('Fatality','Fatality',icons['fatal'],self.crash_fatal_cnt)
+        ret += add_img('Severe injury','Severe injury',icons['severe'],self.crash_sev_cnt)
+        ret += add_img('Minor injury','Minor injury',icons['minor'],self.crash_min_cnt)
+        return ret
+
+        
     def __streetview__(self):
         '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
@@ -302,18 +319,114 @@ class nztacrash:
         '''
         Returns a nice, readable string of the "factors and roles" of the accident
         '''
-        print self.causesdict_decoded
-        print self.keyvehicle_decoded
-        print self.secondaryvehicles_decoded
-        raw_input("pause")
+        #print self.causesdict_decoded # {'A': [(False, 'Explan'), (True, "'s actions")]...)
+        #print self.keyvehicle_decoded # 'car'
+        #print self.secondaryvehicles_decoded # ['car','truck'...]
+        
+        # Map letters to index positions
+        vehicles_dict = {}
+        for i,v in enumerate(string.ascii_uppercase):
+            vehicles_dict[v] = i # {'A': 0, 'B': 1, 'C': 2}
+            
+        # Map the modes to a text about tbe kind of controller
+        decoder = {'C': 'driver of the <strong>X car</strong>',
+           'V': 'driver of the <strong>X van/ute</strong>',
+           'X': '<strong>X taxi/taxi van driver</strong>',
+           'B': '<strong>X bus driver</strong>',
+           'L': '<strong>X school bus driver</strong>',
+           '4': 'driver of the <strong>X SUV/4X4</strong>',
+           'T': '<strong>X truck driver</strong>',
+           'M': '<strong>X motorcyclist</strong>',
+           'P': '<strong>X moped rider</strong>',
+           'S': '<strong>X cyclist</strong>',
+           'O': 'driver of the <strong>X vehicle</strong> of unknown type',
+           'E': '<strong>X pedestrian</strong>', 
+           'K': '<strong>X skater</strong>',
+           'Q': '<strong>X equestrian</strong>',
+           'H': '<strong>X wheeled pedestrian</strong>'}
+        
+        # Keep track of the numbers of each mode we see, so the text can be formed
+        # using ordinal text ('the first car', etc.)
+        modes, mode_counter = ['C','V','X','B','L','4','T','M','P','S','E','K','Q','H','O'], {}
+        for m in modes:
+            mode_counter[m] = 0 # Initially 0, gets incremented
+        
+        def find_mode(v,vehicle_counts,mode_counter):
+            '''Takes the vehicle code 'A', 'B', etc. and returns the mode of that
+            party (e.g. 'car', 'truck')'''
+            
+            if v == 'Environment' or v == '+':
+                # The environment is not a mode
+                return None
+            
+            # Expand the list of modes involved, in order 'A' ... 'Z'
+            if self.secondaryvehicles_decoded == None:
+                vehicle_map = [self.keyvehicle_decoded]
+                vehicle_map_coded = [self.keyvehicle]
+            else:
+                index = vehicles_dict[v] # Gets the index position to insert the vehicle
+                vehicle_map = [self.keyvehicle_decoded] + self.secondaryvehicles_decoded[:]
+                vehicle_map_coded = [self.keyvehicle] + self.secondaryvehicles[:]
+                
+            # Make a version of the mode to included in the causes
+            # This ensures that multiple versions of the same mode get labelled
+            # appropriately
+            if vehicles_dict[v] > len(vehicle_map)-1:
+                # There are more parties involved than vehicles listed
+                logging.warning('There are more given parties than listed vehicles, so cause attribution has not been conducted: Crash ID %s' % self.crash_id) 
+                return None
+                
+            mode_v = vehicle_map_coded[vehicles_dict[v]]
+            mode = vehicle_map[vehicles_dict[v]]
+            # Increase the mode counter appropriately
+            mode_counter[mode_v] = mode_counter[mode_v] + 1
+            
+            if vehicle_counts[mode_v] == 1:
+                # Then there is only one type of this vehicle involved
+                the_mode = 'The %s' % decoder[mode_v].replace('X ','')
+            elif vehicle_counts[mode_v] > 1:
+                # Then there is multiple instances of this type of vehicle involved
+                the_mode = 'The %s' % decoder[mode_v].replace('X', genFunc.ordinal(mode_counter[mode_v]))
+  
+            # Finally, replace '1st' with 'first', etc.
+            ordinal_text = {'1st':'first','2nd':'second','3rd':'third',
+                '4th':'fourth','5th':'fifth','6th':'sixth',
+                '7th':'seventh','8th':'eighth','9th':'ninth'}
+            for s in ordinal_text.keys(): # More?
+                if s in the_mode:
+                    the_mode = the_mode.replace(s,ordinal_text[s])
+            return (the_mode, mode_counter)
+            
+        vehicle_counts = self.get_number_of_vehicles() # {'C': 1, 'V': 1}
+        
+        the_text = ''
+        causesdict_decoded_sorted = self.causesdict_decoded.keys()
+        causesdict_decoded_sorted.sort()
+        for v in causesdict_decoded_sorted:
+            fmode = find_mode(v,vehicle_counts,mode_counter)
+            if fmode != None:
+                # A vehicle
+                mode, mode_counter = fmode[0], fmode[1]
+            else:
+                mode = fmode # None; the Environment
+            for r in self.causesdict_decoded[v]:
+                if r[1] == 'FALSE':
+                    # The cause is NULL
+                    continue
+                subject = r[0]
+                if subject is False:
+                    # Explanation does not require a subject
+                    the_text += '%s.<br>' % (r[1])
+                else:
+                    # Explanation requires a subject
+                    the_text += '%s %s.<br>' % (mode,r[1])
+        #raw_input("pause")
+        return the_text
     
     def __geo_interface__(self):
         '''
         Returns a geojson object representing the point.
         '''
-        # TODO add causes
-        print self.make_causes()
-        
         if self.hasLocation is False:
             # Can't add it to the map if it does not have a location
             return None
@@ -327,6 +440,8 @@ class nztacrash:
         'crash_road': genFunc.formatNiceRoad(self.get_crashroad(),self.streetdecoder),
         'weather_icon': self.weatherIcon(),
         'vehicle_icons': self.__vehicle_icons__(),
+        'injury_icons': self.get_injury_icons(),
+        'causes': self.make_causes(),
         'cyclist': self.cyclist,
         'pedestrian': self.pedestrian,
         'tourist': self.tourist,
@@ -696,6 +811,9 @@ class nztacrash:
                 for causecode in causecodes:
                     # Get the pretty explanations
                     explanation = self.causedecoder[causecode][1] # String
+                    if explanation[0] == "'":
+                        # It begins with a possessive apostrophe, so add a space
+                        explanation = ' %s' % explanation
                     subject = self.causedecoder[causecode][0] # Boolean
                     if vehicle not in decodedretdict.keys():
                         decodedretdict[vehicle] = [(subject, explanation)]
@@ -758,11 +876,12 @@ def main(data,causes,streets):
         for crash in crashreader:
             Crash = nztacrash(crash, causedecoder, streetdecoder)
             # Collect crash descriptions and locations into the feature collection
-            feature_collection["features"].append(Crash.__geo_interface__())
+            if Crash.hasLocation:
+                feature_collection["features"].append(Crash.__geo_interface__())
 
-    # Write the geojson output
-    with open('../data/data.geojson', 'w') as outfile:
-        outfile.write(json.dumps(feature_collection))
+        # Write the geojson output
+        with open('../data/data.geojson', 'w') as outfile:
+            outfile.write(json.dumps(feature_collection))
 
 if __name__ == '__main__':
     # Set paths

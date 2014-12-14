@@ -1,12 +1,12 @@
 Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
-100 Alcohol or drugs,4,TRUE,100,Alcohol or drugs,Driver control,TRUE,'s control was affected by alcohol or drugs
+100 Alcohol or drugs,4,TRUE,100,Alcohol or drugs,Driver control,TRUE,had used alcohol or drugs and was impaired
 101 Alcohol suspected,4,TRUE,101,Alcohol suspected,Driver control,TRUE,was suspected of being under the influence of alcohol
 102 Alcohol test below limit,4,TRUE,102,Alcohol test below limit,Driver control,TRUE,"was tested for alcohol, but found to be below the legal limit"
 103 Alcohol test above limit or test refused,4,TRUE,103,Alcohol test above limit or test refused,Driver control,TRUE,was above the legal alcohol limit (or refused the test)
 104 Alcohol test result unknown,4,TRUE,104,Alcohol test result unknown,Driver control,TRUE,had an alcohol test but the result is unknown
-105 Intoxicated non-driver (pedestrian / cyclist / passenger),4,TRUE,105,Intoxicated non-driver (pedestrian / cyclist / passenger),Driver control,FALSE,A non-driver was intoxicated
+105 Intoxicated non-driver (pedestrian / cyclist / passenger),4,TRUE,105,Intoxicated non-driver (pedestrian / cyclist / passenger),Driver control,TRUE,was intoxicated (or had an intoxicated passenger)
 "106 (MOT only) dead driver not suspect, tested neg",4,TRUE,106,"(MOT only) dead driver not suspect, tested neg",Driver control,TRUE,tested negative for drugs and alcohol
-107 Drug test result unknown,4,TRUE,107,Drug test result unknown,Driver control,FALSE,The result of a drug test is unknown
+107 Drug test result unknown,4,TRUE,107,Drug test result unknown,Driver control,TRUE,"had a drug test, but the result is unknown"
 108 Drugs suspected,4,TRUE,108,Drugs suspected,Driver control,TRUE,is suspected to have been using drugs
 109 Drugs proven,4,TRUE,109,Drugs proven,Driver control,TRUE,was impaired by drugs
 110 Too fast for conditions,4,TRUE,110,Too fast for conditions,Driver control,TRUE,was driving too fast for the conditions
@@ -64,7 +64,7 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 176 Turned into incorrect lane,4,TRUE,176,Turned into incorrect lane,Driver control,TRUE,turned into the incorrect lane
 177 Weaving or cut in on multi-lane roads,4,TRUE,177,Weaving or cut in on multi-lane roads,Driver control,TRUE,was weaving in and out or cur in on a multi-lane road
 178 Moved left to avoid slow vehicle,4,TRUE,178,Moved left to avoid slow vehicle,Driver control,TRUE,moved left to avoid a slow vehicle
-179 Long vehicle tracked outside lane,4,TRUE,179,Long vehicle tracked outside lane,Driver control,FALSE,A long vehicle was tracking the outside lane
+179 Long vehicle tracked outside lane,4,TRUE,179,Long vehicle tracked outside lane,Driver control,TRUE,was controlling a long vehicle and it was tracking the outside lane
 180 In line of traffic,4,TRUE,180,In line of traffic,Driver control,TRUE,lost control in line of traffic
 181 Following too closely,4,TRUE,181,Following too closely,Driver control,TRUE,was following too closely to the vehicle in front
 182 Travelling unreasonably slowly,4,TRUE,182,Travelling unreasonably slowly,Driver control,TRUE,was travelling unreasonably slowly
@@ -163,7 +163,7 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 387 Misjudged intentions of another party,4,TRUE,387,Misjudged intentions of another party,Vehicle conflicts,TRUE,misjudged the intentions of another party
 400 Inexperience,4,TRUE,400,Inexperience,General driver,TRUE,was inexperienced
 "401 In driving in fast, complex or heavy traffic",4,TRUE,401,"In driving in fast, complex or heavy traffic",General driver,TRUE,"was inexperienced at driving in fast, complex or heavy traffic"
-402 New driver showed inexperience,4,TRUE,402,New driver showed inexperience,General driver,TRUE,was inexperienced and showed it
+402 New driver showed inexperience,4,TRUE,402,New driver showed inexperience,General driver,TRUE,was inexperienced
 403 Driving unfamiliar vehicle,4,TRUE,403,Driving unfamiliar vehicle,General driver,TRUE,was driving an unfamiliar vehicle
 404 Overseas / migrant driver fails to adjust to NZ road rules and road conditions,4,TRUE,404,Overseas / migrant driver fails to adjust to NZ road rules and road conditions,General driver,TRUE,was an international visitor or recent migrant and failed to adjust to NZ's road rules and conditions
 405 Driver under instruction,4,TRUE,405,Driver under instruction,General driver,TRUE,was an inexperienced driving under instruction
@@ -181,9 +181,9 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 422 Stalled engine,4,TRUE,422,Stalled engine,General driver,TRUE,stalled their engine
 423 Wrong pedal,4,TRUE,423,Wrong pedal,General driver,TRUE,pressed on the wrong pedal
 "424 Footrest, stand",4,TRUE,424,"Footrest, stand",General driver,TRUE,used their footrest incorrectly
-425 Ignition turned off (steering locked),4,TRUE,425,Ignition turned off (steering locked),General driver,FALSE,"The ignition was turned off, and steering locked"
+425 Ignition turned off (steering locked),4,TRUE,425,Ignition turned off (steering locked),General driver,TRUE,"saw their ignition turn off, and the steering locked"
 426 Lights not switched on,4,TRUE,426,Lights not switched on,General driver,TRUE,did not have their lights on
-427 Foot slipped or caught under pedal,4,TRUE,427,Foot slipped or caught under pedal,General driver,TRUE,'s foot slipped or caught under the pedal
+427 Foot slipped or caught under pedal,4,TRUE,427,Foot slipped or caught under pedal,General driver,TRUE,had their foot slip or catch under the pedal
 428 Parking brake not fully applied,4,TRUE,428,Parking brake not fully applied,General driver,TRUE,did not fully apply their parking brake
 429 Trailer coupling or safety chain not secured,4,TRUE,429,Trailer coupling or safety chain not secured,General driver,TRUE,did not secure their trailer coupling or safety chain
 430 Showing off,4,TRUE,430,Showing off,General driver,TRUE,was showing off
@@ -207,45 +207,45 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 "504 Medical illness (not sudden) flu, diabetes",4,TRUE,504,"Medical illness (not sudden) flu, diabetes",General person,TRUE,"had a (not sudden) medical illness (influenza, diabetes, etc.)"
 "505 Mental illness (depression, psychosis)",4,TRUE,505,"Mental illness (depression, psychosis)",General person,TRUE,"suffered from a mental illness (depression, psychosis, etc.)"
 506 Suicidal (but not successful),4,TRUE,506,Suicidal (but not successful),General person,TRUE,was suicidal (but was not successful)
-507 Impaired ability due to old age,4,TRUE,507,Impaired ability due to old age,General person,TRUE,had impaired driving ability to due to old age
+507 Impaired ability due to old age,4,TRUE,507,Impaired ability due to old age,General person,TRUE,was elderly
 510 Intentional or criminal,4,TRUE,510,Intentional or criminal,General person,TRUE,intentionally or criminally caused an accident
-511 Deliberate homicide (only if succeeded),4,TRUE,511,Deliberate homicide (only if succeeded),General person,FALSE,Intentional homicide
-512 Intentional collision,4,TRUE,512,Intentional collision,General person,FALSE,Intentional collision
-513 Committed suicide (only if succeeded),4,TRUE,513,Committed suicide (only if succeeded),General person,FALSE,Suicide
+511 Deliberate homicide (only if succeeded),4,TRUE,511,Deliberate homicide (only if succeeded),General person,TRUE,committed homicide
+512 Intentional collision,4,TRUE,512,Intentional collision,General person,TRUE,intentionally collided
+513 Committed suicide (only if succeeded),4,TRUE,513,Committed suicide (only if succeeded),General person,TRUE,committed suicide
 514 Evading enforcement,4,TRUE,514,Evading enforcement,General person,TRUE,was evading police
 515 Object deliberately thrown at or dropped on vehicle / shot at,4,TRUE,515,Object deliberately thrown at or dropped on vehicle / shot at,General person,TRUE,"had an object deliberately thrown at or dropped on them, or was shot at"
 516 Object thrown from vehicle,4,TRUE,516,Object thrown from vehicle,General person,TRUE,deliberately threw an object from the vehicle
 517 Stolen vehicle,4,TRUE,517,Stolen vehicle,General person,TRUE,was driving a stolen car
-"520 Driver or passenger, boarding, leaving, in vehicle",4,TRUE,520,"Driver or passenger, boarding, leaving, in vehicle",General person,FALSE,"The driver or a passenger was boarding, leaving or unsafely travelling in a moving vehicle"
-521 Boarding moving vehicle,4,TRUE,521,Boarding moving vehicle,General person,FALSE,Someone was attempting to board a moving vehicle
-522 Intentionally leaving moving vehicle,4,TRUE,522,Intentionally leaving moving vehicle,General person,FALSE,Someone was intentionally leaving a moving vehicle
-523 Riding in insecure position,4,TRUE,523,Riding in insecure position,General person,FALSE,Someone was riding in an insecure position
-524 Interfered with driver,4,TRUE,524,Interfered with driver,General person,FALSE,A passenger interfered with the driver
-525 Opened door inadvertently,4,TRUE,525,Opened door inadvertently,General person,FALSE,A door opened inadvertently
-526 Overloaded vehicle (with passengers),4,TRUE,526,Overloaded vehicle (with passengers),General person,FALSE,The vehicle was overloaded with passengers
-527 Child playing in parked vehicle,4,TRUE,527,Child playing in parked vehicle,General person,FALSE,A child was playing in the parked vehicle
-530 Miscellaneous person,4,TRUE,530,Miscellaneous person,General person,FALSE,A miscellaneous action contributed to the accident or an injury
-531 Casualty drowned,4,TRUE,531,Casualty drowned,General person,FALSE,A casualty drowned
-532 Casualty thrown from vehicle,4,TRUE,532,Casualty thrown from vehicle,General person,FALSE,A casualty was thrown from the vehicle
-533 Equestrian not keeping to verge,4,TRUE,533,Equestrian not keeping to verge,General person,FALSE,An equestrian did not keep to the verge
-534 Cyclist or M/cyclist wearing dark clothing,4,TRUE,534,Cyclist or M/cyclist wearing dark clothing,General person,FALSE,A cyclist or motorcyclist was wearing dark clothing
+"520 Driver or passenger, boarding, leaving, in vehicle",4,TRUE,520,"Driver or passenger, boarding, leaving, in vehicle",General person,TRUE,"or a passenger was boarding or leaving the vehicle, or someone was unsafely travelling in the moving vehicle"
+521 Boarding moving vehicle,4,TRUE,521,Boarding moving vehicle,General person,TRUE,had someone attempting to board their moving vehicle
+522 Intentionally leaving moving vehicle,4,TRUE,522,Intentionally leaving moving vehicle,General person,TRUE,had someone intentionally leaving their moving vehicle
+523 Riding in insecure position,4,TRUE,523,Riding in insecure position,General person,TRUE,had someone riding in an insecure position
+524 Interfered with driver,4,TRUE,524,Interfered with driver,General person,TRUE,had a passenger interfered with their control
+525 Opened door inadvertently,4,TRUE,525,Opened door inadvertently,General person,TRUE,had a door opened inadvertently
+526 Overloaded vehicle (with passengers),4,TRUE,526,Overloaded vehicle (with passengers),General person,TRUE,had too many passengers
+527 Child playing in parked vehicle,4,TRUE,527,Child playing in parked vehicle,General person,TRUE,had a child playing in the parked vehicle
+530 Miscellaneous person,4,TRUE,530,Miscellaneous person,General person,TRUE,performed a miscellaneous action that contributed to the accident or to an injury
+531 Casualty drowned,4,TRUE,531,Casualty drowned,General person,TRUE,(or one or more of their passengers) drowned
+532 Casualty thrown from vehicle,4,TRUE,532,Casualty thrown from vehicle,General person,TRUE,(or one or more of their passengers) was thrown from the vehicle
+533 Equestrian not keeping to verge,4,TRUE,533,Equestrian not keeping to verge,General person,TRUE,did not keep to the verge
+534 Cyclist or M/cyclist wearing dark clothing,4,TRUE,534,Cyclist or M/cyclist wearing dark clothing,General person,TRUE,was wearing dark clothing
 600 Lights and reflectors at fault or dirty,4,TRUE,600,Lights and reflectors at fault or dirty,Vehicles,TRUE,had faulty or dirty lights and/or reflectors
 601 Dazzling headlights,4,TRUE,601,Dazzling headlights,Vehicles,TRUE,had dazzling headlights
 602 Headlights inadequate or no headlights,4,TRUE,602,Headlights inadequate or no headlights,Vehicles,TRUE,had inadequate or no headlights
-603 Headlights failed suddenly,4,TRUE,603,Headlights failed suddenly,Vehicles,TRUE,'s headlights suddenly failed
-604 Brake-lights or indicators faulty or not fitted,4,TRUE,604,Brake-lights or indicators faulty or not fitted,Vehicles,TRUE,'s brake lights or indicators were faulty or absent
-605 Tail-lights inadequate or no tail-lights,4,TRUE,605,Tail-lights inadequate or no tail-lights,Vehicles,TRUE,'s tail lights were inadequate or absent
+603 Headlights failed suddenly,4,TRUE,603,Headlights failed suddenly,Vehicles,TRUE,had sudden headlight failure
+604 Brake-lights or indicators faulty or not fitted,4,TRUE,604,Brake-lights or indicators faulty or not fitted,Vehicles,TRUE,had faulty or absent brake lights or indicators
+605 Tail-lights inadequate or no tail-lights,4,TRUE,605,Tail-lights inadequate or no tail-lights,Vehicles,TRUE,had inadequate or absent tail lights
 606 Reflectors inadequate or no reflectors,4,TRUE,606,Reflectors inadequate or no reflectors,Vehicles,TRUE,had inadequate or no reflectors
-607 Lights or reflectors obscured,4,TRUE,607,Lights or reflectors obscured,Vehicles,TRUE,'s lights or reflectors were obscured
+607 Lights or reflectors obscured,4,TRUE,607,Lights or reflectors obscured,Vehicles,TRUE,had obscured lights or reflectors
 610 Brakes,4,TRUE,610,Brakes,Vehicles,TRUE,had an issue with their brakes
-611 Parking brake failed,4,TRUE,611,Parking brake failed,Vehicles,TRUE,'s parking brake failed
+611 Parking brake failed,4,TRUE,611,Parking brake failed,Vehicles,TRUE,had parking brake failure
 612 Parking brake defective,4,TRUE,612,Parking brake defective,Vehicles,TRUE,had a defective parking brake
-613 Service brake failed,4,TRUE,613,Service brake failed,Vehicles,TRUE,'s service brake failed
+613 Service brake failed,4,TRUE,613,Service brake failed,Vehicles,TRUE,had service brake failure
 614 Service brake defective,4,TRUE,614,Service brake defective,Vehicles,TRUE,had a defective service brake
 615 Jack-knifed,4,TRUE,615,Jack-knifed,Vehicles,TRUE,jack-knifed
 620 Steering,4,TRUE,620,Steering,Vehicles,TRUE,had an issue with their steering
 621 Defective,4,TRUE,621,Defective,Vehicles,TRUE,had defective steering controls
-622 Failed suddenly,4,TRUE,622,Failed suddenly,Vehicles,TRUE,'s steering failed suddenly
+622 Failed suddenly,4,TRUE,622,Failed suddenly,Vehicles,TRUE,had sudden steering failure
 630 Tyres,4,TRUE,630,Tyres,Vehicles,TRUE,had an issue with their tyres
 631 Puncture or blow-out,4,TRUE,631,Puncture or blow-out,Vehicles,TRUE,suffered a puncture or blow-out
 632 Worn tread on tyre,4,TRUE,632,Worn tread on tyre,Vehicles,TRUE,had worn tread on their tyre
@@ -253,8 +253,8 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 634 Mixed treads / space savers,4,TRUE,634,Mixed treads / space savers,Vehicles,TRUE,"was using a space saver tyre, or mixed tread"
 640 Windscreen or mirror,4,TRUE,640,Windscreen or mirror,Vehicles,TRUE,had an issue with their windscreen or a mirror
 641 Shattered windscreen,4,TRUE,641,Shattered windscreen,Vehicles,TRUE,had a shattered windscreen
-642 Windscreen or rear window dirty,4,TRUE,642,Windscreen or rear window dirty,Vehicles,TRUE,'s windscreen or read window was dirty
-643 Rear vision mirror not adjusted correctly,4,TRUE,643,Rear vision mirror not adjusted correctly,Vehicles,TRUE,'s rear vision mirror was not correctly adjusted
+642 Windscreen or rear window dirty,4,TRUE,642,Windscreen or rear window dirty,Vehicles,TRUE,had a dirty windscreen or rear window
+643 Rear vision mirror not adjusted correctly,4,TRUE,643,Rear vision mirror not adjusted correctly,Vehicles,TRUE,had not correctly adjusted their rear vision mirror
 644 No rear vision mirror,4,TRUE,644,No rear vision mirror,Vehicles,TRUE,did not have a rear vision mirror
 645 Windscreen or rear window misted/frosted,4,TRUE,645,Windscreen or rear window misted/frosted,Vehicles,TRUE,had a misted/frosted windscreen or rear vision mirror
 646 Inadequate or no sun-visors,4,TRUE,646,Inadequate or no sun-visors,Vehicles,TRUE,had inadequate or no sun visors
@@ -266,32 +266,32 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 653 Accelerator or throttle jammed,4,TRUE,653,Accelerator or throttle jammed,Vehicles,TRUE,had a jammed accelerator or throttle
 660 Body or chassis,4,TRUE,660,Body or chassis,Vehicles,TRUE,had an issue with the body or chassis of their vehicle
 "661 Body, chassis or frame (cycle, m/c) failure",4,TRUE,661,"Body, chassis or frame (cycle, m/c) failure",Vehicles,TRUE,"had a failure of their vehicle's body, chassis or frame"
-662 Suspension failure,4,TRUE,662,Suspension failure,Vehicles,TRUE,'s suspension failed
+662 Suspension failure,4,TRUE,662,Suspension failure,Vehicles,TRUE,has suspension failure
 663 Failure of door catch or door not shut,4,TRUE,663,Failure of door catch or door not shut,Vehicles,TRUE,had a faulty door catch or their door was not shut properly
 664 Inadequate mudguards,4,TRUE,664,Inadequate mudguards,Vehicles,TRUE,was using inadequate mudguards
 665 Inadequate tow coupling,4,TRUE,665,Inadequate tow coupling,Vehicles,TRUE,had an inadequate tow coupling
 666 Inadequate or no safety chain,4,TRUE,666,Inadequate or no safety chain,Vehicles,TRUE,had an inadequate (or lacked a) safety chain
-667 Bonnet catch failed,4,TRUE,667,Bonnet catch failed,Vehicles,TRUE,'s bonnet catch failed
+667 Bonnet catch failed,4,TRUE,667,Bonnet catch failed,Vehicles,TRUE,had their bonnet catch fail
 668 Wheel off,4,TRUE,668,Wheel off,Vehicles,TRUE,had a wheel come off
 669 Broken axle,4,TRUE,669,Broken axle,Vehicles,TRUE,had a broken axle
-670 Inconspicuous colour,4,TRUE,670,Inconspicuous colour,Vehicles,TRUE,'s vehicle was an inconspicuous colour
+670 Inconspicuous colour,4,TRUE,670,Inconspicuous colour,Vehicles,TRUE,had a vehicle of inconspicuous colour
 671 Blind spot,4,TRUE,671,Blind spot,Vehicles,TRUE,had a significant blind spot
-672 Seat belt / restraint failed,4,TRUE,672,Seat belt / restraint failed,Vehicles,TRUE,'s seatbelt or restraint failed
-673 Air-bag failed to inflate (fully),4,TRUE,673,Air-bag failed to inflate (fully),Vehicles,TRUE,'s airbag failed to fully inflate
+672 Seat belt / restraint failed,4,TRUE,672,Seat belt / restraint failed,Vehicles,TRUE,had their seatbelt or restraint fail
+673 Air-bag failed to inflate (fully),4,TRUE,673,Air-bag failed to inflate (fully),Vehicles,TRUE,had an airbag that failed to fully inflate
 680 Load,4,TRUE,680,Load,Vehicles,TRUE,had a dangerous load
-681 Load interferes with driver,4,TRUE,681,Load interferes with driver,Vehicles,TRUE,'s load interfered with the driver
-682 Not well secured or load moved,4,TRUE,682,Not well secured or load moved,Vehicles,TRUE,'s load was not well secured or moved
+681 Load interferes with driver,4,TRUE,681,Load interferes with driver,Vehicles,TRUE,had an interfering load
+682 Not well secured or load moved,4,TRUE,682,Not well secured or load moved,Vehicles,TRUE,had a load that was not well secured or that moved
 683 Over-hanging,4,TRUE,683,Over-hanging,Vehicles,TRUE,had an overhanging load
-684 Load obscured vision,4,TRUE,684,Load obscured vision,Vehicles,TRUE,'s load obscured their vision
+684 Load obscured vision,4,TRUE,684,Load obscured vision,Vehicles,TRUE,had a load obscuring their vision
 685 Excess dimensions not adequately indicated,4,TRUE,685,Excess dimensions not adequately indicated,Vehicles,TRUE,had an overhanging load whose dimensions were not adequately indicated
 686 Over dimension vehicle or load,4,TRUE,686,Over dimension vehicle or load,Vehicles,TRUE,was oversize (or their load was)
-687 Load too heavy,4,TRUE,687,Load too heavy,Vehicles,TRUE,'s load was too heavy
+687 Load too heavy,4,TRUE,687,Load too heavy,Vehicles,TRUE,was carrying a load that was too heavy
 688 Towed vehicle or trailer too heavy or incompatible,4,TRUE,688,Towed vehicle or trailer too heavy or incompatible,Vehicles,TRUE,was towing a vehicle or trailer that was too heavy or incompatible
 690 Miscellaneous vehicle,4,TRUE,690,Miscellaneous vehicle,Vehicles,TRUE,had a miscellaneous vehicle issue
 691 Emergency Vehicle attending emergency,4,TRUE,691,Emergency Vehicle attending emergency,Vehicles,TRUE,was an emergency vehicle attending an emergency
 692 Vehicle caught fire,4,TRUE,692,Vehicle caught fire,Vehicles,TRUE,caught fire
 693 Being towed,4,TRUE,693,Being towed,Vehicles,TRUE,was being towed
-694 Air-bag contributed to crash or injury,4,TRUE,694,Air-bag contributed to crash or injury,Vehicles,TRUE,'s airbag contributed to the crash or an injury
+694 Air-bag contributed to crash or injury,4,TRUE,694,Air-bag contributed to crash or injury,Vehicles,TRUE,had a faulty airbag which contributed to the crash or to an injury
 695 Seatbelt / restraint absent or unusable,4,TRUE,695,Seatbelt / restraint absent or unusable,Vehicles,TRUE,did not have a seatbelt
 696 Dangerous goods,4,TRUE,696,Dangerous goods,Vehicles,TRUE,was carrying dangerous goods
 700 Walking along road,4,TRUE,700,Walking along road,Pedestrian,TRUE,was walking along the road
@@ -310,7 +310,7 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 717 Suddenly stepped onto pedestrian crossing,4,TRUE,717,Suddenly stepped onto pedestrian crossing,Pedestrian,TRUE,stepped out suddenly onto the pedestrian crossing
 718 Not complying with traffic signals or school patrols,4,TRUE,718,Not complying with traffic signals or school patrols,Pedestrian,TRUE,did not comply with traffic signals or a school patrol
 719 Misjudged speed and / or distance of vehicle,4,TRUE,719,Misjudged speed and / or distance of vehicle,Pedestrian,TRUE,misjudged the speed and/or distance of a vehicle
-720 Miscellaneous,4,TRUE,720,Miscellaneous,Pedestrian,FALSE,Miscellaneous issue with the pedestrian's behaviour
+720 Miscellaneous,4,TRUE,720,Miscellaneous,Pedestrian,TRUE,did something miscellaneous that contributed to the accident
 "721 Pushing, working on or unloading vehicle",4,TRUE,721,"Pushing, working on or unloading vehicle",Pedestrian,TRUE,"was pushing, working on or unloading a vehicle"
 722 Playing on road or unnecessarily on road,4,TRUE,722,Playing on road or unnecessarily on road,Pedestrian,TRUE,"was playing on the road, or was there unnecessarily"
 723 Working on road,4,TRUE,723,Working on road,Pedestrian,TRUE,was working on the road
@@ -422,9 +422,9 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 990 Old 273: Defective vision or illness (not sudden),4,TRUE,990,Old 273: Defective vision or illness (not sudden),Miscellaneous,TRUE,had pre-existing poor vision or an illness
 991 Old 503: In face of traffic,4,TRUE,991,Old 503: In face of traffic,Miscellaneous,TRUE,had poor vision in the face of traffic
 992 Old 504: Opened door in path of another party,4,TRUE,992,Old 504: Opened door in path of another party,Miscellaneous,TRUE,opened their door in the path of someone
-993 Old 512: Interfered with driver or overloaded vehicle,4,TRUE,993,Old 512: Interfered with driver or overloaded vehicle,Miscellaneous,FALSE,A passenger interfered with the driver
+993 Old 512: Interfered with driver or overloaded vehicle,4,TRUE,993,Old 512: Interfered with driver or overloaded vehicle,Miscellaneous,TRUE,had a passenger interfere with the driver
 994 Old 737: Physical defect or old age,4,TRUE,994,Old 737: Physical defect or old age,Miscellaneous,TRUE,had a physical disability or was elderly
-995 Old 738: Unattended child,4,TRUE,995,Old 738: Unattended child,Miscellaneous,FALSE,There was an unattended child
-996 Old 952: Suicide,4,TRUE,996,Old 952: Suicide,Miscellaneous,FALSE,Suicide
-997 Old 400: Specific cyclist faults,4,TRUE,997,Old 400: Specific cyclist faults,Miscellaneous,FALSE,The cyclist did something wrong
-998 Old 930: Bicycle faults,4,TRUE,998,Old 930: Bicycle faults,Miscellaneous,TRUE,'s bike was faulty
+995 Old 738: Unattended child,4,TRUE,995,Old 738: Unattended child,Miscellaneous,TRUE,had an unattended child (or children)
+996 Old 952: Suicide,4,TRUE,996,Old 952: Suicide,Miscellaneous,TRUE,committed suicide
+997 Old 400: Specific cyclist faults,4,TRUE,997,Old 400: Specific cyclist faults,Miscellaneous,TRUE,did something miscellaneous wrong
+998 Old 930: Bicycle faults,4,TRUE,998,Old 930: Bicycle faults,Miscellaneous,TRUE,had a faulty bicycle
