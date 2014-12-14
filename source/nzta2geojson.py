@@ -21,6 +21,7 @@ import csv
 import string
 import generalFunctions as genFunc
 import re
+import logging
      
 class nztacrash:
     '''A crash recorded by NZTA'''
@@ -74,6 +75,7 @@ class nztacrash:
         if self.hasLocation == True:
             self.lat, self.lon = self.proj(self.easting, self.northing, inverse=True) # Lat/lon
         else:
+            logging.warning('Crash does not have XY location, so is not added to GeoJSON')
             self.lat, self.lon = None, None
         
         # Output of causeDecoderCSV()
@@ -125,83 +127,6 @@ class nztacrash:
         self.tourist = self.get_tourist()
         self.alcohol = self.get_alcohol()
         self.drugs = self.get_drugs()
-        
-        # HTML text descriptions, used in self.__str__()
-        if self.road_wet == 'W':
-            self.__roadwet = 'The road was wet.'
-        elif self.road_wet == 'D':
-            self.__roadwet = 'The road was dry.'
-        elif self.road_wet == 'I':
-            self.__roadwet = 'There was snow or ice on the road.'
-        else:
-            self.__roadwet = None
-        if self.wthr_a != None:
-            self.__wthr = 'Weather: %s' % self.wthr_a_decoded[0]
-            if self.wthr_a_decoded[1] != None:
-                self.__wthr += ' - %s' % self.wthr_a_decoded[1]
-        if self.light != None:
-            self.__light = 'Lighting: %s' % self.light_decoded[0]
-            if self.light_decoded[1] != None:
-                self.__light += ' - %s' % self.light_decoded[1]
-        if self.decodeMovement() != None and self.decodeMovement()[0] != None:
-            self.__movement = 'Movement: %s' % self.decodeMovement()[0]
-            if self.decodeMovement()[1] != None:
-                self.__movement += '- %s' % self.decodeMovement()[1]
-        else:
-            self.__movement = None
-        self.__atype = '<b>Vehicle A was a %s</b> (it may or may not have been at fault).' % self.keyvehicle_decoded.lower()
-        if self.keyvehiclemovement_decoded != None:
-            self.__amovement = 'Vehicle A was moving %s.' % self.keyvehiclemovement_decoded.lower()
-        else:
-            self.__amovement = None
-        if self.secondaryvehicles_decoded != None:
-            party = genFunc.grammar('party', 'parties', len(self.secondaryvehicles))
-            self.__secondary = 'Secondary %s: ' % party
-            for v in self.secondaryvehicles_decoded:
-                self.__secondary += '<b>%s</b>, ' % v
-            self.__secondary = self.__secondary.strip(', ')
-        else:
-            self.__secondary = 'No other parties were involved.'
-        if self.pers_age1 != None and self.secondaryvehicles != None:
-            youngest = genFunc.grammar('', ' youngest', len(self.secondaryvehicles))
-            self.__youngestped = '<b>The%s pedestrian was %d years old.</b>' % (youngest, self.pers_age1)
-        else:
-            self.__youngestped = None
-        if self.pers_age2 != None and self.secondaryvehicles != None:
-            youngest = genFunc.grammar('', ' youngest', len(self.secondaryvehicles))
-            self.__youngestcyc = '<b>The%s cyclist was %d years old.</b>' % (youngest, self.pers_age2) 
-        else:
-            self.__youngestcyc = None
-        self.__factors = "<u>Factors and roles</u>:<ol>\n"
-        for vehicle in list(string.ascii_uppercase): # 'A', 'B', ..., 'Z'
-            if self.causesdict_decoded != None and vehicle in self.causesdict_decoded.keys():
-                for cause in self.causesdict_decoded[vehicle]:
-                    self.__factors += "<li>Vehicle <b>%s</b>: %s.</li>" % (vehicle, cause)
-        if self.causesdict_decoded != None and 'Environment' in self.causesdict_decoded.keys():
-            for cause in self.causesdict_decoded['Environment']:
-                self.__factors += '<li>Environmental factor: %s.</li>' % cause
-        self.__factors += '</ol>'
-        if len(self.objects_struck) > 0:
-            self.__objects = '<u>Stationary objects hit</u>:<ul>'
-            for o in self.objects_struck_decoded:
-                self.__objects += '<li>%s</li>' % o.capitalize()
-            self.__objects += '</ul>'
-        else:
-            self.__objects = 'No stationary objects were hit.'
-        self.__consequences = '<center>'
-        if self.crash_fatal_cnt > 0:
-            person = genFunc.grammar('person', 'people', self.crash_fatal_cnt)
-            self.__consequences += '\nUnfortunately, <b>%d %s died</b> as a result of this crash.'  % (self.crash_fatal_cnt, person)
-        if self.crash_sev_cnt > 0:
-            person = genFunc.grammar('person', 'people', self.crash_sev_cnt)
-            self.__consequences += '\n<b>%d %s suffered serious injuries</b>.' % (self.crash_sev_cnt, person)
-        if self.crash_min_cnt > 0:
-            was = genFunc.grammar('was', 'were', self.crash_min_cnt)
-            injury = genFunc.grammar('injury', 'injuries', self.crash_min_cnt)
-            self.__consequences += '\nThere %s <b>%d minor %s</b>.' % (was, self.crash_min_cnt, injury)
-        if self.fatal == False and self.injuries == False:
-            self.__consequences = '\nFortunately, there were <b>no deaths or injuries</b>.'
-        self.__consequences = self.__consequences.strip() + '</center>'
         
     def get_hasLocation(self):
         if self.easting == None or self.northing == None:
@@ -372,36 +297,26 @@ class nztacrash:
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
         alt = 'Click to go to Google Streetview'
         return '<a href="%s" alt="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,alt,alt,w,h,self.lon,self.lat,pitch,self.api)
-        
-            
-    def __str__(self):
-        '''Creates an HTML-readable summary of the nztacrash object.'''
-        text = ''
-        for t in [self.tla_name,
-        self.__movement, self.__atype, self.__amovement, self.__secondary,
-        self.__youngestped, self.__youngestcyc, self.__factors, self.__objects,
-        self.__consequences]:
-            if t != None:
-                text += t + '\n'
-        rettext = ''
-        for l in text.split('\n'):
-            if 'None' not in l:
-                rettext += l + '\n'    
-        return rettext
+    
+    def make_causes(self):
+        '''
+        Returns a nice, readable string of the "factors and roles" of the accident
+        '''
+        print self.causesdict_decoded
+        print self.keyvehicle_decoded
+        print self.secondaryvehicles_decoded
+        raw_input("pause")
     
     def __geo_interface__(self):
         '''
         Returns a geojson object representing the point.
         '''
-        #return {'type': 'Point', 'coordinates': (self.lat, self.lon), }
+        # TODO add causes
+        print self.make_causes()
+        
         if self.hasLocation is False:
+            # Can't add it to the map if it does not have a location
             return None
-        if self.crash_intsn == 'I':
-            crashroad = self.crash_road + ' at ' + self.side_road
-        else:
-            crashroad = self.crash_road
-        #if 'cpk' in crashroad.lower():
-        #    print crashroad, self.__str__()
         return {'type': 'Feature',
         'properties': {'crash_id': self.crash_id,
         'tla_name': self.tla_name,
@@ -409,20 +324,9 @@ class nztacrash:
         'crash_date': genFunc.formatNiceDate(self.crash_date),
         'crash_time': genFunc.formatNiceTime(self.crash_time),
         'streetview': self.__streetview__(),
-        'crash_road': genFunc.formatNiceRoad(crashroad,self.streetdecoder),
+        'crash_road': genFunc.formatNiceRoad(self.get_crashroad(),self.streetdecoder),
         'weather_icon': self.weatherIcon(),
         'vehicle_icons': self.__vehicle_icons__(),
-        'road_conditions_txt': self.__roadwet,
-        'light_txt': self.__light,
-        'movement_txt': self.__movement,
-        'vehicle_a_txt': self.__atype,
-        'vehicle_a_movement_txt': self.__amovement,
-        'secondary_vehicles_txt': self.__secondary,
-        'youngest_pedestrian_txt': self.__youngestped,
-        'youngest_cyclist_txt': self.__youngestcyc,
-        'factors_txt': self.__factors,
-        'objects_txt': self.__objects,
-        'consequences_txt': self.__consequences,
         'cyclist': self.cyclist,
         'pedestrian': self.pedestrian,
         'tourist': self.tourist,
@@ -581,6 +485,19 @@ class nztacrash:
             return [decoder[o] for o in self.objects_struck]
         except KeyError:
             return None
+            
+    def get_crashroad(self):
+        if self.crash_intsn == 'I':
+            # The crash happened at an intersection
+            crashroad = self.crash_road + ' at ' + self.side_road
+        else:
+            if self.side_road != None:
+                # Not stated as occuring at a side road, but one still provided
+                crashroad = self.crash_road + ' near ' + self.side_road
+            else:
+                # Only one road provided
+                crashroad = self.crash_road
+        return crashroad
         
     def decodeLight(self):
         '''Takes self.light (a list of strings) and applies a decoder to it,
@@ -702,9 +619,19 @@ class nztacrash:
     def getCauses(self, decode=False):
         '''Returns the causes of the crash, and the vehicle to which the (in)action
         is ascribed to as a dictionary in the following structure:
-        {'A': ['Cause1', 'Cause2'],
-         'B': ['Cause3'],
-         'Environment': ['Cause4']}
+        {'A': [(Subject, 'Cause1'), (Subject, 'Cause2')],
+         'B': [(Subject, 'Cause3'],
+         'Environment': [(Subject, 'Cause4')]}
+         
+        <Subject> in the above indicates if the cause (which is written in a nice,
+        grammatical structure, requires a subject to be used at the beginning of
+        the string in order to be grammatical. If False, the string must be used
+        as a standalone piece of text, as it is a generality: it does not refer
+        to the actions of a particular person, or it is better presented as a
+        generality. This is an interpretation of the original data. Previous versions
+        of this function retained the exact text used in the reports. These have
+        not been opted for because they were difficult for users to read and 
+        understand.
          
         If decode == False: codes are used in the returned dictionary.
         Else if decode == True: the codes are converted to human-readable string
@@ -740,74 +667,6 @@ class nztacrash:
         Note:
         All contributing factors may not be shown in the listing due to space
         limitations on the report.'''
-        
-        # Miscellaneous lookup information
-        majorcauses_lookup = {(100, 210): 'Driver control',
-        (300, 387): 'Vehicle conflicts',
-        (400, 448): 'General driver',
-        (500, 534): 'General person',
-        (600, 696): 'Vehicles',
-        (700, 732): 'Pedestrians',
-        (800, 873): 'Road',
-        (900, 998): 'Miscellaneous'}
-        majorcauses_lookup = {(100, 210): 'Driver control',
-        (300, 387): 'Vehicle conflicts',
-        (400, 448): 'General driver',
-        (500, 534): 'General person',
-        (600, 696): 'Vehicles',
-        (700, 732): 'Pedestrians',
-        (800, 873): 'Road',
-        (900, 998): 'Miscellaneous'}
-        minorcauses_lookup = {100: 'Alcohol or drugs',
-        110: 'Too fast for conditions',
-        120: 'Failed to keep left',
-        130: 'Lost control',
-        140: 'Failed to signal in time',
-        150: 'Overtaking',
-        170: 'Wrong lane or turned from wrong positions',
-        180: 'In line of traffic',
-        190: 'Sudden action',
-        200: 'Forbidden movements',
-        300: 'Failed to give way',
-        320: 'Did not stop',
-        330: 'Inattentive: failed to notice',
-        350: 'Attention diverted by:',
-        370: 'Did not see or look for another party until too late',
-        380: 'Misjudged speed, distance, size or position of:',
-        400: 'Inexperience',
-        410: 'Fatigue (drowsy, tired, fell asleep',
-        420: 'Incorrect use of vehicle controls',
-        430: 'Showing off',
-        440: 'Parked or stopped',
-        500: 'Illness and disability',
-        510: 'Intentional or criminal',
-        520: 'Driver or passenger, boarding, leaving, in vehicle',
-        530: 'Miscellaneous person',
-        600: 'Lights and reflectors at fault or dirty',
-        610: 'Brakes',
-        620: 'Steering',
-        630: 'Types',
-        640: 'Windscreen or mirror',
-        650: 'Mechanical',
-        660: 'Body or chassis',
-        680: 'Load',
-        690: 'Miscellaneous vehicle',
-        700: 'Walking along road',
-        710: 'Crossing road',
-        720: 'Miscellaneous',
-        800: 'Slippery',
-        810: 'Surface',
-        820: 'Obstructed',
-        830: 'Visibility limited',
-        840: 'Signs and signals',
-        850: 'Markings',
-        860: 'Street lighting',
-        870: 'Raised islands and roundabouts',
-        900: 'Weather',
-        910: 'Animals',
-        920: 'Entering or leaving land use',
-        970: 'Unconverted old codes'}
-        
         retdict = {}
         for cause in self.causes:
             if len(cause) == 4:
@@ -817,117 +676,33 @@ class nztacrash:
                 vehicle = 'Environment'
                 causecode = cause
             else:
-                #raise Exception # Invalid party
-                return None
+                # Invalid party
+                # Log error, but ignore
+                logging.warning('Invalid cause/party for an accident (should be of form 000X or 000 for environmental variables): "%s"' % cause)
             if len(causecode) > 3:
                 raise Exception # Cause codes must be 3 digits in length
             elif len(causecode) < 3:
-                # Append a leading 0
-                # TODO: is this correct?
+                # Append a leading 0, because the listed cause is only two
+                # digits long when it must be threee
                 causecode = '0' + causecode
             if vehicle not in retdict.keys():
                 retdict[vehicle] = [causecode]
             else:
                 retdict[vehicle].append(causecode)
-        if not decode:
-            return retdict
-        else:
+        if decode:
             decodedretdict = {}
             for vehicle in retdict.keys():
                 causecodes = retdict[vehicle]
                 for causecode in causecodes:
-                    major, minor, detail = None, None, None # Default
-                    # Get the major category the cause falls into
-                    while major == None:
-                        for k in majorcauses_lookup.keys():
-                            if int(causecode) >= k[0] and int(causecode) <= k[1]:
-                                major = majorcauses_lookup[k]
-                                
-                    # Get the minor category the cause falls into
-                    # Round the cause code down to the nearest 10
-                    minorcode = genFunc.round_down(int(causecode),10)
-                    while minor == None: # Until we find a matching entry...
-                        if minorcode not in minorcauses_lookup.keys():
-                            # If there's no matching entry, subtract 10 and look again
-                            minorcode -= 10
-                        else:
-                            # If there's a match, decode the value
-                            minor = minorcauses_lookup[minorcode]
-
-                    # Get the lowest level of detail if applicable
-                    if causecode[2] != '0': # If there's a trailing zero...
-                        # ...then we have more detail available
-                        detail = self.causedecoder[causecode]
-                        
-                    # Now piece together the decoded cause string
-                    causedecoded = major + ": " + minor
-                    if detail != None:
-                        causedecoded += ' - ' + detail
-
+                    # Get the pretty explanations
+                    explanation = self.causedecoder[causecode][1] # String
+                    subject = self.causedecoder[causecode][0] # Boolean
                     if vehicle not in decodedretdict.keys():
-                        decodedretdict[vehicle] = [causedecoded]
+                        decodedretdict[vehicle] = [(subject, explanation)]
                     else:
-                        decodedretdict[vehicle].append(causedecoded)
-            return decodedretdict
-
-def makeFolium(instances, peds=True, cyclists=True, others=True):
-    '''
-    Makes a Folium map with a list of crash instances to plot.
-    
-    Able to filter with peds, cyclists and others (Booleans)
-    '''
-    # instantiate map
-    # add points iteratively
-    # save map
-    map_osm = folium.Map(location=[-41.17, 174.46], width='100%',height='100%',tiles='OpenStreetMap', zoom_start=6)
-    for crash in instances:
-        # Add a marker
-        desc, lat, lon, fatal, injuries_severe, injuries_minor, ped, cyc = crash[0], crash[1][1], crash[1][0], crash[2], crash[3], crash[4], crash[5], crash[6]
-        
-        # Data filtering
-        if peds == False and ped == True:
-            continue
-        if cyclists == False and cyc == True:
-            continue
-        if others == False and (cyc == False or ped == False):
-            continue
-        # Handle jQuery special characters in the pop-up
-        for sc in [':',',','\n','-', '\t']:
-            if sc == '\n':
-                replace = '<br>'
-            elif sc == '\t':
-                # Just get rid of these
-                replace = ''
-            else:
-                replace = '\\%s' % sc
-            desc = desc.replace(sc,replace)
-        #map_osm.simple_marker([lat, lon], popup=desc)
-        if fatal:
-            # Death
-            color = 'red'
-            radius = 90
-            fill_opacity = 0.9
-        elif injuries_severe:
-            # Severe injuries
-            color = 'orange'
-            radius = 60
-            fill_opacity = 0.8
-        elif injuries_minor:
-            # Minor injuries
-            color = 'purple'
-            radius = 30
-            fill_opacity = 0.6
-        else:
-            # No injuries
-            color = 'blue'
-            radius = 15
-            fill_opacity = 0.4
-        #fill_opacity = 0.8 # Override
-        try:
-            map_osm.circle_marker([lat, lon], popup=desc, fill_color=color, radius=radius, fill_opacity=fill_opacity, line_color=color)
-        except UnicodeDecodeError:
-            print desc
-    map_osm.create_map(path='../nzta-crash-analysis.html')
+                        decodedretdict[vehicle].append((subject, explanation))
+            retdict = decodedretdict
+        return retdict
     
 def causeDecoderCSV(data):
     '''
@@ -941,8 +716,17 @@ def causeDecoderCSV(data):
         retdict = {}
         for coderow in decodereader:
             code = coderow[3]
-            decode = coderow[4]
-            retdict[code] = decode
+            subject = coderow[6]
+            pretty_explanation = coderow[7]
+            if subject == 'TRUE':
+                subject = True
+            elif subject == 'FALSE':
+                subject = False
+            else:
+                raise ValueError
+            if pretty_explanation in ['FALSE','',' ']:
+                pretty_explanation = None
+            retdict[code] = (subject, pretty_explanation)
     return retdict
 
 def streetDecoderCSV(data):
@@ -973,25 +757,26 @@ def main(data,causes,streets):
                               "features": []}
         for crash in crashreader:
             Crash = nztacrash(crash, causedecoder, streetdecoder)
-            # Collect crash descriptions and locations into a list of tuples
-            if Crash.hasLocation:
-                # Append it to our list to map
-                crashes.append((Crash.__str__(), (Crash.lat, Crash.lon), Crash.fatal, Crash.injuries_severe, Crash.injuries_minor, Crash.pedestrian, Crash.cyclist))
-                
-                # Add to the GeoJSON feature collection
-                feature_collection["features"].append(Crash.__geo_interface__())
+            # Collect crash descriptions and locations into the feature collection
+            feature_collection["features"].append(Crash.__geo_interface__())
 
-        # Write the geojson output
-        with open('../data/data.geojson', 'w') as outfile:
-            outfile.write(json.dumps(feature_collection))
-
-    # Make the map
-    #makeFolium(crashes)
+    # Write the geojson output
+    with open('../data/data.geojson', 'w') as outfile:
+        outfile.write(json.dumps(feature_collection))
 
 if __name__ == '__main__':
-    data = '/home/richard/Documents/Projects/national-crash-statistics/data/crash-data-2014-partial.csv'
-    causes = '/home/richard/Documents/Projects/national-crash-statistics/data/decoders/cause-decoder.csv'
-    streets = '/home/richard/Documents/Projects/national-crash-statistics/data/decoders/NZ-post-street-types.csv'
+    # Set paths
+    data = '../data/crash-data-2014-partial.csv'
+    causes = '../data/decoders/cause-decoder.csv'
+    streets = '../data/decoders/NZ-post-street-types.csv'
+    
+    # Set up error logging
+    logger = 'crash_error.log'
+    with open(logger,'w'):
+        pass # Clear the log from previous runs
+    logging.basicConfig(filename=logger,level=logging.DEBUG)
+    
+    # Run main function
     main(data,causes,streets)
 
 

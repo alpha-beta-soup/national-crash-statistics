@@ -137,7 +137,7 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 "355 Trying to find intersection, house number, destination",4,TRUE,355,"Trying to find intersection, house number, destination",Vehicle conflicts,TRUE,"was distracted because they were trying to find an intersection, house number or their destination"
 356 Advertising or signs,4,TRUE,356,Advertising or signs,Vehicle conflicts,TRUE,was distracted by advertising or signs
 357 Emotionally upset /road rage,4,TRUE,357,Emotionally upset /road rage,Vehicle conflicts,TRUE,had road rage
-"358 Cigarette, radio, heater, AC, glove box, obj under drivers feet/pedals etc",4,TRUE,358,"Cigarette, radio, heater, AC, glove box, obj under drivers feet/pedals etc",Vehicle conflicts,TRUE,was distracted by a cigarette/radio/heater/AC/glove bx/object under their feet/etc.
+"358 Cigarette, radio, heater, AC, glove box, obj under drivers feet/pedals etc",4,TRUE,358,"Cigarette, radio, heater, AC, glove box, obj under drivers feet/pedals etc",Vehicle conflicts,TRUE,was distracted by a cigarette/radio/heater/AC/glove box/object under their feet/etc.
 359 Cell phone,4,TRUE,359,Cell phone,Vehicle conflicts,TRUE,was on their cellphone
 360 NULL,4,TRUE,360,NULL,Vehicle conflicts,FALSE,FALSE
 361 Navigation device,4,TRUE,361,Navigation device,Vehicle conflicts,TRUE,was distracted by a navigation device
@@ -242,7 +242,7 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 612 Parking brake defective,4,TRUE,612,Parking brake defective,Vehicles,TRUE,had a defective parking brake
 613 Service brake failed,4,TRUE,613,Service brake failed,Vehicles,TRUE,'s service brake failed
 614 Service brake defective,4,TRUE,614,Service brake defective,Vehicles,TRUE,had a defective service brake
-615 Jack-knifed,4,TRUE,615,Jack-knifed,Vehicles,TRUE,Jack-knifed
+615 Jack-knifed,4,TRUE,615,Jack-knifed,Vehicles,TRUE,jack-knifed
 620 Steering,4,TRUE,620,Steering,Vehicles,TRUE,had an issue with their steering
 621 Defective,4,TRUE,621,Defective,Vehicles,TRUE,had defective steering controls
 622 Failed suddenly,4,TRUE,622,Failed suddenly,Vehicles,TRUE,'s steering failed suddenly
