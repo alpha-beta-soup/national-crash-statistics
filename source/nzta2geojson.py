@@ -238,7 +238,7 @@ class nztacrash:
         for c in self.causes:
             if len(c) == 4:
                 c = c[0:3]
-            if c = '359':
+            if c == '359':
                 return True
             else:
                 pass
