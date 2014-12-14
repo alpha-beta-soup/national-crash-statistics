@@ -127,6 +127,9 @@ class nztacrash:
         self.tourist = self.get_tourist()
         self.alcohol = self.get_alcohol()
         self.drugs = self.get_drugs()
+        self.cellphone = self.get_cellphone()
+        self.fatigue = self.get_fatigue()
+        self.dickhead = self.get_dickhead()
         
     def get_hasLocation(self):
         if self.easting == None or self.northing == None:
@@ -181,15 +184,16 @@ class nztacrash:
         return cyclist
         
     def get_tourist(self):
-        '''Returns a Boolean indicating whether or not factor/role 404 is cited to
-        explain the accident.
+        '''Returns a Boolean indicating whether or not factor/role 404 or 731 
+        is cited to explain the accident.
         404: Overseas/migrant driver fails to adjust to NZ road rules and road
              conditions
+        731: Overseas pedesrtrian
         '''
         for c in self.causes:
             if len(c) == 4:
                 c = c[0:3]
-            if c == '404':
+            if c in ['404','731']:
                 return True
             else:
                 pass
@@ -222,6 +226,54 @@ class nztacrash:
             if len(c) == 4:
                 c = c[0:3]
             if c in ['107','108','109']:
+                return True
+            else:
+                pass
+        return False
+        
+    def get_cellphone(self):
+        '''Returns a Boolean indicating whether or not factor/role 359
+        was cited to explain the accident.
+        359: cellphone'''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c = '359':
+                return True
+            else:
+                pass
+        return False
+        
+    def get_fatigue(self):
+        '''Returns a Boolean indicating whether or not factors/roles 410--415
+        were cited to explain the accident.
+        410: Fatigue (drowsy, tired, fell asleep)
+        411: Long trip
+        412: Lack of sleep
+        413: Exhaust fumes
+        414: Worked long hours before driving
+        415: Exceed driving hours'''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c in ['410','411','412','413','414','415']:
+                return True
+            else:
+                pass
+        return False
+        
+    def get_dickhead(self):
+        '''Returns a Boolean indicating whether or not factors/roles 430-434
+        were cited to explain the accident.
+        430: Showing off
+        431: Racing
+        432: Playing chicken
+        433: Wheel spings / wheelies / doughnuts / drifting
+        434: Intimidating driving'''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c in ['430','431','432','433','434']:
                 return True
             else:
                 pass
@@ -447,6 +499,9 @@ class nztacrash:
         'tourist': self.tourist,
         'alcohol': self.alcohol,
         'drugs': self.drugs,
+        'cellphone': self.cellphone,
+        'fatigue': self.fatigue,
+        'dickhead': self.dickhead,
         'fatal': self.fatal,
         'severe': self.injuries_severe,
         'minor': self.injuries_minor,

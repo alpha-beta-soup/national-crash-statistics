@@ -534,6 +534,72 @@
                 }
 
             })//.addTo(map);
+            
+            layers["Cellphone"] = new L.GeoJSON.AJAX(crashes,{
+                
+                pointToLayer: function(feature, latlng) {
+                        
+                    return new L.CircleMarker(latlng, injury(feature))
+
+                },
+                
+                onEachFeature: function(feature, layer) {
+                    
+                    layer.bindPopup(popUpText(feature))
+                
+                },
+
+                filter: function(feature, layer) {
+
+                    return feature.properties.cellphone
+
+                }
+
+            })//.addTo(map);
+            
+            layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
+                
+                pointToLayer: function(feature, latlng) {
+                        
+                    return new L.CircleMarker(latlng, injury(feature))
+
+                },
+                
+                onEachFeature: function(feature, layer) {
+                    
+                    layer.bindPopup(popUpText(feature))
+                
+                },
+
+                filter: function(feature, layer) {
+
+                    return feature.properties.fatigue
+
+                }
+
+            })//.addTo(map);
+            
+            layers["Dickheads'] = new L.GeoJSON.AJAX(crashes,{
+                
+                pointToLayer: function(feature, latlng) {
+                        
+                    return new L.CircleMarker(latlng, injury(feature))
+
+                },
+                
+                onEachFeature: function(feature, layer) {
+                    
+                    layer.bindPopup(popUpText(feature))
+                
+                },
+
+                filter: function(feature, layer) {
+
+                    return feature.properties.dickhead
+
+                }
+
+            })//.addTo(map);
 
             layers["Pedestrian"] = new L.GeoJSON.AJAX(crashes,{
                 
