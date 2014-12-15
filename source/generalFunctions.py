@@ -86,12 +86,28 @@ def check_offroad(crash_road):
         # Join it back up to a proper description
         crash_road = ' '.join(crash_road)
     return crash_road
+    
+def streetExpander(road,streetdecoder):
+    '''Input: 'St John St' (for example)
+    Output: St John Street'''
+    road = road.split(' ')
+    processed = []
+    road.reverse() # Flip order
+    for i, elem in enumerate(road):
+        # Do it in reverse so only the last instance of a road shortning trope
+        # gets expanded. This prevents "St John St" becoming "Street John
+        # Street" rather than "St John Street"
+        if (elem in streetdecoder.keys()) and (elem not in processed):
+            processed.append(elem)
+            road[i] = streetdecoder[elem]
+    road.reverse() # Back to original order
+    return ' '.join(road)
 
-def formatNiceRoad(road, decoder):
+def formatNiceRoad(road):
     '''Takes a location expressed as a road, or a street or a highway... and
-    makes some cosmetic changes. Minor ones are "St" >> "Street" and "Rd" >>> "Road"
-    More major ones are taking State Highway linear references and returning something
-    understandavble to people.
+    makes some cosmetic changes. This includes taking State Highway linear
+    references and returning something understandavble to people.
+    Listed expressions from the documentation:
     CPK = car park
     BCH = beach
     DWY = driveway
@@ -153,9 +169,6 @@ def formatNiceRoad(road, decoder):
             check = '/'.join(check)
             road[i] = check
 
-    for i, elem in enumerate(road):
-        if elem in decoder.keys():
-            road[i] = decoder[elem]
     return ' '.join(road)
  
 def formatStringList(listofstrings, delim=None):

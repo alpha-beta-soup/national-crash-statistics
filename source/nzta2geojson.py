@@ -37,6 +37,12 @@ class nztacrash:
         the function causeDecoderCSV(). This should be the output of this function,
         to avoid running it each tim an nztacrash object is instantiated.
         '''
+        # Output of causeDecoderCSV()
+        self.causedecoder = causedecoder
+        
+        # Output of streetDecoderCSV()
+        self.streetdecoder = streetdecoder
+        
         # Original data
         self.row = row
         self.tla_name = genFunc.formatString(row[0])
@@ -77,13 +83,7 @@ class nztacrash:
         else:
             logging.warning('Crash does not have XY location, so is not added to GeoJSON')
             self.lat, self.lon = None, None
-        
-        # Output of causeDecoderCSV()
-        self.causedecoder = causedecoder
-        
-        # Output of streetDecoderCSV()
-        self.streetdecoder = streetdecoder
-        
+
         # Google Streetview API key
         self.api = open('google-streetview-api-key','r').read()
         
@@ -136,8 +136,7 @@ class nztacrash:
             return False
         else:
             return True
-    
-            
+       
     def get_crash_road(self):
         crash_road = genFunc.formatString(self.row[1])
         if crash_road != None and crash_road[0:3] != 'SH ':
@@ -146,6 +145,7 @@ class nztacrash:
             else:
                 crash_road = crash_road.title()
         crash_road = genFunc.check_offroad(crash_road)
+        crash_road = genFunc.streetExpander(crash_road,self.streetdecoder)
         return crash_road
         
     def get_crash_dow(self):
@@ -170,6 +170,7 @@ class nztacrash:
             else:
                 side_road = side_road.title()
         side_road = genFunc.check_offroad(side_road)
+        side_road = genFunc.streetExpander(side_road,self.streetdecoder)
         return side_road
         
     def get_cyclist(self):
@@ -489,7 +490,7 @@ class nztacrash:
         'crash_date': genFunc.formatNiceDate(self.crash_date),
         'crash_time': genFunc.formatNiceTime(self.crash_time),
         'streetview': self.__streetview__(),
-        'crash_road': genFunc.formatNiceRoad(self.get_crashroad(),self.streetdecoder),
+        'crash_road': genFunc.formatNiceRoad(self.get_crashroad()),
         'weather_icon': self.weatherIcon(),
         'vehicle_icons': self.__vehicle_icons__(),
         'injury_icons': self.get_injury_icons(),
