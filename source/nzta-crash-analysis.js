@@ -59,14 +59,14 @@ function injury (feature) {
 
 //pop-up text function different if other parties involved. Bound to when events are retrieved from data
 function popUpText (row, layer) {      
-    return '<span class="crash-location">' + row.properties.tla_name + "</span><br>" +
-           '<span class="date">' + row.properties.crash_dow + ", " + row.properties.crash_date + "</span><br>" +
-           '<span class="time">' + row.properties.crash_time + '</span><br>' +
-           '<span class="weather-icons">' + row.properties.weather_icon + '</span><br>' +
-           '<span class="road">' + row.properties.crash_road + "</span><br>" +
-            row.properties.streetview + "<br>" +
-           '<span class="vehicle-icons">' + row.properties.vehicle_icons + '</span><br>' +
-           '<span class="injury-icons">' + row.properties.injury_icons + '</span><br>' + 
+    return '<span class="crash-location">' + row.properties.tla_name + "</span>" +
+           '<span class="date">' + row.properties.crash_dow + ", " + row.properties.crash_date + "</span>" +
+           '<span class="time">' + row.properties.crash_time + '</span>' +
+           '<span class="weather-icons">' + row.properties.weather_icon + '</span>' +
+           '<span class="road">' + row.properties.crash_road + "</span>" +
+           '<div class="streetview-container">' + row.properties.streetview + '</div><br>' +
+           '<span class="injury-icons">Injuries: ' + row.properties.injury_icons + '</span><br>' +
+           '<span class="vehicle-icons">Vehicles involved: ' + row.properties.vehicle_icons + '</span><br><br>' + 
            '<span class="causes-text">' + row.properties.causes + '</span>'
 };
 
@@ -97,7 +97,7 @@ map.addControl(new layerTitle());
 //path to the crash geojson from nzta2geojson.py
 var crashes = "./data/data.geojson"
 
-//create layers, bind popups and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
+//create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
 var layers = {};
 layers["Fatal"] = new L.GeoJSON.AJAX(crashes,{
     
@@ -109,7 +109,7 @@ layers["Fatal"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -131,7 +131,7 @@ layers["Severe injuries"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -153,7 +153,7 @@ layers["Minor injuries"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -175,7 +175,7 @@ layers["No injuries"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -197,7 +197,7 @@ layers["Tourist / recent migrant"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -219,7 +219,7 @@ layers["Alcohol"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -241,7 +241,7 @@ layers["Drugs"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -263,7 +263,7 @@ layers["Cellphone"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -285,7 +285,7 @@ layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -307,7 +307,7 @@ layers["Dickheads"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -329,7 +329,7 @@ layers["Pedestrian"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
@@ -351,7 +351,7 @@ layers["Cyclist"] = new L.GeoJSON.AJAX(crashes,{
     
     onEachFeature: function(feature, layer) {
         
-        layer.bindPopup(popUpText(feature))
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
     
     },
 
