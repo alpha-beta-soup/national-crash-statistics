@@ -95,7 +95,7 @@ html, body, #map {
     margin: 10px 0px;
     background: rgb(236,236,236);
     -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 6px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
     box-shadow: 3px 3px 3px #888888;
 }
 
@@ -116,7 +116,9 @@ html, body, #map {
     width: 250px;
     position: relative;
     top: -20px;
-    box-shadow: 6px 6px 6px #888888;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
     background: rgb(236,236,236);
 }
 
@@ -124,6 +126,20 @@ html, body, #map {
     width: 300px;
 }
 
+.leaflet-popup-content-wrapper {
+    background: #ECECEC;
+    border-radius: 0px;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+.leaflet-popup-tip {
+    background: #ECECEC;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 6px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
 /* bold class */
 .bold {
     font-weight: bold;
@@ -175,21 +191,39 @@ html, body, #map {
     margin:0 auto;
 }
 
+.streetview-container {
+    height: 200px;
+    width: 300px;
+}
+
 /* class for vehicle icons */
-.vehicle-icons {
-    display:table;
+.vehicle-icons {    
     margin:0 auto;
+}
+
+/* to align text and icons */
+.vehicle-icons img {
+    position: relative;
+    top: 9px;
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 /* class for vehicle icons */
 .injury-icons {
-    display:table;
     margin:0 auto;
+}
+
+.injury-icons img {
+    position: relative;
+    top: 9px;
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 /* class for the popup crash date text */
 .causes-text {
-    align:'left'
+    align:'left';
     font-weight: normal;
     font-size: 10px;
 }
