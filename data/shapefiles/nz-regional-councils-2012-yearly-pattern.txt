@@ -1,0 +1,45 @@
+========================================================================
+ NZ Regional Councils (2012 Yearly Pattern)
+------------------------------------------------------------------------
+ https://koordinates.com/layer/4240-nz-regional-councils-2012-yearly-pattern/
+========================================================================
+From: Statistics New Zealand
+
+Description:
+  This dataset is the definitive set of regional council boundaries for 2012 as
+  defined by the Local Government Commission and/or the territorial authorities
+  themselves but maintained by Statistics New Zealand (who are the custodian).
+  
+  The region is the top tier of local government in New Zealand. There are 16
+  regions of New Zealand (Part 1 of Schedule 2 of the Local Government Act 2002).
+  Eleven are governed by an elected regional council, while five are governed by
+  territorial authorities (the second tier of local government) who also perform
+  the functions of a regional council and thus are known as unitary authorities.
+  These unitary authorities are Auckland Council, Nelson City Council, Gisborne,
+  Tasman, and Marlborough District Councils. The Chatham Islands Council also
+  perform some of the functions of a regional council, but is not strictly a
+  unitary authority. Unitary authorities act as regional councils for the purposes
+  of a wide range of Acts and regulations. Regional council areas are based on
+  water catchment areas. Regional councils are responsible for the administration
+  of many environmental and public transport matters.
+
+Region: New Zealand
+
+Category: Boundaries & Administration
+
+Projection: WGS 84
+
+------------------------------------------------------------------------
+ Processing steps applied by Koordinates
+------------------------------------------------------------------------
+
+- imported to Koordinates in Shapefile format on 18 May 2012
+- reprojected from NZGD2000 / New Zealand Transverse Mercator 2000 to WGS 84
+- converted by Koordinates to Shapefile on 16 Dec 2014
+
+====================
+No license specified
+====================
+
+No license was specified for this layer. This could mean default rights under copyright law for your legal jurisdiction may apply. Please check with Koordinates if you're unsure of your right to access and use this layer.
+
