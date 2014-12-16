@@ -1,0 +1,229 @@
+/* hyperlink styling */
+a {
+    text-decoration: underline;
+    color: black;
+}
+
+/* remove margin from default h1 */
+h1 {
+    margin: 0;
+}
+
+/* full page map setting size, font, z-index and margin */
+html, body, #map {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+    z-index: 1;
+    margin: 0px;
+}
+
+/* whole sidebar max-width and full height on top of map */
+#sidebar {
+    position: absolute;
+    width: 33%;
+    max-width: 400px;
+    height: 100%;
+    margin: 0;
+    z-index: 2;
+}
+
+/* container inside for interactivity */
+#sidebarContainer {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+/* styling of the background of the description */
+#desc {
+    height: 100%;
+    width: 90%;
+    background-color: rgb(236,236,236);
+    float: left;
+    position: relative;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+/* styling on the div in which the text description sits */
+#descContainer {
+    margin: 3% auto;
+    width: 92%;
+}
+
+/* background div for the button to hide the description */
+#hideDesc {
+    height: 32px;
+    width: 32px;
+    background-color: rgb(236,236,236);
+    top: 48%; 
+    float: left;
+    position: relative;
+    padding: 0;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+/* styling of dark grey circle */
+#circleButton {
+    height: 26px;
+    width: 26px;
+    border-radius: 13px;
+    background-color: rgb(151,151,151);
+    margin: 3px;
+    position: relative;
+}
+
+/* info i styling */
+#i {
+    margin: 0;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    padding-top: 2px;
+}
+
+/* styling for title div attached at the top of layer switches */
+.layerTitle {
+    width: 250px;
+    padding: 8px 8px 0 8px;
+    background: white;
+    margin: 10px 0px;
+    background: rgb(236,236,236);
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+/* remove margin for h3 inside title div for layers */ 
+.layerTitle h3 {
+    margin: 0px;
+}
+
+/* remove margins for leaflet elements at the top */
+.leaflet-top {
+    margin: 0;
+}
+
+/* needed to reinstate the margin as leaflet-control-layers override stylings */
+.leaflet-control-layers {
+    border-radius: 0px;
+    margin: 0px;
+    width: 250px;
+    position: relative;
+    top: -20px;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+    background: rgb(236,236,236);
+}
+
+.leaflet-popup-content {
+    width: 300px;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #ECECEC;
+    border-radius: 0px;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+.leaflet-popup-tip {
+    background: #ECECEC;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 6px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+}
+/* bold class */
+.bold {
+    font-weight: bold;
+}
+
+/* red text class for the word 'crash' or 'crashes'*/
+.red {
+    color: rgb(255,26,26);
+}
+
+/* class for the popup crash location text */
+.crash-location {
+    display:table;
+    margin:0 auto;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgb(255,26,26);
+}
+
+/* class for the popup crash date text */
+.date {
+    display:table;
+    margin:0 auto;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+/* class for the popup crash time text */
+.time {
+    display:table;
+    margin:0 auto;
+    font-weight: normal;
+    font-size: 16px;
+    font-family: VT323;
+}
+
+/* class for the popup crash time text */
+.road {
+    display:table;
+    margin:0 auto;
+    font-weight: bold;
+    font-size: 12px;
+    color: rgb(255,26,26);
+}
+
+/* class for weather icons */
+.weather-icons {
+    display:table;
+    margin:0 auto;
+}
+
+.streetview-container {
+    height: 200px;
+    width: 300px;
+}
+
+/* class for vehicle icons */
+.vehicle-icons {    
+    margin:0 auto;
+}
+
+/* to align text and icons */
+.vehicle-icons img {
+    position: relative;
+    top: 9px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+/* class for vehicle icons */
+.injury-icons {
+    margin:0 auto;
+}
+
+.injury-icons img {
+    position: relative;
+    top: 9px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+/* class for the popup crash date text */
+.causes-text {
+    align:'left';
+    font-weight: normal;
+    font-size: 10px;
+}
