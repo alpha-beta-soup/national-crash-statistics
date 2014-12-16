@@ -185,6 +185,7 @@ WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
+WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:There are more given parties than listed vehicles, so cause attribution has not been conducted: Crash ID 201436784
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
@@ -214,6 +215,7 @@ WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Invalid cause/party for an accident (should be of form 000X or 000 for environmental variables): "+"
 WARNING:root:Invalid cause/party for an accident (should be of form 000X or 000 for environmental variables): "+"
+WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON
 WARNING:root:Crash does not have XY location, so is not added to GeoJSON

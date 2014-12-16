@@ -132,7 +132,9 @@ class nztacrash:
         self.dickhead = self.get_dickhead()
         
     def get_hasLocation(self):
-        if self.easting == None or self.northing == None:
+        if self.easting in [0,None] or self.northing in [0,None]:
+            # If either coordinate is invalid, accident does not have location
+            # 0 considered erroneous because of NZTA data entry error
             return False
         else:
             return True
