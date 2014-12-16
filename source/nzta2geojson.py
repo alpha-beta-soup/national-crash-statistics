@@ -76,8 +76,18 @@ class nztacrash:
         # Spatial information
         self.easting = genFunc.formatInteger(row[27]) # NZTM
         self.northing = genFunc.formatInteger(row[28]) # NZTM
-        self.proj = pyproj.Proj(init='epsg:2193') # NZTM projection
         self.hasLocation = self.get_hasLocation()
+        
+        # Approximate correction for Chatham Islands, which NZTA has offset
+        if self.tla_name == 'Chatham Islands County' and self.hasLocation:
+             # In units of the projection system (NZTM)
+            lat_correction = -96135
+            lon_correction = 355966
+            self.easting += lon_correction
+            self.northing += lat_correction
+        
+        self.proj = pyproj.Proj(init='epsg:2193') # NZTM projection
+        
         if self.hasLocation == True:
             self.lat, self.lon = self.proj(self.easting, self.northing, inverse=True) # Lat/lon
         else:
