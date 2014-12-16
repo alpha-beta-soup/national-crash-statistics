@@ -1,15 +1,91 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<html>
- <head>
-  <title>Index of /national-crash-statistics</title>
- </head>
- <body>
-<h1>Index of /national-crash-statistics</h1>
-<pre>      <a href="?C=N;O=D">Name</a>                    <a href="?C=M;O=A">Last modified</a>      <a href="?C=S;O=A">Size</a>  <a href="?C=D;O=A">Description</a><hr>      <a href="/">Parent Directory</a>                             -   
-      <a href="data.geojson">data.geojson</a>  
-      <a href="jquery.min.js">jquery.min.js</a>  
-      <a href="leaflet.ajax.min.js">leaflet.ajax.min.js</a>
-      <a href="nzCrashDataScript.js">nzCrashDataScript.js</a>
-      <a href="nzta-crash-analysis.html">nzta-crash-analysis...&gt;</a> 
-<hr></pre>
-</body></html>
+<!DOCTYPE html>
+    <head>
+
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />   
+        
+        <meta charset="utf-8" />
+
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+        
+        <link href="http://fonts.googleapis.com/css?family=VT323" rel="stylesheet" type="text/css">
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+        <script src="./source/leaflet.ajax.min.js" type="text/javascript"></script>
+        
+        <link rel="stylesheet" type="text/css" href="./css/nzta-crash-analysis.css">
+
+        <link rel="shortcut icon" href="./icons/crashIcon.ico" >
+
+        <title>NZ Crash Reports</title>
+    
+    </head>
+    
+    <body>
+        
+        <!-- contain all div -->
+        <div>
+            
+            <!-- map div -->
+            <div id="map"></div>
+
+            <!-- div for side bar -->
+            <div id="sidebar">
+
+                <!-- side bar container for interactivity -->
+                <div id="sidebarContainer">
+                       
+                    <!-- background div for desc -->
+                    <div id="desc">
+                        
+                        <!-- container for desc text -->
+                        <div id="descContainer">
+                        
+                            <!-- text for desc -->
+                            <h1><span class="red">Crash</span> Reports</h1>
+                            
+                            <h3>New Zealand <span class="red">crash</span> reports </br>
+                                January &ndash; July 2013</h3>
+
+                            <p>Traffic <span class="red">crash</span> reports are completed by police officers at all road <span class="red">crash</span> scenes, including non-injury <span class="red">crashes</span>. Details of exactly where, when, how and why the <span class="red">crash</span> happened are recorded. </p>
+
+                            <p>Traffic <span class="red">crashes</span> reports provide essential information to a wide range of road safety and road construction partners who are engaged in the constant fight to reduce the approximately 2000 deaths and severe injuries recorded each year. </p>
+
+                            <p>These data are from the NZ Transport Agency’s <span class="red">Crash</span> Analysis System (CAS).</p>
+
+                            <!-- <p class="bold"><a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">More information</a></p> -->
+                            
+                            <!-- need to add stuff about us here -->
+
+                        </div>
+
+                    </div>
+                    
+                    <!-- divs for hide button -->
+                    <div id="hideDesc">
+                    
+                        <div id="circleButton">
+                        
+                            <p id="i">i</p>
+
+                        </div>
+
+                    </div>
+                
+                </div>
+            
+            </div>
+        
+        </div>
+
+        <script src="./source/nzta-crash-analysis.js" type="text/javascript"></script>
+
+    </body>
