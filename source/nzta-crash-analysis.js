@@ -313,7 +313,7 @@ layers["Dangerous driving"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.dickhead
+        return feature.properties.dangerous_driving
 
     }
 

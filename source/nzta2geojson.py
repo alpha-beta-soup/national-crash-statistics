@@ -514,7 +514,7 @@ class nztacrash:
         'drugs': self.drugs,
         'cellphone': self.cellphone,
         'fatigue': self.fatigue,
-        'dickhead': self.dickhead,
+        'dangerous_driving': self.dickhead,
         'fatal': self.fatal,
         'severe': self.injuries_severe,
         'minor': self.injuries_minor,
