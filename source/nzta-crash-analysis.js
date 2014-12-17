@@ -297,7 +297,7 @@ layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
-layers["Dickheads"] = new L.GeoJSON.AJAX(crashes,{
+layers["Dangerous driving"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
