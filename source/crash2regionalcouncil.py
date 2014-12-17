@@ -6,7 +6,7 @@ from shapely.geometry import shape, Point
 
 # Or test it in the main code. If it has no serious overhead, just run it each time.
 
-fc = fiona.open("nz-regional-councils-2012-yearly-pattern.shp")
+fc = fiona.open("nz-rc-2012d.shp")
 for f in fc:
     print f['type'],
     print f['id'],
@@ -16,5 +16,5 @@ for f in fc:
     geom = shape(f['geometry'])
     point = Point(171.8,-34.2) # longitude, latitude
     if geom.contains(point):
-        print "Found it!"
+        print f['properties']
     print geom.bounds
