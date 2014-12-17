@@ -43,9 +43,9 @@ html, body, #map {
     background-color: rgb(236,236,236);
     float: left;
     position: relative;
-    -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 3px 3px #888888;
-    box-shadow: 3px 3px 3px #888888;
+    -moz-box-shadow: 2px 2px 2px #888888;
+    -webkit-box-shadow: 2px 2px 2px #888888;
+    box-shadow: 2px 2px 2px #888888;
 }
 
 /* styling on the div in which the text description sits */
@@ -63,9 +63,9 @@ html, body, #map {
     float: left;
     position: relative;
     padding: 0;
-    -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 3px 3px #888888;
-    box-shadow: 3px 3px 3px #888888;
+    -moz-box-shadow: 2px 2px 2px #888888;
+    -webkit-box-shadow: 2px 2px 2px #888888;
+    box-shadow: 2px 2px 2px #888888;
 }
 
 /* styling of dark grey circle */
@@ -94,9 +94,9 @@ html, body, #map {
     background: white;
     margin: 10px 0px;
     background: rgb(236,236,236);
-    -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 3px 3px #888888;
-    box-shadow: 3px 3px 3px #888888;
+    border-top: 1px solid #8C8C8C;
+    border-right: 1px solid #8C8C8C;
+    border-left: 1px solid #8C8C8C;
 }
 
 /* remove margin for h3 inside title div for layers */ 
@@ -116,10 +116,11 @@ html, body, #map {
     width: 250px;
     position: relative;
     top: -20px;
-    -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 3px 3px #888888;
-    box-shadow: 3px 3px 3px #888888;
+    border-bottom: 1px solid #8C8C8C;
+    border-right: 1px solid #8C8C8C;
+    border-left: 1px solid #8C8C8C;
     background: rgb(236,236,236);
+    box-shadow: none;
 }
 
 .leaflet-popup-content {
@@ -129,16 +130,16 @@ html, body, #map {
 .leaflet-popup-content-wrapper {
     background: #ECECEC;
     border-radius: 0px;
-    -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 3px 3px #888888;
-    box-shadow: 3px 3px 3px #888888;
+    -moz-box-shadow: 0 0 2px 2px #888888;
+    -webkit-box-shadow: 0 0 2px 2px #888888;
+    box-shadow: 0 0 2px 2px #888888;
 }
 
 .leaflet-popup-tip {
     background: #ECECEC;
-    -moz-box-shadow: 3px 3px 3px #888888;
-    -webkit-box-shadow: 3px 6px 3px #888888;
-    box-shadow: 3px 3px 3px #888888;
+    -moz-box-shadow: 0 0 2px 2px #888888;
+    -webkit-box-shadow: 0 0 2px 2px #888888;
+    box-shadow: 0 0 2px 2px #888888;
 }
 /* bold class */
 .bold {
