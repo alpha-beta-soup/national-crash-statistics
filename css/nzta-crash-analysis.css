@@ -76,15 +76,16 @@ html, body, #map {
     background-color: rgb(151,151,151);
     margin: 3px;
     position: relative;
+    background-image: url("/icons/arrow.png");
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-/* info i styling */
-#i {
-    margin: 0;
-    font-size: 18px;
-    color: white;
-    text-align: center;
-    padding-top: 2px;
+.rotate {
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 /* styling for title div attached at the top of layer switches */

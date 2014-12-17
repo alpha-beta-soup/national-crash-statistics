@@ -367,7 +367,6 @@ layers["Cyclist"] = new L.GeoJSON.AJAX(crashes,{
 //add layer selector to the map
 L.control.layers(layers,[], {"position":"topright", "collapsed":false}).addTo(map);
 
-
 //hide function for the sidebar
 $(document).ready(function(){
     
@@ -376,20 +375,26 @@ $(document).ready(function(){
     var moveLeft;
 
     moveLeft = -($("#desc").width());
+
+    $("#circleButton").addClass('rotate');
     
-    $("#sidebarContainer").on('click', function(){
+    $("#hideDesc").on('click', function(){
     
     if(clicked){
     
         clicked=false;
     
         $("#sidebarContainer").css({"left": 0});
+
+        $("#circleButton").addClass('rotate');
     
         } else {
 
         clicked=true;
     
         $("#sidebarContainer").css({"left": moveLeft});
+
+        $("#circleButton").removeClass('rotate');
 
         }
     
