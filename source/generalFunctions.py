@@ -81,7 +81,7 @@ def check_offroad(crash_road):
                     'FCT': 'Forecourt'}
         for i, r in enumerate(crash_road):
             if r.upper() in patterns.keys():
-                crash_road = crash_road[:i] + crash_road[i+1:] + [patterns[r.upper()], '(Off-roadway)']
+                crash_road = crash_road[:i] + crash_road[i+1:] + [patterns[r.upper()], '(off-roadway)']
                 break
         # Join it back up to a proper description
         crash_road = ' '.join(crash_road)
