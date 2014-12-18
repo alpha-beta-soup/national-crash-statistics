@@ -20,6 +20,7 @@ import json
 import csv
 import string
 import generalFunctions as genFunc
+import crash2regionalcouncil
 import re
 import logging
      
@@ -83,6 +84,10 @@ class nztacrash:
         else:
             logging.warning('Crash does not have XY location, so is not added to GeoJSON')
             self.lat, self.lon = None, None
+        
+        # Get the regional council
+        if self.hasLocation:
+            self.regional_council = crash2regionalcouncil.get_region(self)
 
         # Google Streetview API key
         self.api = open('google-streetview-api-key','r').read()
@@ -506,7 +511,9 @@ class nztacrash:
         'fatal': self.fatal,
         'severe': self.injuries_severe,
         'minor': self.injuries_minor,
-        'no_injuries': self.injuries_none},
+        'no_injuries': self.injuries_none,
+        'tla': self.tla_name,
+        'regional_council': self.regional_council},
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
         
     def decodeMovement(self):
