@@ -1,5 +1,9 @@
 //where, initial zoom level and remove zoom buttons
-var map = L.map('map', {zoomControl: false}).setView([-41.17, 174.46], 6);
+var map = L.map('map', {
+    zoomControl: false,
+    continuousWorld: true,
+    worldCopyJump: true
+    }).setView([-41.17, 174.46], 6);
 
 
 //base map tiles, zoom and attribution
