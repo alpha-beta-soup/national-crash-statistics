@@ -123,6 +123,44 @@ html, body, #map {
     background: rgb(236,236,236);
     box-shadow: none;
 }
+.leaflet-control-layers-selector {
+    float: left;
+}
+
+
+.legendDot {
+    height: 12px;
+    width: 12px;
+    border-radius: 6px;
+    top: 2px;
+    margin-right: 50%;
+    float: right;
+    position: relative;
+}
+
+#redDot {
+    background-color: #ff1a1a;
+}
+
+#orangeDot {
+    background-color: #ff821a;
+}
+
+#yellowDot {
+    background-color: #a7ee18; 
+}
+
+#greenDot {
+    background-color: #15CC15;
+}
+
+.legendText {
+    float: left;
+}
+
+#clear {
+    clear: both;
+}
 
 .leaflet-popup-content {
     width: 300px;

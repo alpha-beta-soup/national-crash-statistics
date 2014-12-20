@@ -99,7 +99,7 @@ var crashes = "./data/data.geojson"
 
 //create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
 var layers = {};
-layers["Fatal"] = new L.GeoJSON.AJAX(crashes,{
+layers["<div class='legendEntry'><div class='legendText'>Fatal&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='legendDot' id='redDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
@@ -121,7 +121,7 @@ layers["Fatal"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
-layers["Severe injuries"] = new L.GeoJSON.AJAX(crashes,{
+layers["<div class='legendEntry'><div class='legendText'>Severe injuries&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='legendDot' id='orangeDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
@@ -143,7 +143,7 @@ layers["Severe injuries"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
-layers["Minor injuries"] = new L.GeoJSON.AJAX(crashes,{
+layers["<div class='legendEntry'><div class='legendText'>Minor injuries&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='legendDot' id='yellowDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
@@ -165,7 +165,7 @@ layers["Minor injuries"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
-layers["No injuries"] = new L.GeoJSON.AJAX(crashes,{
+layers["<div class='legendEntry'><div class='legendText'>No injuries&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='legendDot' id='greenDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
