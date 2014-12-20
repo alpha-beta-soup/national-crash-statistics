@@ -76,7 +76,7 @@ html, body, #map {
     background-color: rgb(151,151,151);
     margin: 3px;
     position: relative;
-    background-image: url("/icons/arrow.png");
+    background-image: url("../icons/arrow.png");
     background-repeat: no-repeat;
     background-position: center;
 }
