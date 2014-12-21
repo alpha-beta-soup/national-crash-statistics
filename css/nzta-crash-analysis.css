@@ -70,25 +70,16 @@ html, body, #map {
 
 /* styling for controls panel */
 #controlsPanel {
-    position: relative;
-    bottom: -400px;
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
     border-radius: 0px;
-    border: 2px solid;
-    box-shadow: 2px 3px #888888;
-}
-
-/* styling for controls */
-#controls {
-    padding: 10px;
 }
 
 /* styling for control */
 .control {
     margin:auto;
     display:block;
-    text-align:center;
-    font-weight:bold;
-    font-size: 18px;
 }
 
 /* styling of dark grey circle */
