@@ -132,6 +132,23 @@ class nztacrash:
             self.injuries_none = True
         else:
             self.injuries_none = False
+            
+        # Now assign booleans to identify the worst (and only the worst) injury
+        self.worst_fatal = False # Default
+        self.worst_severe = False # Default
+        self.worst_minor = False # Default
+        self.worst_none = False # Default
+        if self.fatal:
+            self.worst_fatal = True
+        elif not self.fatal:
+            if self.injuries:
+                if self.injuries_severe:
+                    self.worst_severe = True
+                elif self.injuries_minor:
+                    self.worst_minor = True
+        if self.injuries_none:
+            self.worst_none = True
+
         self.pedestrian = self.get_mode_involvement(['E','K','H']) # Pedestrian, skater, wheeled pedestrian
         self.cyclist = self.get_mode_involvement(['S']) # Cyclist
         self.motorcyclist = self.get_mode_involvement(['M','P']) # Motorcyclist, moped
@@ -513,10 +530,10 @@ class nztacrash:
         'cellphone': self.cellphone,
         'fatigue': self.fatigue,
         'dangerous_driving': self.dickhead,
-        'fatal': self.fatal,
-        'severe': self.injuries_severe,
-        'minor': self.injuries_minor,
-        'no_injuries': self.injuries_none},
+        'fatal': self.worst_fatal,
+        'severe': self.worst_severe,
+        'minor': self.worst_minor,
+        'no_injuries': self.worst_none},
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
         
     def decodeMovement(self):

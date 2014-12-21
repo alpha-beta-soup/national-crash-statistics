@@ -87,7 +87,7 @@ var layerTitle = L.Control.extend({
 
         var container = L.DomUtil.create('div', 'layerTitle');
         
-        container.innerHTML = '<h3><span class="red">Crash</span> events</h3><p><span class="red">Crashes</span> can have more than one level of injury severity when multiple parties are involved.</p><h4>Filter by consequence</h4>';
+        container.innerHTML = '<h3><span class="red">Crash</span> events</h3><h4>Filter by consequence</h4>';
         
         return container;
     
