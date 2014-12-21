@@ -87,7 +87,7 @@ var layerTitle = L.Control.extend({
 
         var container = L.DomUtil.create('div', 'layerTitle');
         
-        container.innerHTML = '<h3><span class="red">Crash</span> events</h3><p><span class="red">Crashes</span> can have more than one level of injury severity when multiple parties are involved.</p>';
+        container.innerHTML = '<h3><span class="red">Crash</span> events</h3><p><span class="red">Crashes</span> can have more than one level of injury severity when multiple parties are involved.</p><h4>Filter by consequence</h4>';
         
         return container;
     
@@ -169,7 +169,7 @@ layers["<div class='legendEntry'><div class='legendText'>Minor injuries</div><di
 
 })//.addTo(map);
 
-layers["<div class='legendEntry'><div class='legendText'>No injuries</div><div class='legendDot' id='greenDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
+layers["<div class='legendEntry'><div class='legendText'>No injuries</div><div class='legendDot' id='greenDot'></div></div><div id='clear'></div><h4>Filter by factor</h4>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
@@ -301,7 +301,7 @@ layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
-layers["Dangerous driving"] = new L.GeoJSON.AJAX(crashes,{
+layers["Dangerous driving<div id='clear'></div><h4>Filter by party</h4>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             

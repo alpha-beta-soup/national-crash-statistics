@@ -9,6 +9,10 @@ h1 {
     margin: 0;
 }
 
+h4 {
+    margin: 6px 0 0 0;
+}
+
 /* full page map setting size, font, z-index and margin */
 html, body, #map {
     height: 100%;
@@ -137,10 +141,15 @@ html, body, #map {
     background: rgb(236,236,236);
     box-shadow: none;
 }
+
+/* reduce gap between layer title and layer seletor as 'Filter by consequence' is in the div above unlike the other subtitles */
+.leaflet-control-layers-expanded {
+    padding-top: 0;
+}
+
 .leaflet-control-layers-selector {
     float: left;
 }
-
 
 .legendDot {
     height: 12px;
