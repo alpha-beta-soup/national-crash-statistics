@@ -394,21 +394,21 @@ class nztacrash:
             vehicles_dict[v] = i # {'A': 0, 'B': 1, 'C': 2}
             
         # Map the modes to a text about tbe kind of controller
-        decoder = {'C': 'driver of the <strong>X car</strong>',
-           'V': 'driver of the <strong>X van/ute</strong>',
-           'X': '<strong>X taxi/taxi van driver</strong>',
-           'B': '<strong>X bus driver</strong>',
-           'L': '<strong>X school bus driver</strong>',
-           '4': 'driver of the <strong>X SUV/4X4</strong>',
-           'T': '<strong>X truck driver</strong>',
-           'M': '<strong>X motorcyclist</strong>',
-           'P': '<strong>X moped rider</strong>',
-           'S': '<strong>X cyclist</strong>',
-           'O': 'driver of the <strong>X vehicle</strong> of unknown type',
-           'E': '<strong>X pedestrian</strong>', 
-           'K': '<strong>X skater</strong>',
-           'Q': '<strong>X equestrian</strong>',
-           'H': '<strong>X wheeled pedestrian</strong>'}
+        decoder = {'C': 'driver of the <strong>car</strong>',
+           'V': 'driver of the <strong>van/ute</strong>',
+           'X': '<strong>taxi/taxi van driver</strong>',
+           'B': '<strong>bus driver</strong>',
+           'L': '<strong>school bus driver</strong>',
+           '4': 'driver of the <strong>SUV/4X4</strong>',
+           'T': '<strong>truck driver</strong>',
+           'M': '<strong>motorcyclist</strong>',
+           'P': '<strong>moped rider</strong>',
+           'S': '<strong>cyclist</strong>',
+           'O': 'driver of the <strong>vehicle</strong> of unknown type',
+           'E': '<strong>pedestrian</strong>', 
+           'K': '<strong>skater</strong>',
+           'Q': '<strong>equestrian</strong>',
+           'H': '<strong>wheeled pedestrian</strong>'}
         
         # Keep track of the numbers of each mode we see, so the text can be formed
         # using ordinal text ('the first car', etc.)
@@ -448,10 +448,10 @@ class nztacrash:
             
             if vehicle_counts[mode_v] == 1:
                 # Then there is only one type of this vehicle involved
-                the_mode = 'The %s' % decoder[mode_v].replace('X ','')
+                the_mode = 'The %s' % decoder[mode_v]
             elif vehicle_counts[mode_v] > 1:
                 # Then there is multiple instances of this type of vehicle involved
-                the_mode = 'The %s' % decoder[mode_v].replace('X', genFunc.ordinal(mode_counter[mode_v]))
+                the_mode = 'The %s' % decoder[mode_v].replace('<strong>', '<strong>%s ' % genFunc.ordinal(mode_counter[mode_v]))
   
             # Finally, replace '1st' with 'first', etc.
             ordinal_text = {'1st':'first','2nd':'second','3rd':'third',
