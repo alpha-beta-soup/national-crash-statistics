@@ -160,6 +160,7 @@ class nztacrash:
         self.cellphone = self.get_cellphone()
         self.fatigue = self.get_fatigue()
         self.dickhead = self.get_dickhead()
+        self.speeding = self.get_toofast()
         
     def get_hasLocation(self):
         if self.easting in [0,None] or self.northing in [0,None]:
@@ -310,6 +311,26 @@ class nztacrash:
             if len(c) == 4:
                 c = c[0:3]
             if c in ['430','431','432','433','434']:
+                return True
+            else:
+                pass
+        return False
+    
+    def get_toofast(self):
+        '''Returns a Boolean indicating whether or not factor/roles 110-117
+        were cited to explain the accident.
+        110: Too fast for conditions
+        111: Cornering
+        112: On straight
+        113: To give way at intersection
+        114: Approaching railway crossing
+        115: When passing stationary school bus
+        116: At temporary speed limit
+        117: At crash or emergency'''
+        for c in self.causes:
+            if len(c) == 4:
+                c = c[0:3]
+            if c in ['110','111','112','113','114','115','116','117']:
                 return True
             else:
                 pass
@@ -530,6 +551,7 @@ class nztacrash:
         'cellphone': self.cellphone,
         'fatigue': self.fatigue,
         'dangerous_driving': self.dickhead,
+        'speed': self.speeding,
         'fatal': self.worst_fatal,
         'severe': self.worst_severe,
         'minor': self.worst_minor,

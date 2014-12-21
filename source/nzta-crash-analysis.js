@@ -301,6 +301,28 @@ layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
+layers["Speed"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.speed
+
+    }
+
+})//.addTo(map);
+
 layers["Dangerous driving<div id='clear'></div><h4>Filter by party</h4>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
