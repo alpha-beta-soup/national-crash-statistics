@@ -68,6 +68,20 @@ html, body, #map {
     box-shadow: 2px 2px 2px #888888;
 }
 
+/* styling for controls panel */
+#controlsPanel {
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    border-radius: 0px;
+}
+
+/* styling for control */
+.control {
+    margin:auto;
+    display:block;
+}
+
 /* styling of dark grey circle */
 #circleButton {
     height: 26px;
