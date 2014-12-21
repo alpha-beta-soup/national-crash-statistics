@@ -134,6 +134,7 @@ class nztacrash:
             self.injuries_none = False
         self.cyclist = self.get_cyclist()
         self.pedestrian = self.get_pedestrian()
+        self.motorcyclist = self.get_motorcyclist()
         self.tourist = self.get_tourist()
         self.alcohol = self.get_alcohol()
         self.drugs = self.get_drugs()
@@ -302,6 +303,18 @@ class nztacrash:
         elif self.keyvehicle == 'E':
             pedestrian = True
         return pedestrian
+        
+    def get_motorcyclist(self):
+        '''Returns a Boolean indicating whether or not a rider of a motorcycle or
+        a moped was an involved party'''
+        motorcyclist = False # Until shown otherwise
+        if self.secondaryvehicles != None:
+            if ('M' in self.secondaryvehicles) or ('P' in self.secondaryvehicles) or (self.keyvehicle in ['M','P']):
+                # A motorcylist/moped-rider was involved
+                motorcyclist = True
+        elif self.keyvehicle in ['M','P']:
+            motorcyclist = True
+        return motorcyclist
         
     def get_number_of_vehicles(self):
         '''Returns integers representing the numbers of the different types of vehicles
@@ -509,6 +522,7 @@ class nztacrash:
         'causes': self.make_causes(),
         'cyclist': self.cyclist,
         'pedestrian': self.pedestrian,
+        'motorcyclist': self.motorcyclist,
         'tourist': self.tourist,
         'alcohol': self.alcohol,
         'drugs': self.drugs,
