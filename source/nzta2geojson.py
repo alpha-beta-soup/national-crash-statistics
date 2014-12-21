@@ -132,9 +132,9 @@ class nztacrash:
             self.injuries_none = True
         else:
             self.injuries_none = False
-        self.cyclist = self.get_cyclist()
-        self.pedestrian = self.get_pedestrian()
-        self.motorcyclist = self.get_motorcyclist()
+        self.pedestrian = self.get_mode_involvement(['E','K','H']) # Pedestrian, skater, wheeled pedestrian
+        self.cyclist = self.get_mode_involvement(['S']) # Cyclist
+        self.motorcyclist = self.get_mode_involvement(['M','P']) # Motorcyclist, moped
         self.tourist = self.get_tourist()
         self.alcohol = self.get_alcohol()
         self.drugs = self.get_drugs()
@@ -186,16 +186,19 @@ class nztacrash:
         side_road = genFunc.streetExpander(side_road,self.streetdecoder)
         return side_road
         
-    def get_cyclist(self):
-        '''Returns a Boolean indicating whether or not a cyclist was an involved party'''
-        cyclist = False # Until shown otherwise
+    def get_mode_involvement(self, mode_list):
+        '''Returns a boolean indicating whether the key vehicle or any of the
+        secondary vehicles were of the same type of vehicle/person as any of the
+        modes supplies in mode_list (a list of modes). Used to determine if a 
+        pedestrian was involved in an accident, for example.'''
+        if self.keyvehicle in mode_list:
+            return True
         if self.secondaryvehicles != None:
-            if ('S' in self.secondaryvehicles) or (self.keyvehicle =='S'):
-                # A cyclist was involved
-                cyclist = True
-        elif self.keyvehicle == 'S':
-            cyclist == True
-        return cyclist
+            for m in self.secondaryvehicles:
+                if m in mode_list:
+                    return True
+        else:
+            return False
         
     def get_tourist(self):
         '''Returns a Boolean indicating whether or not factor/role 404 or 731 
@@ -292,29 +295,6 @@ class nztacrash:
             else:
                 pass
         return False
-    
-    def get_pedestrian(self):
-        '''Returns a Boolean indicating whether or not a pedestrian was an involved party'''
-        pedestrian = False # Until shown otherwise
-        if self.secondaryvehicles != None:
-            if ('E' in self.secondaryvehicles) or ('K' in self.secondaryvehicles) or (self.keyvehicle == 'E'):
-                # A pedestrian/skater was involved
-                pedestrian = True
-        elif self.keyvehicle == 'E':
-            pedestrian = True
-        return pedestrian
-        
-    def get_motorcyclist(self):
-        '''Returns a Boolean indicating whether or not a rider of a motorcycle or
-        a moped was an involved party'''
-        motorcyclist = False # Until shown otherwise
-        if self.secondaryvehicles != None:
-            if ('M' in self.secondaryvehicles) or ('P' in self.secondaryvehicles) or (self.keyvehicle in ['M','P']):
-                # A motorcylist/moped-rider was involved
-                motorcyclist = True
-        elif self.keyvehicle in ['M','P']:
-            motorcyclist = True
-        return motorcyclist
         
     def get_number_of_vehicles(self):
         '''Returns integers representing the numbers of the different types of vehicles
