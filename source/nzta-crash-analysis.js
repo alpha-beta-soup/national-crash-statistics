@@ -389,6 +389,51 @@ layers["Motorcyclist"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
+layers["Taxi"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.taxi
+
+    }
+
+})//.addTo(map);
+
+layers["Truck"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.truck
+
+    }
+
+})//.addTo(map);
+
+
 
 //add layer selector to the map
 L.control.layers(layers,[], {"position":"topright", "collapsed":false}).addTo(map);

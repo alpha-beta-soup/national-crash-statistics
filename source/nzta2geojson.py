@@ -135,6 +135,8 @@ class nztacrash:
         self.pedestrian = self.get_mode_involvement(['E','K','H']) # Pedestrian, skater, wheeled pedestrian
         self.cyclist = self.get_mode_involvement(['S']) # Cyclist
         self.motorcyclist = self.get_mode_involvement(['M','P']) # Motorcyclist, moped
+        self.taxi = self.get_mode_involvement(['X']) # Taxi/taxi van
+        self.truck = self.get_mode_involvement(['T']) # Truck
         self.tourist = self.get_tourist()
         self.alcohol = self.get_alcohol()
         self.drugs = self.get_drugs()
@@ -503,6 +505,8 @@ class nztacrash:
         'cyclist': self.cyclist,
         'pedestrian': self.pedestrian,
         'motorcyclist': self.motorcyclist,
+        'taxi': self.taxi,
+        'truck': self.truck,
         'tourist': self.tourist,
         'alcohol': self.alcohol,
         'drugs': self.drugs,
