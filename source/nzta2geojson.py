@@ -221,8 +221,7 @@ class nztacrash:
             for m in self.secondaryvehicles:
                 if m in mode_list:
                     return True
-        else:
-            return False
+        return False
             
     def get_factor_involvement(self, factor_list):
         '''Returns a boolean indicating whether any of the 3-digit factor codes

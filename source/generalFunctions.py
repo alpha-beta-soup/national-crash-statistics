@@ -168,7 +168,8 @@ def formatNiceRoad(road):
                    'Obr': 'Overbridge',
                    'Off': 'Off-ramp',
                    'Xing': 'Crossing',
-                   'Mckays': 'McKays'}
+                   'Mckays': 'McKays',
+                   'Rly': 'Railway'}
     for i, r in enumerate(road):
         if r.upper() in knownAcronyms:
             road[i] = r.upper()
