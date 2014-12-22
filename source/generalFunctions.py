@@ -171,6 +171,14 @@ def formatNiceRoad(road):
                    'Mckays': 'McKays',
                    'Rly': 'Railway'}
     for i, r in enumerate(road):
+        # Check for "knownErros requires no brackets around term
+        left, right = False, False
+        if '(' in r:
+            left = True
+            r = r.replace('(','')
+        if ')' in r:
+            right = True
+            r = r.replace(')','')
         if r.upper() in knownAcronyms:
             road[i] = r.upper()
         if r.title() in knownErrors.keys():
@@ -180,13 +188,16 @@ def formatNiceRoad(road):
             r = striplinearref(r)
             check = r.split('/')
             for j, c in enumerate(check):
-                if c in knownErrors:
-                    check[j] = knownErrors[c]
+                if c.title() in knownErrors.keys():
+                    check[j] = knownErrors[c.title()]
                 if c in knownAcronyms:
-                    check[j] = knownAcronyms[c]
+                    check[j] = c.upper()
             check = '/'.join(check)
             road[i] = check
-
+        if left:
+            road[i] = '(%s' % road[i]
+        if right:
+            road[i] = '%s)' % road[i]
     return ' '.join(road)
  
 def formatStringList(listofstrings, delim=None):
