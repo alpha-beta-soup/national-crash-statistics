@@ -185,7 +185,10 @@ class nztacrash:
     def get_crash_dow(self):
         '''Returns a full text representation of the English day of the week,
         e.g. "Monday"'''
-        return self.crash_date.strftime("%A")
+        if self.crash_date != None:
+            return self.crash_date.strftime("%A")
+        else:
+            return None
      
     def get_spd_lim(self):
         '''Speed limit can either be a number (integer is returned) or a character,
@@ -527,6 +530,7 @@ class nztacrash:
                                'M': 'motorcycle',
                                'P': 'moped',
                                'S': 'bicycle',
+                               'K': 'skateboard/in-line skater/etc.',
                                'O': 'other/unknown',
                                'E': 'pedestrian'}
                 except KeyError:
@@ -896,29 +900,34 @@ def streetDecoderCSV(data):
     return retdict
     
 def main(data,causes,streets):
-    # Open and read the CSV of crash events
-    with open(data, 'rb') as crashcsv:
-        crashreader = csv.reader(crashcsv, delimiter=',')
-        header = crashreader.next()
-        causedecoder = causeDecoderCSV(causes) # Decode the coded values
-        streetdecoder = streetDecoderCSV(streets)
-        crashes = []
-        # Empty feature collection, ready for geojson-ing
-        feature_collection = {"type": "FeatureCollection",
-                              "features": []}
-        for crash in crashreader:
-            Crash = nztacrash(crash, causedecoder, streetdecoder)
-            # Collect crash descriptions and locations into the feature collection
-            if Crash.hasLocation:
-                feature_collection["features"].append(Crash.__geo_interface__())
-
+    causedecoder = causeDecoderCSV(causes) # Decode the coded values
+    streetdecoder = streetDecoderCSV(streets)
+    crashes = []
+    with open('../data/data.geojson', 'w') as outfile:
+        for d in data:
+            print(d)
+            # Open and read the CSVs of crash events
+            with open(d, 'rb') as crashcsv:
+                crashreader = csv.reader(crashcsv, delimiter=',')
+                header = crashreader.next()
+                
+                # Empty feature collection, ready for geojson-ing
+                feature_collection = {"type": "FeatureCollection",
+                                      "features": []}
+                for crash in crashreader:
+                    Crash = nztacrash(crash, causedecoder, streetdecoder)
+                    # Collect crash descriptions and locations into the feature collection
+                    if Crash.hasLocation:
+                        feature_collection["features"].append(Crash.__geo_interface__())
+                crashcsv.close()
         # Write the geojson output
-        with open('../data/data.geojson', 'w') as outfile:
-            outfile.write(json.dumps(feature_collection))
+        outfile.write(json.dumps(feature_collection))
+        outfile.close()
 
 if __name__ == '__main__':
     # Set paths
-    data = '../data/crash-data-2014-partial.csv'
+    data = ['../data/crash-data-2014-partial.csv',
+        '../data/crash-data-2013.csv']
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
     

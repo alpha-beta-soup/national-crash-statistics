@@ -14,7 +14,7 @@ datetime
 import datetime
 
 def empty(string):
-    if string in ['', ' ']:
+    if string in ['', ' ', None]:
         return True
     return False
     
@@ -35,7 +35,12 @@ def formatDate(datestring):
     DD/MM/YYYY (e.g. 30/01/2014)'''
     if empty(datestring):
         return None
-    return datetime.datetime.strptime(datestring, "%d/%m/%Y").date()
+    else:
+        try:
+            return datetime.datetime.strptime(datestring, "%d/%m/%Y").date()
+        except ValueError:
+            # Poorly formatted date in source data
+            return None
 
 def ordinal(n):
     return str(n)+("th" if 4<=n%100<=20 else {1:"st",2:"nd",3:"rd"}.get(n%10, "th"))
@@ -43,12 +48,14 @@ def ordinal(n):
 def formatNiceDate(datetime):
     '''Takes a datetime.datetime (e.g. datetime(2014,1,1)) and returns a nice
     string representation (e.g. "1st of January 2014"'''
+    if empty(datetime):
+        return None
     return ordinal(datetime.day) + " %s %d" % (datetime.strftime("%B"), datetime.year)
 
 def formatNiceTime(time):
     '''Takes a datetime.time (e.g. time(12,0,0)) and returns a nice string representation
     (e.g. 12:00). Seconds are ignored, and not even considered for rounding.'''
-    if time == None:
+    if empty(time):
         return ''
     t = str(time).split(":")
     return "%s:%s" % (t[0],t[1])
@@ -60,7 +67,7 @@ def formatCrashTime(crashtime, dateobj):
     if empty(crashtime):
         return None
     return datetime.datetime.strptime(str(dateobj)+" "+'0'*(4-len(crashtime))+crashtime,'%Y-%m-%d %H%M').time()
-
+    
 def check_offroad(crash_road):
     '''Applies a check for 'Z': the flat for offroad indicator, and corrects
     strings representing these places so that they're a bit nicer to read.'''
@@ -153,7 +160,15 @@ def formatNiceRoad(road):
                    'W': 'West',
                    'N': 'North',
                    'Riv': 'River',
-                   'Br': 'Bridge'}
+                   'Br': 'Bridge',
+                   'Wbd': 'Westbound',
+                   'Ebd': 'Eastbound',
+                   'Nbd': 'Northbound',
+                   'Sbd': 'Southbound',
+                   'Obr': 'Overbridge',
+                   'Off': 'Off-ramp',
+                   'Xing': 'Crossing',
+                   'Mckays': 'McKays'}
     for i, r in enumerate(road):
         if r.upper() in knownAcronyms:
             road[i] = r.upper()
