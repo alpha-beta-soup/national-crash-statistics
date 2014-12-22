@@ -689,14 +689,14 @@ class nztacrash:
             light = 'Night'
         else:
             light = 'Day'
-        decoder1 = {'F': {'Night': ['Weather-Moon-icon.png','Clear Night'], 'Day': ['weather-sun-icon.svg','Clear Day']},
-                    'M': {'Night': ['Weather-Fog-Night-icon.png','Night Fog'], 'Day': ['Weather-Fog-Day-icon.png','Day Fog']},
-                    'L': ['Weather-Little-Rain-icon.png','Light Rain'],
-                    'H': ['Weather-Downpour-icon.png','Heavy Rain'],
-                    'S': ['parnell-snow.png','Snow'],
+        decoder1 = {'F': {'Night': ['weather-moon-icon.svg','Clear Night'], 'Day': ['weather-sun-icon.svg','Clear Day']},
+                    'M': {'Night': ['Fog-Night-icon.svg','Night Fog'], 'Day': ['Fog-Day-icon.svg','Day Fog']},
+                    'L': ['weather-little-rain-icon.svg','Light Rain'],
+                    'H': ['weather-downpour-icon.svg','Heavy Rain'],
+                    'S': ['weather-snow-icon.svg','Snow'],
                     ' ': None}
-        decoder2 = {'F': ['Temperature-2-icon.png','Frost'],
-                    'S': ['parnell-wind.png','Strong Winds'],
+        decoder2 = {'F': ['weather-frost-icon.svg','Frost'],
+                    'S': ['weather-wind-icon.svg','Strong Winds'],
                     ' ': None}
         if len(self.wthr_a) > 2:
             raise Exception # More than 2 weather indicators are not permitted
