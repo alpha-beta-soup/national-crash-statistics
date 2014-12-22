@@ -653,7 +653,7 @@ class nztacrash:
             light = 'Night'
         else:
             light = 'Day'
-        decoder1 = {'F': {'Night': ['Weather-Moon-icon.png','Clear Night'], 'Day': ['Weather-Sun-icon.png','Clear Day']},
+        decoder1 = {'F': {'Night': ['Weather-Moon-icon.png','Clear Night'], 'Day': ['weather-sun-icon.svg','Clear Day']},
                     'M': {'Night': ['Weather-Fog-Night-icon.png','Night Fog'], 'Day': ['Weather-Fog-Day-icon.png','Day Fog']},
                     'L': ['Weather-Little-Rain-icon.png','Light Rain'],
                     'H': ['Weather-Downpour-icon.png','Heavy Rain'],
