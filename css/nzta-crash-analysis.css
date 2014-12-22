@@ -248,24 +248,34 @@ html, body, #map {
     color: rgb(255,26,26);
 }
 
-/* class for weather icons */
-.environment-icons {
-    display:table;
+/* class for vehicle icons */
+#environment-icons {
+    display: table;
     margin:0 auto;
+    margin-bottom: 0px;
 }
 
-.streetview-container {
+#environment-icons img {
+    height: 25px;
+    width: 25px;
+    position: relative;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+#streetview-container {
     height: 200px;
     width: 300px;
 }
 
 /* class for vehicle icons */
-.vehicle-icons {    
+#vehicle-icons {
     margin:0 auto;
 }
 
-/* to align text and icons */
-.vehicle-icons img {
+#vehicle-icons img {
+    height: 30px;
+    width: 30px;
     position: relative;
     top: 9px;
     margin-left: 3px;
@@ -273,11 +283,13 @@ html, body, #map {
 }
 
 /* class for vehicle icons */
-.injury-icons {
+#injury-icons {
     margin:0 auto;
 }
 
-.injury-icons img {
+#injury-icons img {
+    height: 30px;
+    width: 30px;
     position: relative;
     top: 9px;
     margin-left: 3px;

@@ -283,7 +283,7 @@ class nztacrash:
             alt = decoder[v][1]
             title = alt
             multiplier = vehicles[v]
-            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,title,h,w,hspace) * multiplier
+            ret += '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
         return ret
         
     def get_injury_icons(self):
@@ -295,7 +295,7 @@ class nztacrash:
                  'minor': 'broken-arm.png'}
         ret = ''
         def add_img(alt,title,icon,multiplier):
-            return '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,title,h,w,hspace) * multiplier
+            return '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
         ret += add_img('Fatality','Fatality',icons['fatal'],self.crash_fatal_cnt)
         ret += add_img('Severe injury','Severe injury',icons['severe'],self.crash_sev_cnt)
         ret += add_img('Minor injury','Minor injury',icons['minor'],self.crash_min_cnt)
@@ -311,7 +311,7 @@ class nztacrash:
             icon = 'speeding.svg'
             alt = 'Speeding'
             title = alt
-            return '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (base,icon,alt,title,h,w,hspace)
+            return '<img src="%s/%s" title="%s">' % (base,icon,title)
         else:
             return ''
             
@@ -332,20 +332,21 @@ class nztacrash:
         hspace = 5
         title = alt
         icon = '%s/limit_%s.svg' % (base,self.spd_lim)
-        return '<img src="%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (icon,alt,title,h,w,hspace)
+        return '<img src="%s" title="%s">' % (icon,title)
               
     def __streetview__(self):
         '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
             return None
+        # Params for the Streetview API (not styling)
         h = 200
         w = 300
-        fov = 90
-        heading = 235
-        pitch = 5
+        fov = 120 # Field of view, max 120
+        pitch = -15 # Up or down angle relative to the Streetview vehicle
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
         alt = 'Click to go to Google Streetview'
-        return '<a href="%s" alt="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,alt,alt,w,h,self.lon,self.lat,pitch,self.api)
+        title = alt
+        return '<a href="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,title,w,h,self.lon,self.lat,pitch,self.api)
     
     def make_causes(self):
         '''
@@ -726,13 +727,15 @@ class nztacrash:
         h,w = 30,30
         hspace = 5
         base = './icons'
+        title1 = alt1
+        title2 = alt2
         if icon1 == None and icon2 == None:
             # No weather data at all
             return ''
         if icon1 != None:
-            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (base,icon1,alt1,alt1,h,w,hspace)
+            ret += '<img src="%s/%s" title="%s">' % (base,icon1,title1)
         if icon2 != None:
-            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (base,icon2,alt2,alt2,h,w,hspace)
+            ret += '<img src="%s/%s" title="%s">' % (base,icon2,title2)
         return ret
         
     def decodeJunction(self):
