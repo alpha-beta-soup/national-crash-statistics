@@ -290,9 +290,9 @@ class nztacrash:
         base = './icons/injuries'
         h,w = 30,30
         hspace = 10
-        icons = {'fatal': 'skull.png',
-                 'severe': 'broken-leg.png',
-                 'minor': 'broken-arm.png'}
+        icons = {'fatal': 'RedMan.svg',
+                 'severe': 'OrangeMan.svg',
+                 'minor': 'YellowMan.svg'}
         ret = ''
         def add_img(alt,title,icon,multiplier):
             return '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
