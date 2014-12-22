@@ -148,19 +148,22 @@ class nztacrash:
                     self.worst_minor = True
         if self.injuries_none:
             self.worst_none = True
-
+        
+        # Party involvement
         self.pedestrian = self.get_mode_involvement(['E','K','H']) # Pedestrian, skater, wheeled pedestrian
         self.cyclist = self.get_mode_involvement(['S']) # Cyclist
         self.motorcyclist = self.get_mode_involvement(['M','P']) # Motorcyclist, moped
         self.taxi = self.get_mode_involvement(['X']) # Taxi/taxi van
         self.truck = self.get_mode_involvement(['T']) # Truck
-        self.tourist = self.get_tourist()
-        self.alcohol = self.get_alcohol()
-        self.drugs = self.get_drugs()
-        self.cellphone = self.get_cellphone()
-        self.fatigue = self.get_fatigue()
-        self.dickhead = self.get_dickhead()
-        self.speeding = self.get_toofast()
+        
+        # Roles and factors
+        self.tourist = self.get_factor_involvement(['404','731'])
+        self.alcohol = self.get_factor_involvement(['101','102','103','104','105'])
+        self.drugs = self.get_factor_involvement(['107','108','109'])
+        self.cellphone = self.get_factor_involvement(['359'])
+        self.fatigue = self.get_factor_involvement(['410','411','412','413','414','415'])
+        self.dickhead = self.get_factor_involvement(['430','431','432','433','434'])
+        self.speeding = self.get_factor_involvement(['110','111','112','113','114','115','116','117'])
         
     def get_hasLocation(self):
         if self.easting in [0,None] or self.northing in [0,None]:
@@ -219,118 +222,15 @@ class nztacrash:
                     return True
         else:
             return False
-        
-    def get_tourist(self):
-        '''Returns a Boolean indicating whether or not factor/role 404 or 731 
-        is cited to explain the accident.
-        404: Overseas/migrant driver fails to adjust to NZ road rules and road
-             conditions
-        731: Overseas pedesrtrian
-        '''
+            
+    def get_factor_involvement(self, factor_list):
+        '''Returns a boolean indicating whether any of the 3-digit factor codes
+        listed in the factor_list parameter (list of strings) have been cited to
+        explain the accident'''
         for c in self.causes:
             if len(c) == 4:
                 c = c[0:3]
-            if c in ['404','731']:
-                return True
-            else:
-                pass
-        return False
-    
-    def get_alcohol(self):
-        '''Returns a Boolean indicating whether or not factors/roles 101,102,103,104,105
-        are cited to explain the accident.
-        101: Alcohol suspected
-        102: Alcohol test below limit
-        103: Alcohol test above limit or test refused
-        104: Alcohol test result unknown
-        105: Intoxicated non-driver (pedestrian / cyclist / passenger)'''
-        for c in self.causes:
-            if len(c) == 4:
-                c = c[0:3]
-            if c in ['101','102','103','104','105']:
-                return True
-            else:
-                pass
-        return False
-        
-    def get_drugs(self):
-        '''Returns a Boolean indicating whether or not factors/roles 107,108,109
-        are cited to explain the accident.
-        107: Drug test result unknown
-        108: Drugs suspected
-        109: Drugs proven'''
-        for c in self.causes:
-            if len(c) == 4:
-                c = c[0:3]
-            if c in ['107','108','109']:
-                return True
-            else:
-                pass
-        return False
-        
-    def get_cellphone(self):
-        '''Returns a Boolean indicating whether or not factor/role 359
-        was cited to explain the accident.
-        359: cellphone'''
-        for c in self.causes:
-            if len(c) == 4:
-                c = c[0:3]
-            if c == '359':
-                return True
-            else:
-                pass
-        return False
-        
-    def get_fatigue(self):
-        '''Returns a Boolean indicating whether or not factors/roles 410--415
-        were cited to explain the accident.
-        410: Fatigue (drowsy, tired, fell asleep)
-        411: Long trip
-        412: Lack of sleep
-        413: Exhaust fumes
-        414: Worked long hours before driving
-        415: Exceed driving hours'''
-        for c in self.causes:
-            if len(c) == 4:
-                c = c[0:3]
-            if c in ['410','411','412','413','414','415']:
-                return True
-            else:
-                pass
-        return False
-        
-    def get_dickhead(self):
-        '''Returns a Boolean indicating whether or not factors/roles 430-434
-        were cited to explain the accident.
-        430: Showing off
-        431: Racing
-        432: Playing chicken
-        433: Wheel spings / wheelies / doughnuts / drifting
-        434: Intimidating driving'''
-        for c in self.causes:
-            if len(c) == 4:
-                c = c[0:3]
-            if c in ['430','431','432','433','434']:
-                return True
-            else:
-                pass
-        return False
-    
-    def get_toofast(self):
-        '''Returns a Boolean indicating whether or not factor/roles 110-117
-        were cited to explain the accident.
-        110: Too fast for conditions
-        111: Cornering
-        112: On straight
-        113: To give way at intersection
-        114: Approaching railway crossing
-        115: When passing stationary school bus
-        116: At temporary speed limit
-        117: At crash or emergency'''
-        for c in self.causes:
-            if len(c) == 4:
-                c = c[0:3]
-            if c in ['110','111','112','113','114','115','116','117']:
+            if c in factor_list:
                 return True
             else:
                 pass
