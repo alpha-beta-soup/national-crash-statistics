@@ -257,23 +257,23 @@ class nztacrash:
         base = './icons/transport'
         h,w = 30,30
         hspace = 10
-        default = 'Car-2-icon.png'
-        other = 'Skateboard-icon.png'
+        default = 'Car-2-icon.svg'
+        other = 'skateboard-icon.svg'
         decoder = {'C': [default, 'Car'],
-                   'V': ['Transport-Bus-2-icon.png', 'Van or Ute'],
-                   'X': ['Taxi-2-icon.png', 'Taxi or Taxi Van'],
-                   'B': ['Bus-2-icon.png', 'Bus'],
-                   'L': ['Transport-Bus-icon.png', 'School Bus'],
-                   '4': [default, '4X4 or SUV'],
-                   'T': ['Transport-Truck-icon.png', 'Truck'],
-                   'M': [default, 'Motorcycle'],
-                   'P': [default, 'Moped'],
-                   'S': ['Bicycle-icon.png', 'Bicycle'],
+                   'V': ['Transport-Bus-2-icon.svg', 'Van or Ute'],
+                   'X': ['Taxi-2-icon.svg', 'Taxi or Taxi Van'],
+                   'B': ['Transport-Bus-3-icon.svg', 'Bus'],
+                   'L': ['Transport-Bus-4-icon.svg', 'School Bus'],
+                   '4': ['SUV.svg', '4X4 or SUV'],
+                   'T': ['Transport-Truck-icon.svg', 'Truck'],
+                   'M': ['motorcycle-icon.svg', 'Motorcycle'],
+                   'P': ['moped-icon.svg', 'Moped'],
+                   'S': ['bicycle-icon.svg', 'Bicycle'],
                    'O': [other, 'Miscellaneous Vehicle'],
-                   'E': ['Sports-Walking-icon.png', 'Pedestrian'],
+                   'E': ['pedestrian-icon.svg', 'Pedestrian'],
                    'K': [other, 'Skateboard, inline skater, etc.'],
-                   'Q': ['horse-icon.png', 'equestrian'],
-                   'H': ['wheelchair-icon.png', 'Wheeled Pedestrian']}
+                   'Q': ['equestrian-icon.svg', 'equestrian'],
+                   'H': ['wheelchair-icon.svg', 'Wheeled Pedestrian']}
         ret = ''
         for v in vehicles.keys():
             icon = decoder[v][0]
