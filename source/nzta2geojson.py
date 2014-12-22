@@ -459,8 +459,7 @@ class nztacrash:
             # Can't add it to the map if it does not have a location
             return None
         return {'type': 'Feature',
-        'properties': {'crash_id': self.crash_id,
-        'tla_name': self.tla_name,
+        'properties': {'tla_name': self.tla_name,
         'crash_dow': self.crash_dow,
         'crash_date': genFunc.formatNiceDate(self.crash_date),
         'crash_time': genFunc.formatNiceTime(self.crash_time),
@@ -905,7 +904,6 @@ def main(data,causes,streets):
     crashes = []
     with open('../data/data.geojson', 'w') as outfile:
         for d in data:
-            print(d)
             # Open and read the CSVs of crash events
             with open(d, 'rb') as crashcsv:
                 crashreader = csv.reader(crashcsv, delimiter=',')
