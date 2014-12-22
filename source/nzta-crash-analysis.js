@@ -66,7 +66,7 @@ function popUpText (row, layer) {
     return '<span class="crash-location">' + row.properties.tla_name + "</span>" +
            '<span class="date">' + row.properties.crash_dow + ", " + row.properties.crash_date + "</span>" +
            '<span class="time">' + row.properties.crash_time + '</span>' +
-           '<span class="weather-icons">' + row.properties.weather_icon + '</span>' +
+           '<span class="environment-icons">' + row.properties.environment_icons + '</span>' +
            '<span class="road">' + row.properties.crash_road + "</span>" +
            '<div class="streetview-container">' + row.properties.streetview + '</div><br>' +
            '<span class="injury-icons">Injuries: ' + row.properties.injury_icons + '</span><br>' +

@@ -278,8 +278,9 @@ class nztacrash:
         for v in vehicles.keys():
             icon = decoder[v][0]
             alt = decoder[v][1]
+            title = alt
             multiplier = vehicles[v]
-            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,alt,h,w,hspace) * multiplier
+            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,title,h,w,hspace) * multiplier
         return ret
         
     def get_injury_icons(self):
@@ -291,13 +292,45 @@ class nztacrash:
                  'minor': 'broken-arm.png'}
         ret = ''
         def add_img(alt,title,icon,multiplier):
-            return '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,alt,h,w,hspace) * multiplier
+            return '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d"> ' % (base,icon,alt,title,h,w,hspace) * multiplier
         ret += add_img('Fatality','Fatality',icons['fatal'],self.crash_fatal_cnt)
         ret += add_img('Severe injury','Severe injury',icons['severe'],self.crash_sev_cnt)
         ret += add_img('Minor injury','Minor injury',icons['minor'],self.crash_min_cnt)
         return ret
-
-        
+    
+    def speedingIcon(self):
+        '''If speeding was a factor, returns the HTML <img> tag for the speeding icon,
+        else returns an empty string.'''
+        if self.speeding:
+            base = './icons/actions'
+            h,w = 30,30
+            hspace = 5
+            icon = 'speeding.svg'
+            alt = 'Speeding'
+            title = alt
+            return '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (base,icon,alt,title,h,w,hspace)
+        else:
+            return ''
+            
+    def speedLimitIcon(self):
+        if self.spd_lim in ['','U']:
+            # No information, or unknown
+            # Do not return an icon
+            return ''
+        elif self.spd_lim == 'LSZ':
+            # Limited speed zone
+            # Could not be set since 2003, and was progressively replaced until 2009
+            # It is now illegal
+            alt = 'Limited speed zone'
+        else:
+            alt = '%skm/h speed limit' % self.spd_lim
+        base = './icons/speed-limits'
+        h,w = 30,30
+        hspace = 5
+        title = alt
+        icon = '%s/limit_%s.svg' % (base,self.spd_lim)
+        return '<img src="%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (icon,alt,title,h,w,hspace)
+              
     def __streetview__(self):
         '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
@@ -430,7 +463,7 @@ class nztacrash:
         'crash_time': genFunc.formatNiceTime(self.crash_time),
         'streetview': self.__streetview__(),
         'crash_road': genFunc.formatNiceRoad(self.get_crashroad()),
-        'weather_icon': self.weatherIcon(),
+        'environment_icons': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon(),
         'vehicle_icons': self.__vehicle_icons__(),
         'injury_icons': self.get_injury_icons(),
         'causes': self.make_causes(),
@@ -688,14 +721,15 @@ class nztacrash:
             alt2 = None
         ret = ''
         h,w = 30,30
+        hspace = 5
         base = './icons'
         if icon1 == None and icon2 == None:
             # No weather data at all
             return ''
         if icon1 != None:
-            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d">' % (base,icon1,alt1,alt1,h,w)
+            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (base,icon1,alt1,alt1,h,w,hspace)
         if icon2 != None:
-            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d">' % (base,icon2,alt2,alt2,h,w)
+            ret += '<img src="%s/%s" alt="%s" title="%s" height="%d" width="%d" hspace="%d">' % (base,icon2,alt2,alt2,h,w,hspace)
         return ret
         
     def decodeJunction(self):

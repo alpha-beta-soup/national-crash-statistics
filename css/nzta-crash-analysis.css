@@ -249,7 +249,7 @@ html, body, #map {
 }
 
 /* class for weather icons */
-.weather-icons {
+.environment-icons {
     display:table;
     margin:0 auto;
 }
