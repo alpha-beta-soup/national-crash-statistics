@@ -901,17 +901,15 @@ def streetDecoderCSV(data):
 def main(data,causes,streets):
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
-    crashes = []
+    feature_collection = {"type": "FeatureCollection",
+                                              "features": []}
     with open('../data/data.geojson', 'w') as outfile:
-        for d in data:
-            # Open and read the CSVs of crash events
+        for d in data: # For each CSV of source data
+            # Open and read the CSV of crash events
             with open(d, 'rb') as crashcsv:
                 crashreader = csv.reader(crashcsv, delimiter=',')
                 header = crashreader.next()
                 
-                # Empty feature collection, ready for geojson-ing
-                feature_collection = {"type": "FeatureCollection",
-                                      "features": []}
                 for crash in crashreader:
                     Crash = nztacrash(crash, causedecoder, streetdecoder)
                     # Collect crash descriptions and locations into the feature collection
