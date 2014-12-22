@@ -9,12 +9,10 @@ GeoJSON, to be styled and filtered for presentation in a Leaflet map.
 Depends
 =======
 pyproj
-folium
 geojson
 '''
 
 import pyproj
-import folium
 import geojson
 import json
 import csv
@@ -317,10 +315,6 @@ class nztacrash:
         '''
         Returns a nice, readable string of the "factors and roles" of the accident
         '''
-        #print self.causesdict_decoded # {'A': [(False, 'Explan'), (True, "'s actions")]...)
-        #print self.keyvehicle_decoded # 'car'
-        #print self.secondaryvehicles_decoded # ['car','truck'...]
-        
         # Map letters to index positions
         vehicles_dict = {}
         for i,v in enumerate(string.ascii_uppercase):
