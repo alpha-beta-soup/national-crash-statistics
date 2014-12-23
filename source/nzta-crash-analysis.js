@@ -69,8 +69,7 @@ function popUpText (row, layer) {
            '<span><div id="environment-icons">' + row.properties.environment_icons + '</div></span>' +
            '<span class="road">' + row.properties.crash_road + "</span>" +
            '<span><div id="streetview-container">' + row.properties.streetview + '</div></span>' +
-           '<span><div id="injury-icons">Injuries: ' + row.properties.injury_icons + '</div></span>' +
-           '<span><div id="vehicle-icons">Vehicles involved: ' + row.properties.vehicle_icons + '</div></span><br>' + 
+           '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.vehicle_icons + '</div><div id="injury-icons">' + row.properties.injury_icons + '</div><div id="clear"></div></div></span>' +
            '<span class="causes-text">' + row.properties.causes + '</span>'
 };
 

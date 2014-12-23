@@ -248,7 +248,7 @@ html, body, #map {
     color: rgb(255,26,26);
 }
 
-/* class for vehicle icons */
+/* class for environmental icons */
 #environment-icons {
     display: table;
     margin:0 auto;
@@ -268,30 +268,21 @@ html, body, #map {
     width: 300px;
 }
 
-/* class for vehicle icons */
-#vehicle-icons {
-    margin:0 auto;
-}
-
 #vehicle-icons img {
     height: 30px;
     width: 30px;
     position: relative;
-    top: 9px;
+    float: left;
     margin-left: 3px;
     margin-right: 3px;
 }
 
-/* class for vehicle icons */
-#injury-icons {
-    margin:0 auto;
-}
 
 #injury-icons img {
     height: 30px;
     width: 30px;
     position: relative;
-    top: 9px;
+    float: right;
     margin-left: 3px;
     margin-right: 3px;
 }

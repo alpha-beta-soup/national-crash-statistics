@@ -266,8 +266,8 @@ class nztacrash:
                    'X': ['Taxi-2-icon.svg', 'Taxi or Taxi Van'],
                    'B': ['Transport-Bus-3-icon.svg', 'Bus'],
                    'L': ['Transport-Bus-4-icon.svg', 'School Bus'],
-                   '4': ['SUV.svg', '4X4 or SUV'],
-                   'T': ['Transport-Truck-icon.svg', 'Truck'],
+                   '4': ['SUV-icon.svg', '4X4 or SUV'],
+                   'T': ['Transport-Truck-2-icon.svg', 'Truck'],
                    'M': ['motorcycle-icon.svg', 'Motorcycle'],
                    'P': ['moped-icon.svg', 'Moped'],
                    'S': ['bicycle-icon.svg', 'Bicycle'],
@@ -286,12 +286,14 @@ class nztacrash:
         return ret
         
     def get_injury_icons(self):
+        if self.injuries_none:
+            return ''
         base = './icons/injuries'
         h,w = 30,30
         hspace = 10
-        icons = {'fatal': 'RedMan.svg',
-                 'severe': 'OrangeMan.svg',
-                 'minor': 'YellowMan.svg'}
+        icons = {'fatal': 'RedMan2.svg',
+                 'severe': 'OrangeMan2.svg',
+                 'minor': 'YellowMan2.svg'}
         ret = ''
         def add_img(alt,title,icon,multiplier):
             return '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
