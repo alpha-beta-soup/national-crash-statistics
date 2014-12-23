@@ -46,16 +46,16 @@ var noInjuryCrashStyle = {
 //conditional styling by injury type
 function injury (feature) {
     
-    if (feature.properties.fatal == true) {
+    if (feature.properties.fa == true) {
         return fatalCrashStyle
     
-    } else if (feature.properties.severe == true) {
+    } else if (feature.properties.se == true) {
         return severeCrashStyle
     
-    } else if (feature.properties.minor == true) {
+    } else if (feature.properties.mi == true) {
         return minorCrashStyle
     
-    } else if (feature.properties.no_injuries == true) {
+    } else if (feature.properties.no == true) {
         return noInjuryCrashStyle
     
     };
@@ -63,14 +63,14 @@ function injury (feature) {
 
 //pop-up text function different if other parties involved. Bound to when events are retrieved from data
 function popUpText (row, layer) {      
-    return '<span class="crash-location">' + row.properties.tla_name + "</span>" +
-           '<span class="date">' + row.properties.crash_dow + ", " + row.properties.crash_date + "</span>" +
-           '<span class="time">' + row.properties.crash_time + '</span>' +
-           '<span><div id="environment-icons">' + row.properties.environment_icons + '</div></span>' +
-           '<span class="road">' + row.properties.crash_road + "</span>" +
-           '<span><div id="streetview-container">' + row.properties.streetview + '</div></span>' +
-           '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.vehicle_icons + '</div><div id="injury-icons">' + row.properties.injury_icons + '</div><div id="clear"></div></div></span>' +
-           '<span class="causes-text">' + row.properties.causes + '</span>'
+    return '<span class="crash-location">' + row.properties.t + "</span>" +
+           '<span class="date">' + row.properties.d + ", " + row.properties.dt + "</span>" +
+           '<span class="time">' + row.properties.ti + '</span>' +
+           '<span><div id="environment-icons">' + row.properties.e + '</div></span>' +
+           '<span class="road">' + row.properties.r + "</span>" +
+           '<span><div id="streetview-container">' + row.properties.s+ '</div></span>' +
+           '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' +
+           '<span class="causes-text">' + row.properties.c + '</span>'
 };
 
 //create div that appears above the layer selector for explanation and clarity
@@ -118,7 +118,7 @@ layers["<div class='legendEntry'><div class='legendText'>Fatal</div><div class='
 
     filter: function(feature, layer) {
 
-        return feature.properties.fatal
+        return feature.properties.fa
 
     }
 
@@ -140,7 +140,7 @@ layers["<div class='legendEntry'><div class='legendText'>Severe injuries</div><d
 
     filter: function(feature, layer) {
 
-        return feature.properties.severe
+        return feature.properties.se
 
     }
 
@@ -162,7 +162,7 @@ layers["<div class='legendEntry'><div class='legendText'>Minor injuries</div><di
 
     filter: function(feature, layer) {
 
-        return feature.properties.minor
+        return feature.properties.mi
 
     }
 
@@ -184,7 +184,7 @@ layers["<div class='legendEntry'><div class='legendText'>No injuries</div><div c
 
     filter: function(feature, layer) {
 
-        return feature.properties.no_injuries
+        return feature.properties.no
 
     }
 
@@ -206,7 +206,7 @@ layers["Tourist / recent migrant"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.tourist
+        return feature.properties.to
 
     }
 
@@ -228,7 +228,7 @@ layers["Alcohol"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.alcohol
+        return feature.properties.al
 
     }
 
@@ -250,7 +250,7 @@ layers["Drugs"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.drugs
+        return feature.properties.dr
 
     }
 
@@ -272,7 +272,7 @@ layers["Cellphone"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.cellphone
+        return feature.properties.cp
 
     }
 
@@ -294,7 +294,7 @@ layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.fatigue
+        return feature.properties.fa
 
     }
 
@@ -316,7 +316,7 @@ layers["Speed"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.speed
+        return feature.properties.sp
 
     }
 
@@ -338,7 +338,7 @@ layers["Dangerous driving<div id='clear'></div><h4>Filter by party</h4>"] = new 
 
     filter: function(feature, layer) {
 
-        return feature.properties.dangerous_driving
+        return feature.properties.dd
 
     }
 
@@ -360,7 +360,7 @@ layers["Pedestrian"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.pedestrian
+        return feature.properties.pd
 
     }
 
@@ -382,7 +382,7 @@ layers["Cyclist"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.cyclist
+        return feature.properties.cy
 
     }
 
@@ -404,7 +404,7 @@ layers["Motorcyclist"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.motorcyclist
+        return feature.properties.mc
 
     }
 
@@ -426,7 +426,7 @@ layers["Taxi"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.taxi
+        return feature.properties.tx
 
     }
 
@@ -448,7 +448,7 @@ layers["Truck"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.truck
+        return feature.properties.tr
 
     }
 

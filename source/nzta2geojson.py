@@ -216,12 +216,12 @@ class nztacrash:
         modes supplies in mode_list (a list of modes). Used to determine if a 
         pedestrian was involved in an accident, for example.'''
         if self.keyvehicle in mode_list:
-            return True
+            return 1
         if self.secondaryvehicles != None:
             for m in self.secondaryvehicles:
                 if m in mode_list:
-                    return True
-        return False
+                    return 1
+        return 0
             
     def get_factor_involvement(self, factor_list):
         '''Returns a boolean indicating whether any of the 3-digit factor codes
@@ -231,10 +231,10 @@ class nztacrash:
             if len(c) == 4:
                 c = c[0:3]
             if c in factor_list:
-                return True
+                return 1
             else:
                 pass
-        return False
+        return 0
         
     def get_number_of_vehicles(self):
         '''Returns integers representing the numbers of the different types of vehicles
@@ -478,8 +478,10 @@ class nztacrash:
         if self.hasLocation is False:
             # Can't add it to the map if it does not have a location
             return None
+        '''
         return {'type': 'Feature',
-        'properties': {'tla_name': self.tla_name,
+        'properties': {
+        'tla_name': self.tla_name,
         'crash_dow': self.crash_dow,
         'crash_date': genFunc.formatNiceDate(self.crash_date),
         'crash_time': genFunc.formatNiceTime(self.crash_time),
@@ -505,6 +507,36 @@ class nztacrash:
         'severe': self.worst_severe,
         'minor': self.worst_minor,
         'no_injuries': self.worst_none},
+        'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
+        '''
+        return {'type': 'Feature',
+        'properties': {
+        't': self.tla_name, # Name of Territorial Local Authority
+        'd': self.crash_dow, # Crash daw of the week
+        'dt': genFunc.formatNiceDate(self.crash_date), # The date, nicely formatted
+        'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
+        's': self.__streetview__(), # The Streetview img container and call
+        'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
+        'e': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon() + self.intersectionIcon(), # The environment icon imgs
+        'v': self.__vehicle_icons__(), # Vehicle icon imgs
+        'i': self.get_injury_icons(), # Injury icon imgs
+        'c': self.make_causes(), # Causes (formatted string)
+        'cy': self.cyclist, # Cyclist Boolean
+        'pd': self.pedestrian, # Pedestrian Boolean
+        'mc': self.motorcyclist, # Motorcyclist Boolean
+        'tx': self.taxi, # Taxi Boolean
+        'tr': self.truck, # Truck Boolean
+        'to': self.tourist, # Tousit Boolean
+        'al': self.alcohol, # Alcohol Boolean
+        'dr': self.drugs, # Drugs Boolean
+        'cp': self.cellphone, # Cellphone Boolean
+        'fg': self.fatigue, # Faitgue Boolean
+        'dd': self.dickhead, # Dangerous driving Boolean
+        'sp': self.speeding, # Speeding Boolean
+        'fa': self.worst_fatal, # Fatal Boolean
+        'se': self.worst_severe, # Severe Boolean
+        'mi': self.worst_minor, # Minor Boolean
+        'no': self.worst_none}, # No injury Boolean
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
         
     def decodeMovement(self):
@@ -939,7 +971,7 @@ def main(data,causes,streets):
                         feature_collection["features"].append(Crash.__geo_interface__())
                 crashcsv.close()
         # Write the geojson output
-        outfile.write(json.dumps(feature_collection))
+        outfile.write(json.dumps(feature_collection, separators=(',',':')))
         outfile.close()
 
 if __name__ == '__main__':
