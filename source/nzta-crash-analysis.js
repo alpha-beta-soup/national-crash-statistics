@@ -46,16 +46,16 @@ var noInjuryCrashStyle = {
 //conditional styling by injury type
 function injury (feature) {
     
-    if (feature.properties.fa == true) {
+    if (feature.properties.ij == 'f') {
         return fatalCrashStyle
     
-    } else if (feature.properties.se == true) {
+    } else if (feature.properties.ij == 's') {
         return severeCrashStyle
     
-    } else if (feature.properties.mi == true) {
+    } else if (feature.properties.ij == 'm') {
         return minorCrashStyle
     
-    } else if (feature.properties.no == true) {
+    } else if (feature.properties.ij == 'n') {
         return noInjuryCrashStyle
     
     };
@@ -118,7 +118,7 @@ layers["<div class='legendEntry'><div class='legendText'>Fatal</div><div class='
 
     filter: function(feature, layer) {
 
-        return feature.properties.fa
+        return feature.properties.ij == 'f'
 
     }
 
@@ -140,7 +140,7 @@ layers["<div class='legendEntry'><div class='legendText'>Severe injuries</div><d
 
     filter: function(feature, layer) {
 
-        return feature.properties.se
+        return feature.properties.ij == 's'
 
     }
 
@@ -162,7 +162,7 @@ layers["<div class='legendEntry'><div class='legendText'>Minor injuries</div><di
 
     filter: function(feature, layer) {
 
-        return feature.properties.mi
+        return feature.properties.ij == 'm'
 
     }
 
@@ -184,7 +184,7 @@ layers["<div class='legendEntry'><div class='legendText'>No injuries</div><div c
 
     filter: function(feature, layer) {
 
-        return feature.properties.no
+        return feature.properties.ij == 'n'
 
     }
 
@@ -432,7 +432,7 @@ layers["Taxi"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
-layers["Truck"] = new L.GeoJSON.AJAX(crashes,{
+layers["Truck<div id='clear'></div><h4>Official Holiday Periods</h4>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
@@ -454,6 +454,138 @@ layers["Truck"] = new L.GeoJSON.AJAX(crashes,{
 
 })//.addTo(map);
 
+layers["Easter 2013"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.h == 'Easter Holiday 2013'
+
+    }
+
+})//.addTo(map);
+
+layers["Easter 2014"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.h == 'Easter Holiday 2014'
+
+    }
+
+})//.addTo(map);
+
+layers["Queen's Birthday 2013"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.h == "Queen's Birthday 2013"
+
+    }
+
+})//.addTo(map);
+
+layers["Queen's Birthday 2014"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.h == "Queen's Birthday 2014"
+
+    }
+
+})//.addTo(map);
+
+layers["Labour Weekend 2013"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.h == "Labour Weekend 2013"
+
+    }
+
+})//.addTo(map);
+
+
+layers["Christmas & New Year 2013–14"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.h == 'Christmas/New Year 2013-14'
+
+    }
+
+})//.addTo(map);
 
 
 //add layer selector to the map

@@ -20,10 +20,11 @@ import string
 import generalFunctions as genFunc
 import re
 import logging
+import datetime
      
 class nztacrash:
     '''A crash recorded by NZTA'''
-    def __init__(self, row, causedecoder, streetdecoder):
+    def __init__(self, row, causedecoder, streetdecoder, holidays):
         '''
         A row from one of the crash .csv files gives us all the attrbiutes we
         have to define it as a Python object. When initialising, we typecast
@@ -41,6 +42,9 @@ class nztacrash:
         # Output of streetDecoderCSV()
         self.streetdecoder = streetdecoder
         
+        # Official Holiday Periods
+        self.holidays = holidays
+        
         # Original data
         self.row = row
         self.tla_name = genFunc.formatString(row[0])
@@ -53,6 +57,7 @@ class nztacrash:
         self.crash_date = genFunc.formatDate(row[7])
         self.crash_dow = self.get_crash_dow()
         self.crash_time = genFunc.formatCrashTime(row[9], self.crash_date) # Returns a datetime.datetime.time() object
+        self.crash_datetime = self.get_crash_datetime()
         self.mvmt = genFunc.formatString(row[10])
         self.vehicles = genFunc.formatString(row[11])
         self.causes = genFunc.formatStringList(row[12],delim=' ') # Returns a list
@@ -146,6 +151,10 @@ class nztacrash:
                     self.worst_minor = True
         if self.injuries_none:
             self.worst_none = True
+            
+        # Official holiday period information
+        self.holiday = self.get_holiday()
+        self.holiday_name = self.get_holiday_period()
         
         # Party involvement
         self.pedestrian = self.get_mode_involvement(['E','K','H']) # Pedestrian, skater, wheeled pedestrian
@@ -189,6 +198,40 @@ class nztacrash:
             return self.crash_date.strftime("%A")
         else:
             return None
+    
+    def get_crash_datetime(self):
+        '''Returns a datetime.datetime object expressing the date and time of the
+        crash, if the crash has both of those attributes. If it does not, this
+        returns None'''
+        if self.crash_date != None and self.crash_time != None:
+            return datetime.datetime.combine(self.crash_date,self.crash_time)
+        else:
+            return None
+   
+    def get_holiday(self):
+        '''Returns a Boolean indicating whether the accident involved a severe
+        injury AND occured during an official holiday period.'''
+        if self.crash_datetime == None:
+            return False
+        if self.worst_severe == False and self.worst_fatal == False:
+            return False
+        for hp in self.holidays.keys():
+            start, end = self.holidays[hp][0], self.holidays[hp][1]
+            if start <= self.crash_datetime <= end:
+                print self.crash_datetime, start, end, hp
+                return True
+        return False
+        
+    def get_holiday_period(self):
+        '''If self.get_holiday is True, then this function returns the name of
+        the holiday period in which it occurred, otherwise it returns an empty
+        string'''
+        if self.holiday == False or self.crash_datetime == None:
+            return ''
+        for hp in self.holidays.keys():
+            start, end = self.holidays[hp][0], self.holidays[hp][1]
+            if start <= self.crash_datetime <= end:
+                return hp
      
     def get_spd_lim(self):
         '''Speed limit can either be a number (integer is returned) or a character,
@@ -284,6 +327,18 @@ class nztacrash:
             multiplier = vehicles[v]
             ret += '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
         return ret
+    
+    def get_worst_injury_text(self):
+        if self.worst_fatal:
+            return 'f' # Fatal
+        elif self.worst_severe:
+            return 's' # Severe
+        elif self.worst_minor:
+            return 'm' # minor
+        elif self.worst_none:
+            return 'n' # no injury
+        else:
+            return '' # no data
         
     def get_injury_icons(self):
         if self.injuries_none:
@@ -491,6 +546,7 @@ class nztacrash:
         'v': self.__vehicle_icons__(), # Vehicle icon imgs
         'i': self.get_injury_icons(), # Injury icon imgs
         'c': self.make_causes(), # Causes (formatted string)
+        'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
         'cy': self.cyclist, # Cyclist Boolean
         'pd': self.pedestrian, # Pedestrian Boolean
         'mc': self.motorcyclist, # Motorcyclist Boolean
@@ -503,10 +559,7 @@ class nztacrash:
         'fg': self.fatigue, # Faitgue Boolean
         'dd': self.dickhead, # Dangerous driving Boolean
         'sp': self.speeding, # Speeding Boolean
-        'fa': self.worst_fatal, # Fatal Boolean
-        'se': self.worst_severe, # Severe Boolean
-        'mi': self.worst_minor, # Minor Boolean
-        'no': self.worst_none}, # No injury Boolean
+        'ij': self.get_worst_injury_text()}, # f,s,m,n >> worst injury as text
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
         
     def decodeMovement(self):
@@ -922,7 +975,25 @@ def streetDecoderCSV(data):
             retdict[code] = decode
     return retdict
     
-def main(data,causes,streets):
+def get_official_holiday_periods():
+    '''
+    See: http://www.transport.govt.nz/research/roadtoll/#holiday
+    (#Holiday road toll information)
+    
+    Non-injury chrases are not considered when reporting the road toll, so the
+    filter on this should pre-exclude non-injury crashes.
+    '''
+    hols = {'Christmas/New Year 2013-14': (datetime.datetime(2013,12,24,16), datetime.datetime(2014,1,3,4)),
+        'Christmas/New Year 2014-15': (datetime.datetime(2014,12,24,16), datetime.datetime(2015,1,5,6)),
+        'Labour Weekend 2013': (datetime.datetime(2013,10,25,16), datetime.datetime(2013,10,29,6)),
+        'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6)),
+        'Queen\'s Birthday 2013': (datetime.datetime(2013,5,31,16), datetime.datetime(2013,6,4,6)),
+        'Queen\'s Birthday 2014': (datetime.datetime(2014,5,30,16), datetime.datetime(2014,6,3,6)),
+        'Easter Holiday 2013': (datetime.datetime(2013,3,28,16), datetime.datetime(2013,4,6,6)),
+        'Easter Holiday 2014': (datetime.datetime(2014,4,17,16), datetime.datetime(2014,4,22,6))}
+    return hols
+    
+def main(data,causes,streets,holidays):
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
     feature_collection = {"type": "FeatureCollection",
@@ -935,7 +1006,7 @@ def main(data,causes,streets):
                 header = crashreader.next()
                 
                 for crash in crashreader:
-                    Crash = nztacrash(crash, causedecoder, streetdecoder)
+                    Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
                     # Collect crash descriptions and locations into the feature collection
                     if Crash.hasLocation:
                         feature_collection["features"].append(Crash.__geo_interface__())
@@ -950,6 +1021,7 @@ if __name__ == '__main__':
         '../data/crash-data-2013.csv']
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
+    holidays = get_official_holiday_periods()
     
     # Set up error logging
     logger = 'crash_error.log'
@@ -958,6 +1030,6 @@ if __name__ == '__main__':
     logging.basicConfig(filename=logger,level=logging.DEBUG)
     
     # Run main function
-    main(data,causes,streets)
+    main(data,causes,streets,holidays)
 
 
