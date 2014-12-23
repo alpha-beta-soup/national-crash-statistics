@@ -51,24 +51,24 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.40784314"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313709"
-     inkscape:cx="13.073616"
-     inkscape:cy="13.621868"
+     inkscape:zoom="16.994133"
+     inkscape:cx="11.987791"
+     inkscape:cy="17.078637"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-page="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1382"
-     inkscape:window-height="918"
+     inkscape:window-width="1419"
+     inkscape:window-height="928"
      inkscape:window-x="73"
      inkscape:window-y="17"
      inkscape:window-maximized="0"
      inkscape:snap-from-guide="false">
     <sodipodi:guide
        orientation="0,1"
-       position="15.398024,5.9267868"
+       position="15.564195,1.2651425"
        id="guide2985" />
     <sodipodi:guide
        orientation="0,1"
@@ -80,7 +80,7 @@
        id="guide2989" />
     <sodipodi:guide
        orientation="1,0"
-       position="24,24.642"
+       position="24.09154,18.016644"
        id="guide2991" />
   </sodipodi:namedview>
   <metadata
@@ -91,7 +91,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -101,26 +101,25 @@
      id="layer1"
      transform="translate(0,-1022.3622)">
     <g
-       id="g3979"
-       transform="translate(-0.01397474,-0.04926842)">
+       id="g3831"
+       transform="translate(-0.26100908,0.07115377)">
       <path
          sodipodi:type="arc"
-         style="fill:#000000;fill-opacity:1;stroke:none"
+         style="fill:none;stroke:#000000;stroke-width:1.76241124;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="path3856"
          sodipodi:cx="6.9452057"
          sodipodi:cy="17.424658"
          sodipodi:rx="3.8630137"
          sodipodi:ry="3.8630137"
          d="m 10.808219,17.424658 c 0,2.133483 -1.7295297,3.863014 -3.8630133,3.863014 -2.1334836,0 -3.8630138,-1.729531 -3.8630138,-3.863014 0,-2.133484 1.7295302,-3.863014 3.8630138,-3.863014 2.1334836,0 3.8630133,1.72953 3.8630133,3.863014 z"
-         transform="matrix(-0.56740447,0,0,0.56740447,20.397085,1017.8877)" />
+         transform="matrix(-0.56740447,0,0,0.56740447,19.941781,1017.9561)" />
       <path
-         sodipodi:nodetypes="ccccc"
+         sodipodi:nodetypes="cczcccccczcccczccccczcccccc"
+         transform="translate(0,1022.3622)"
          inkscape:connector-curvature="0"
-         id="rect3951"
-         d="m 3.8125,6.1875 20.1875,0 0,22.125 -18,-0.5 z"
-         clip-path="url(#clipPath3955)"
-         style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
-         transform="matrix(1.05,0,0,1.05,-0.75069874,1021.4824)" />
+         id="path3829"
+         d="m 9.5700416,12.108183 c -0.4834927,2.294756 -0.7905686,4.285714 -0.7905686,4.285714 0,0 -0.1849485,0.881687 0.5409153,1.12344 0.7258637,0.241753 1.0402217,-0.540915 1.0402217,-0.540915 l 0.832178,-3.661582 1.789181,-1.373092 -0.748959,4.993065 -1.206658,4.327323 -2.7045767,3.869625 c 0,0 -0.3577864,0.688177 0.2496533,1.206658 0.6074397,0.518481 1.2482663,0 1.2482663,0 l 3.0790571,-3.828017 1.289875,-2.95423 4.45215,6.449376 c 0,0 0.65395,0.868294 1.45631,0.332871 0.80236,-0.535423 0.393806,-1.441392 0.393806,-1.441392 l -4.804347,-8.045432 0.707351,-3.32871 0.665742,1.12344 3.869626,1.664355 c 0,0 0.909382,0.461378 1.279473,-0.275659 0.37009,-0.737038 -0.447295,-1.139043 -0.447295,-1.139043 -0.973617,-0.382757 -3.411928,-1.581138 -3.411928,-1.581138 l -1.24531,-3.221118 c 0,0 -0.217751,-1.0004768 -1.500876,-1.2726402 -0.717692,-0.076408 -1.8724,0 -1.8724,0 -0.885278,0.295912 -3.176687,2.2942322 -4.1608874,3.2871012 z"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
     </g>
   </g>
 </svg>
