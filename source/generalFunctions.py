@@ -97,6 +97,12 @@ def check_offroad(crash_road):
 def streetExpander(road,streetdecoder):
     '''Input: 'St John St' (for example)
     Output: St John Street'''
+    # First, check St isn't the first element in a street name
+    check = road.replace('near ','').replace('at ','')
+    if check.split(' ')[0] == 'St' and 'St' not in check.split(' ')[1:]:
+        # Then don't repalce the St as it means Saint and there is not Street in title
+        return road
+    # Otherwise, there are two instances of "St" and we want to only replace the second one
     road = road.split(' ')
     processed = []
     road.reverse() # Flip order
@@ -119,6 +125,7 @@ def formatNiceRoad(road):
     BCH = beach
     DWY = driveway
     DWAY = driveway'''
+    
     def striplinearref(linref):
         '''Fixes references to State Highways, by removing the linear referencing information'''
         if '/' not in linref:
@@ -147,59 +154,62 @@ def formatNiceRoad(road):
                     linref[i] = "State Highway %s" % r.split('/')[0]
             SH = ' '.join(linref)
         return SH
+        
+    def expander(road):
+        '''Takes `road' (street of crash as ordered list of strings) and runs
+        them past checks for acronyms and abbreviations known to exist in the data.
+        Acronyms are kept as acronyms, and abbreviations are expanded. Returns a
+        string (not the list), joined with spaces.'''
+        knownAcronyms = ['BP', 'VTNZ'] # Ensure acronyms stay acronyms
+        knownAbbreviations = {'Coun': 'Countdown',
+            'C/Down': 'Countdown',
+            'Reserv': 'Reserve',
+            'Stn': 'Station',
+            'Roa': 'Road',
+            'S': 'South',
+            'E': 'East',
+            'W': 'West',
+            'N': 'North',
+            'Riv': 'River',
+            'Br': 'Bridge',
+            'Wbd': 'Westbound',
+            'Ebd': 'Eastbound',
+            'Nbd': 'Northbound',
+            'Sbd': 'Southbound',
+            'Obr': 'Overbridge',
+            'Off': 'Off-ramp',
+            'On': 'On-ramp'
+            'Xing': 'Crossing',
+            'Mckays': 'McKays',
+            'Rly': 'Railway',
+            'Int': 'Interchange'}
+        for i, r in enumerate(road):
+            # Check for "knownAbbreviations" requires no brackets around term
+            rd, left, right = r, False, False
+            if '(' in rd:
+                left = True
+                rd = rd.replace('(','')
+            if ')' in rd:
+                right = True
+                rd = rd.replace(')','')
+            # Check acronyms
+            if rd.upper() in knownAcronyms:
+                rd = rd.upper()
+            # Check abbreviations
+            if rd.title() in knownAbbreviations.keys():
+                rd = knownAbbreviations[rd.title()]
+            # Put brackets back, if neccessary
+            if left:
+                rd = '(%s' % rd
+            if right:
+                rd = '%s)' % rd
+            # Update the element in road with the changes
+            road[i] = rd
+        # Join road to a single string and return
+        return ' '.join(road)
+        
+    return expander(striplinearref(road).split(' '))
 
-    road = striplinearref(road).split(" ")
-    knownAcronyms = ['BP', 'VTNZ'] # Ensure acronyms stay acronyms
-    knownErrors = {'Coun': 'Countdown',
-                   'C/Down': 'Countdown',
-                   'Reserv': 'Reserve',
-                   'Stn': 'Station',
-                   'Roa': 'Road',
-                   'S': 'South',
-                   'E': 'East',
-                   'W': 'West',
-                   'N': 'North',
-                   'Riv': 'River',
-                   'Br': 'Bridge',
-                   'Wbd': 'Westbound',
-                   'Ebd': 'Eastbound',
-                   'Nbd': 'Northbound',
-                   'Sbd': 'Southbound',
-                   'Obr': 'Overbridge',
-                   'Off': 'Off-ramp',
-                   'Xing': 'Crossing',
-                   'Mckays': 'McKays',
-                   'Rly': 'Railway'}
-    for i, r in enumerate(road):
-        # Check for "knownErros requires no brackets around term
-        left, right = False, False
-        if '(' in r:
-            left = True
-            r = r.replace('(','')
-        if ')' in r:
-            right = True
-            r = r.replace(')','')
-        if r.upper() in knownAcronyms:
-            road[i] = r.upper()
-        if r.title() in knownErrors.keys():
-            road[i] = knownErrors[r.title()]
-        if '/' in r:
-            # Split the linear ref: the SH is the side road
-            r = striplinearref(r)
-            check = r.split('/')
-            for j, c in enumerate(check):
-                if c.title() in knownErrors.keys():
-                    check[j] = knownErrors[c.title()]
-                if c in knownAcronyms:
-                    check[j] = c.upper()
-            check = '/'.join(check)
-            road[i] = check
-        if left:
-            road[i] = '(%s' % road[i]
-        if right:
-            road[i] = '%s)' % road[i]
-    return ' '.join(road)
- 
 def formatStringList(listofstrings, delim=None):
     '''Returns a list of strings given a string representation of a list data
     structure, separated by `delim`.
