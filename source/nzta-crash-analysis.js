@@ -294,7 +294,7 @@ layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
 
     filter: function(feature, layer) {
 
-        return feature.properties.fa
+        return feature.properties.fg
 
     }
 

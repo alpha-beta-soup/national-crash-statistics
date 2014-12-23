@@ -478,37 +478,7 @@ class nztacrash:
         if self.hasLocation is False:
             # Can't add it to the map if it does not have a location
             return None
-        '''
-        return {'type': 'Feature',
-        'properties': {
-        'tla_name': self.tla_name,
-        'crash_dow': self.crash_dow,
-        'crash_date': genFunc.formatNiceDate(self.crash_date),
-        'crash_time': genFunc.formatNiceTime(self.crash_time),
-        'streetview': self.__streetview__(),
-        'crash_road': genFunc.formatNiceRoad(self.get_crashroad()),
-        'environment_icons': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon() + self.intersectionIcon(),
-        'vehicle_icons': self.__vehicle_icons__(),
-        'injury_icons': self.get_injury_icons(),
-        'causes': self.make_causes(),
-        'cyclist': self.cyclist,
-        'pedestrian': self.pedestrian,
-        'motorcyclist': self.motorcyclist,
-        'taxi': self.taxi,
-        'truck': self.truck,
-        'tourist': self.tourist,
-        'alcohol': self.alcohol,
-        'drugs': self.drugs,
-        'cellphone': self.cellphone,
-        'fatigue': self.fatigue,
-        'dangerous_driving': self.dickhead,
-        'speed': self.speeding,
-        'fatal': self.worst_fatal,
-        'severe': self.worst_severe,
-        'minor': self.worst_minor,
-        'no_injuries': self.worst_none},
-        'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
-        '''
+            
         return {'type': 'Feature',
         'properties': {
         't': self.tla_name, # Name of Territorial Local Authority
