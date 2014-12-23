@@ -160,7 +160,7 @@ class nztacrash:
         self.drugs = self.get_factor_involvement(['107','108','109'])
         self.cellphone = self.get_factor_involvement(['359'])
         self.fatigue = self.get_factor_involvement(['410','411','412','413','414','415'])
-        self.dickhead = self.get_factor_involvement(['430','431','432','433','434'])
+        self.dickhead = self.get_factor_involvement(['430','431','432','433','434','510','511','512','513','514','515','516','517'])
         self.speeding = self.get_factor_involvement(['110','111','112','113','114','115','116','117'])
         
     def get_hasLocation(self):

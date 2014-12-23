@@ -206,11 +206,11 @@ Raw,space_pos,space_ascii,code,decode,Category,Requires Subject,Pretty
 503 Defective vision,4,TRUE,503,Defective vision,General person,TRUE,had defective vision
 "504 Medical illness (not sudden) flu, diabetes",4,TRUE,504,"Medical illness (not sudden) flu, diabetes",General person,TRUE,"had a (not sudden) medical illness (influenza, diabetes, etc.)"
 "505 Mental illness (depression, psychosis)",4,TRUE,505,"Mental illness (depression, psychosis)",General person,TRUE,"suffered from a mental illness (depression, psychosis, etc.)"
-506 Suicidal (but not successful),4,TRUE,506,Suicidal (but not successful),General person,TRUE,was suicidal (but was not successful)
+506 Suicidal (but not successful),4,TRUE,506,Suicidal (but not successful),General person,TRUE,was attempting suicide
 507 Impaired ability due to old age,4,TRUE,507,Impaired ability due to old age,General person,TRUE,was elderly
-510 Intentional or criminal,4,TRUE,510,Intentional or criminal,General person,TRUE,intentionally or criminally caused an accident
+510 Intentional or criminal,4,TRUE,510,Intentional or criminal,General person,TRUE,intentionally or criminally caused the collision
 511 Deliberate homicide (only if succeeded),4,TRUE,511,Deliberate homicide (only if succeeded),General person,TRUE,committed homicide
-512 Intentional collision,4,TRUE,512,Intentional collision,General person,TRUE,intentionally collided
+512 Intentional collision,4,TRUE,512,Intentional collision,General person,TRUE,intentionally caused the collision
 513 Committed suicide (only if succeeded),4,TRUE,513,Committed suicide (only if succeeded),General person,TRUE,committed suicide
 514 Evading enforcement,4,TRUE,514,Evading enforcement,General person,TRUE,was evading police
 515 Object deliberately thrown at or dropped on vehicle / shot at,4,TRUE,515,Object deliberately thrown at or dropped on vehicle / shot at,General person,TRUE,"had an object deliberately thrown at or dropped on them, or was shot at"
