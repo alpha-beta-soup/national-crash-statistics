@@ -334,6 +334,24 @@ class nztacrash:
         title = alt
         icon = '%s/limit_%s.svg' % (base,self.spd_lim)
         return '<img src="%s" title="%s">' % (icon,title)
+        
+    def intersectionIcon(self):
+        if self.junc_type == None:
+            return ''
+        decoder = {'D': ['driveway-icon.svg', 'Driveway'],
+                   'R': ['roundabout-icon.svg', 'Roundabout'],
+                   'X': ['crossroads-icon.svg', 'Crossroads'],
+                   'T': ['t-intersection-icon.svg', 'T-intersection'],
+                   'Y': ['y-intersection.svg', 'Y-intersection'],
+                   'M': ['multi-leg-icon.svg', 'Multi-leg instersection']}
+        try:
+            icon = decoder[self.junc_type][0]
+            title = decoder[self.junc_type][1]
+        except KeyError:
+            return ''
+        base = './icons/junctions'
+        icon = '%s/%s' % (base, icon)
+        return '<img src="%s" title="%s">' % (icon,title)
               
     def __streetview__(self):
         '''Creates the Google Streetview API request'''
@@ -467,7 +485,7 @@ class nztacrash:
         'crash_time': genFunc.formatNiceTime(self.crash_time),
         'streetview': self.__streetview__(),
         'crash_road': genFunc.formatNiceRoad(self.get_crashroad()),
-        'environment_icons': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon(),
+        'environment_icons': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon() + self.intersectionIcon(),
         'vehicle_icons': self.__vehicle_icons__(),
         'injury_icons': self.get_injury_icons(),
         'causes': self.make_causes(),
