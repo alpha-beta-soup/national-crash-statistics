@@ -178,7 +178,7 @@ def formatNiceRoad(road):
             'Sbd': 'Southbound',
             'Obr': 'Overbridge',
             'Off': 'Off-ramp',
-            'On': 'On-ramp'
+            'On': 'On-ramp',
             'Xing': 'Crossing',
             'Mckays': 'McKays',
             'Rly': 'Railway',
