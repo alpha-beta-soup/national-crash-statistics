@@ -454,28 +454,6 @@ layers["Truck<div id='clear'></div><h4>Official Holiday Periods</h4>"] = new L.G
 
 })//.addTo(map);
 
-layers["Easter 2013"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.h == 'Easter Holiday 2013'
-
-    }
-
-})//.addTo(map);
-
 layers["Easter 2014"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
@@ -493,28 +471,6 @@ layers["Easter 2014"] = new L.GeoJSON.AJAX(crashes,{
     filter: function(feature, layer) {
 
         return feature.properties.h == 'Easter Holiday 2014'
-
-    }
-
-})//.addTo(map);
-
-layers["Queen's Birthday 2013"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.h == "Queen's Birthday 2013"
 
     }
 
@@ -541,29 +497,6 @@ layers["Queen's Birthday 2014"] = new L.GeoJSON.AJAX(crashes,{
     }
 
 })//.addTo(map);
-
-layers["Labour Weekend 2013"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.h == "Labour Weekend 2013"
-
-    }
-
-})//.addTo(map);
-
 
 layers["Christmas & New Year 2013–14"] = new L.GeoJSON.AJAX(crashes,{
     

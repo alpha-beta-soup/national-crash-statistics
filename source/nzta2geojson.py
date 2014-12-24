@@ -218,7 +218,6 @@ class nztacrash:
         for hp in self.holidays.keys():
             start, end = self.holidays[hp][0], self.holidays[hp][1]
             if start <= self.crash_datetime <= end:
-                print self.crash_datetime, start, end, hp
                 return True
         return False
         
@@ -994,10 +993,11 @@ def get_official_holiday_periods():
     return hols
     
 def main(data,causes,streets,holidays):
+    global_start = datetime.date(2013,12,1)
+    global_end = datetime.date(2014,12,31)
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
-    feature_collection = {"type": "FeatureCollection",
-                                              "features": []}
+    feature_collection = {"type": "FeatureCollection","features": []}
     with open('../data/data.geojson', 'w') as outfile:
         for d in data: # For each CSV of source data
             # Open and read the CSV of crash events
@@ -1008,7 +1008,11 @@ def main(data,causes,streets,holidays):
                 for crash in crashreader:
                     Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
                     # Collect crash descriptions and locations into the feature collection
-                    if Crash.hasLocation:
+                    # Only add features with a location
+                    # And that are within the acceptable date range
+                    if Crash.crash_date == None or Crash.hasLocation == False:
+                        continue
+                    if global_start <= Crash.crash_date <= global_end:
                         feature_collection["features"].append(Crash.__geo_interface__())
                 crashcsv.close()
         # Write the geojson output
