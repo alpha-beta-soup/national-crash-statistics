@@ -7,6 +7,8 @@ An interactive web map of the New Zealand Transport Agency's Crash Analysis Syst
 
 Made with **Python** (to read the raw CSVs and produce a nice GeoJSON with useful filters and attributes to build the popups) and **Leaflet** (to display the GeoJSON on the map).
 
+[**An early version was featured on the NZ Herald data blog and was the most read article Christmas Day 2014**](http://www.nzherald.co.nz/nz/news/article.cfm?c_id=1&objectid=11378832)
+
 Acknowledgements
 ----------------
 * **Chris Hewitt** (NZTA), for early feedback and a "go ahead"
