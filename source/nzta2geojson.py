@@ -344,8 +344,6 @@ class nztacrash:
         if self.injuries_none:
             return ''
         base = './icons/injuries'
-        h,w = 30,30
-        hspace = 10
         icons = {'fatal': 'RedMan2.svg',
                  'severe': 'OrangeMan2.svg',
                  'minor': 'YellowMan2.svg'}
@@ -362,8 +360,6 @@ class nztacrash:
         else returns an empty string.'''
         if self.speeding:
             base = './icons/actions'
-            h,w = 30,30
-            hspace = 5
             icon = 'speeding.svg'
             alt = 'Speeding'
             title = alt
@@ -384,12 +380,24 @@ class nztacrash:
         else:
             alt = '%skm/h speed limit' % self.spd_lim
         base = './icons/speed-limits'
-        h,w = 30,30
-        hspace = 5
         title = alt
         icon = '%s/limit_%s.svg' % (base,self.spd_lim)
-        return '<img src="%s" title="%s">' % (icon,title)
+        return '<img src="%s" title="%s">' % (icon,title)   
         
+    def curveIcon(self):
+        if self.road_curve == None:
+            return '' # Empty string
+        decoder = {'R': ['Straight road', 'straight-curve-icon.svg'],
+            'E': ['Road with an slight curve', 'easy-curve-icon.svg'],
+            'M': ['Road with a moderate curve', 'moderate-curve-icon.svg'],
+            'S': ['Road with a severe bend', 'severe-curve-icon.svg']}
+        if self.road_curve not in decoder.keys():
+            raise Exception
+        base = './icons/curve'
+        title = decoder[self.road_curve][0]
+        icon = '%s/%s' % (base,decoder[self.road_curve][1])
+        return '<img src="%s" title="%s">' % (icon,title)
+                
     def intersectionIcon(self):
         if self.junc_type == None:
             return ''
@@ -542,7 +550,7 @@ class nztacrash:
         'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
         's': self.__streetview__(), # The Streetview img container and call
         'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-        'e': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon() + self.intersectionIcon(), # The environment icon imgs
+        'e': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon() + self.intersectionIcon() + self.curveIcon(), # The environment icon imgs
         'v': self.__vehicle_icons__(), # Vehicle icon imgs
         'i': self.get_injury_icons(), # Injury icon imgs
         'c': self.make_causes(), # Causes (formatted string)
