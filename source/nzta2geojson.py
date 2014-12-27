@@ -393,7 +393,7 @@ class nztacrash:
             'S': ['Road with a severe bend', 'severe-curve-icon.svg']}
         if self.road_curve not in decoder.keys():
             raise Exception
-        base = './icons/curve'
+        base = './icons/curves'
         title = decoder[self.road_curve][0]
         icon = '%s/%s' % (base,decoder[self.road_curve][1])
         return '<img src="%s" title="%s">' % (icon,title)
