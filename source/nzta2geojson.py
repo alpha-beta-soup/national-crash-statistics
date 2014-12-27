@@ -162,6 +162,7 @@ class nztacrash:
         self.motorcyclist = self.get_mode_involvement(['M','P']) # Motorcyclist, moped
         self.taxi = self.get_mode_involvement(['X']) # Taxi/taxi van
         self.truck = self.get_mode_involvement(['T']) # Truck
+        self.car = self.get_mode_involvement(['C','V','4']) # Car, van/ute, SUV
         
         # Roles and factors
         self.tourist = self.get_factor_involvement(['404','731'])
@@ -551,6 +552,7 @@ class nztacrash:
         'mc': self.motorcyclist, # Motorcyclist Boolean
         'tx': self.taxi, # Taxi Boolean
         'tr': self.truck, # Truck Boolean
+        'ca': self.car, # Car, van, ute, SUV
         'to': self.tourist, # Tousit Boolean
         'al': self.alcohol, # Alcohol Boolean
         'dr': self.drugs, # Drugs Boolean

@@ -86,7 +86,9 @@ var layerTitle = L.Control.extend({
 
         var container = L.DomUtil.create('div', 'layerTitle');
         
-        container.innerHTML = '<h3><span class="red">Crash</span> events</h3><h4>Filter by consequence</h4>';
+        
+        
+        container.innerHTML = '<h3><span class="red">Crash</span> events</h3>';
         
         return container;
     
@@ -102,6 +104,28 @@ var crashes = "./data/data.geojson"
 
 //create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
 var layers = {};
+layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return true
+
+    }
+
+})//.addTo(map);
+
 layers["<div class='legendEntry'><div class='legendText'>Fatal</div><div class='legendDot' id='redDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
@@ -343,6 +367,28 @@ layers["Dangerous driving<div id='clear'></div><h4>Filter by party</h4>"] = new 
     }
 
 })//.addTo(map);
+
+layers["Car / van / ute / SUV"] = new L.GeoJSON.AJAX(crashes,{
+    
+    pointToLayer: function(feature, latlng) {
+            
+        return new L.CircleMarker(latlng, injury(feature))
+
+    },
+    
+    onEachFeature: function(feature, layer) {
+        
+        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
+    
+    },
+
+    filter: function(feature, layer) {
+
+        return feature.properties.ca
+
+    }
+
+})//.addTo(map); 
 
 layers["Pedestrian"] = new L.GeoJSON.AJAX(crashes,{
     
