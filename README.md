@@ -14,3 +14,4 @@ Acknowledgements
 * **Chris Hewitt** (NZTA), for early feedback and a "go ahead"
 * **Tom Petti**t (Wellington City Council; New Zealand Centre for Sustainable Cities) for support and feedback
 * The **NZTA**, for publishing this data in a largely machine-readable format
+* [Harkanwal Singh](http://www.nzherald.co.nz/Harkanwal-Singh/news/headlines.cfm?a_id=930), the New Zealand Herald Data Editor, for featuring the map.
