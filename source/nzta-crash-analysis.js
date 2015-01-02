@@ -18,47 +18,103 @@ L.tileLayer(
 }).addTo(map);
 
 //styles for crash points
-var fatalCrashStyle = {
+var crashStyle = {
     radius: 5,
     fillOpacity: 0.9,
-    fillColor: "#ff1a1a",
     stroke: false
 }
-var severeCrashStyle = {
-    radius: 5,
-    fillOpacity: 0.9,
-    fillColor: "#ff821a",
-    stroke: false
-}
-var minorCrashStyle = {
-    radius: 5,
-    fillOpacity: 0.9,
-    fillColor: "#a7ee18",
-    stroke: false
-}
-var noInjuryCrashStyle = {
-    radius: 5,
-    fillOpacity: 0.9,
-    fillColor: "#15CC15",
-    stroke: false
-} 
+
+//string for classes
+var crashClass = ''
 
 //conditional styling by injury type
-function injury (feature) {
+function injury (feature, crashStyle, crashClass) {
     
     if (feature.properties.ij == 'f') {
-        return fatalCrashStyle
+        crashStyle.fillColor = "#ff1a1a";
+        crashClass = crashClass + "f";
     
     } else if (feature.properties.ij == 's') {
-        return severeCrashStyle
+        crashStyle.fillColor = "#ff821a";
+        crashClass = crashClass + "s";
     
     } else if (feature.properties.ij == 'm') {
-        return minorCrashStyle
+        crashStyle.fillColor = "#a7ee18";
+        crashClass = crashClass + "m";
     
     } else if (feature.properties.ij == 'n') {
-        return noInjuryCrashStyle
+        crashStyle.fillColor = "#15CC15";
+        crashClass = crashClass + "n";
     
     };
+
+    if (feature.properties.to) {
+        crashClass = crashClass + " to";
+    };
+
+    if (feature.properties.al) {
+        crashClass = crashClass + " al";
+    };
+
+    if (feature.properties.dr) {
+        crashClass = crashClass + " dr";
+    };
+
+    if (feature.properties.cp) {
+        crashClass = crashClass + " cp";
+    };   
+    
+    if (feature.properties.fg) {
+        crashClass = crashClass + " fg";
+    };
+
+    if (feature.properties.sp) {
+        crashClass = crashClass + " sp";
+    };
+    
+    if (feature.properties.dd) {
+        crashClass = crashClass + " dd";
+    };
+
+    if (feature.properties.ca) {
+        crashClass = crashClass + " ca";
+    };
+
+    if (feature.properties.pd) {
+        crashClass = crashClass + " pd";
+    };
+
+    if (feature.properties.cy) {
+        crashClass = crashClass + " cy";
+    };
+
+    if (feature.properties.mc) {
+        crashClass = crashClass + " mc";
+    };
+
+    if (feature.properties.tx) {
+        crashClass = crashClass + " tx";
+    };
+
+    if (feature.properties.tr) {
+        crashClass = crashClass + " tr";
+    };
+
+    if (feature.properties.h == "Easter Holiday 2014") {
+        crashClass = crashClass + " Easter2014";
+    };
+
+    if (feature.properties.h == "Queen's Birthday 2014") {
+        crashClass = crashClass + " QB2014";
+    };
+
+    if (feature.properties.h == "Christmas/New Year 2013-14") {
+        crashClass = crashClass + " XmasNY2014";
+    };
+
+    crashStyle.className = crashClass;
+
+    return crashStyle;
 }
 
 //pop-up text function different if other parties involved. Bound to when events are retrieved from data
@@ -71,44 +127,21 @@ function popUpText (row, layer) {
            '<span><div id="streetview-container">' + row.properties.s+ '</div></span>' +
            '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' +
            '<span class="causes-text">' + row.properties.c + '</span>'
-};
-
-//create div that appears above the layer selector for explanation and clarity
-var layerTitle = L.Control.extend({
-    
-    options:{
-    
-        position: 'topright'
-    
-    },
-    
-    onAdd: function (map) {
-
-        var container = L.DomUtil.create('div', 'layerTitle');
-        
-        
-        
-        container.innerHTML = '<h3><span class="red">Crash</span> events</h3>';
-        
-        return container;
-    
-    }
-
-});
-
-//add layer title to the map
-map.addControl(new layerTitle());            
+};        
 
 //path to the crash geojson from nzta2geojson.py
 var crashes = "./data/data.geojson"
 
 //create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
 var layers = {};
-layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] = new L.GeoJSON.AJAX(crashes,{
+
+//layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] = 
+
+new L.GeoJSON.AJAX(crashes,{
     
     pointToLayer: function(feature, latlng) {
             
-        return new L.CircleMarker(latlng, injury(feature))
+        return new L.CircleMarker(latlng, injury(feature, crashStyle, crashClass))
 
     },
     
@@ -124,451 +157,7 @@ layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] = new 
 
     }
 
-})//.addTo(map);
-
-layers["<div class='legendEntry'><div class='legendText'>Fatal</div><div class='legendDot' id='redDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.ij == 'f'
-
-    }
-
-})//.addTo(map);
-
-layers["<div class='legendEntry'><div class='legendText'>Severe injuries</div><div class='legendDot' id='orangeDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.ij == 's'
-
-    }
-
-})//.addTo(map);
-
-layers["<div class='legendEntry'><div class='legendText'>Minor injuries</div><div class='legendDot' id='yellowDot'></div></div><div id='clear'></div>"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.ij == 'm'
-
-    }
-
-})//.addTo(map);
-
-layers["<div class='legendEntry'><div class='legendText'>No injuries</div><div class='legendDot' id='greenDot'></div></div><div id='clear'></div><h4>Filter by factor</h4>"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.ij == 'n'
-
-    }
-
-})//.addTo(map);
-
-layers["Tourist / recent migrant"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.to
-
-    }
-
-})//.addTo(map);  
-
-layers["Alcohol"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.al
-
-    }
-
-})//.addTo(map);
-
-layers["Drugs"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.dr
-
-    }
-
-})//.addTo(map);
-
-layers["Cellphone"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.cp
-
-    }
-
-})//.addTo(map);
-
-layers["Fatigue"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.fg
-
-    }
-
-})//.addTo(map);
-
-layers["Speed"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.sp
-
-    }
-
-})//.addTo(map);
-
-layers["Dangerous driving<div id='clear'></div><h4>Filter by party</h4>"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.dd
-
-    }
-
-})//.addTo(map);
-
-layers["Car / van / ute / SUV"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.ca
-
-    }
-
-})//.addTo(map); 
-
-layers["Pedestrian"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.pd
-
-    }
-
-})//.addTo(map);                 
-
-layers["Cyclist"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.cy
-
-    }
-
-})//.addTo(map);
-
-layers["Motorcyclist"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.mc
-
-    }
-
-})//.addTo(map);
-
-layers["Taxi"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.tx
-
-    }
-
-})//.addTo(map);
-
-layers["Truck<div id='clear'></div><h4>Official Holiday Periods</h4>"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.tr
-
-    }
-
-})//.addTo(map);
-
-layers["Easter 2014"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.h == 'Easter Holiday 2014'
-
-    }
-
-})//.addTo(map);
-
-layers["Queen's Birthday 2014"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.h == "Queen's Birthday 2014"
-
-    }
-
-})//.addTo(map);
-
-layers["Christmas & New Year 2013–14"] = new L.GeoJSON.AJAX(crashes,{
-    
-    pointToLayer: function(feature, latlng) {
-            
-        return new L.CircleMarker(latlng, injury(feature))
-
-    },
-    
-    onEachFeature: function(feature, layer) {
-        
-        layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
-    },
-
-    filter: function(feature, layer) {
-
-        return feature.properties.h == 'Christmas/New Year 2013-14'
-
-    }
-
-})//.addTo(map);
-
-
-//add layer selector to the map
-L.control.layers(layers,[], {"position":"topright", "collapsed":false}).addTo(map);
+}).addTo(map);
 
 //hide function for the sidebar
 $(document).ready(function(){
@@ -602,5 +191,52 @@ $(document).ready(function(){
         }
     
     });
+
+});
+
+//crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
+$(document).ready(function(){
+
+    $("#checkArray").click(function(){
+
+        $(function () {
+
+            $('#allCheck').on('click', function () {
+        
+                $(this).closest('fieldset').find(':checkbox').prop('checked', false);
+            
+            });
+        
+        });
+
+        var crashClassSelected = 'path';
+
+        $(crashClassSelected).css('display', 'none');
+
+        $("#checkArray input[type=checkbox]").each(
+            
+            function() {
+            
+                if($(this).is(':checked')) {
+
+                    crashClassSelected = crashClassSelected + $(this).val();
+
+                }
+            }
+        )
+
+        $(crashClassSelected).css('display', 'block');
+
+        if(crashClassSelected == 'path') {
+
+            $('#allCheck').prop('checked', true);
+
+        } else {
+
+            $('#allCheck').prop('checked', false);
+
+        };
+
+    })
 
 });
