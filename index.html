@@ -37,6 +37,70 @@
             <!-- map div -->
             <div id="map"></div>
 
+            <!-- controller div -->
+            <div id="controller">
+
+                <h3><span class="red">Crash</span> events</h3>
+
+                <fieldset id="checkArray">
+
+                    <input type="checkbox" id="allCheck" value="" checked>All crashes</br>
+                    
+                    <p class="bold">Filter by consequence</p>
+
+                    <input type="checkbox" id="fatalCheck" value='.f'>Fatal<div class='legendDot' id='redDot'></div></br>
+
+                    <input type="checkbox" id="severveCheck" value='.s'>Severe injuries<div class='legendDot' id='orangeDot'></div></br>
+
+                    <input type="checkbox" id="minorCheck" value='.m'>Minor injuries<div class='legendDot' id='yellowDot'></div></br>
+
+                    <input type="checkbox" id="noInjCheck" value='.n'>No injuries<div class='legendDot' id='greenDot'></div></br>
+
+                    <p class="bold">Filter by factor</p>
+
+                    <input type="checkbox" id="touristCheck" value='.to'>Tourist / Recent migrant</br>
+
+                    <input type="checkbox" id="alcoholCheck" value='.al'>Alcohol</br>
+
+                    <input type="checkbox" id="drugsCheck" value='.dr'>Drugs</br>
+
+                    <input type="checkbox" id="cellphoneCheck" value='.cp'>Cellphone</br>
+
+                    <input type="checkbox" id="fatigueCheck" value='.fg'>Fatigue</br>
+
+                    <input type="checkbox" id="speedCheck" value='.sp'>Speed</br>
+
+                    <input type="checkbox" id="dangerousDrivingCheck" value='.dd'>Dangerous driving</br>
+
+                    <p class="bold">Filter by party involved</p>
+
+                    <input type="checkbox" id="carCheck" value='.ca'>Car / Van / Ute / SUV</br>
+
+                    <input type="checkbox" id="pedestrianCheck" value='.pd'>Pedestrian</br>
+
+                    <input type="checkbox" id="cyclistCheck" value='.cy'>Cyclist</br>
+
+                    <input type="checkbox" id="motorcyclistCheck" value='.mc'>Motorcyclist</br>
+
+                    <input type="checkbox" id="taxiCheck" value='.tx'>Taxi</br>
+
+                    <input type="checkbox" id="truckCheck" value='.tr'>Truck</br>
+
+                    <input type="checkbox" id="motorcyclistCheck" value='.mc'>Motorcyclist</br>
+
+                    <p class="bold">Filter by official holiday period</p>
+
+                    <input type="checkbox" id="easter2014Check" value='.Easter2014'>Easter Holiday 2014</br>
+                    
+                    <input type="checkbox" id="qb2014Check" value='.QB2014'>Queen's Birthday 2014</br>
+
+                    <input type="checkbox" id="XmasNY20132014Check" value='.XmasNY2014'>Christmas/New Year 2013-14</br>
+
+
+                </fieldset>
+            
+            </div>
+
             <!-- div for side bar -->
             <div id="sidebar">
 
@@ -98,3 +162,4 @@
         <script src="./source/nzta-crash-analysis.js" type="text/javascript"></script>
 
     </body>
+

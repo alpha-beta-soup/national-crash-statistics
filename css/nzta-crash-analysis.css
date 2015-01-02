@@ -9,8 +9,12 @@ h1 {
     margin: 0;
 }
 
-h4 {
-    margin: 6px 0 0 0;
+#controller h3 {
+    margin: 9px 0 6px 12px;
+}
+
+#controller p {
+    margin: 3px 0 3px 3px;
 }
 
 /* full page map setting size, font, z-index and margin */
@@ -21,6 +25,30 @@ html, body, #map {
     font-family: Arial, Helvetica, sans-serif;
     z-index: 1;
     margin: 0px;
+}
+
+#controller {
+    width: 300px;
+    position: absolute;
+    z-index: 2;
+    right: 0px;
+    background: #ECECEC;
+    font-size: 14px;
+    margin: 6px;
+    padding: 3px;
+    border: 1px solid #8C8C8C;
+    -moz-box-shadow: 2px 2px 2px #888888;
+    -webkit-box-shadow: 2px 2px 2px #888888;
+    box-shadow: 2px 2px 2px #888888;
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+}
+
+input {
+    font-size: 14px;
 }
 
 /* whole sidebar max-width and full height on top of map */
@@ -104,51 +132,6 @@ html, body, #map {
     -o-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
-}
-
-/* styling for title div attached at the top of layer switches */
-.layerTitle {
-    width: 250px;
-    padding: 8px 8px 0 8px;
-    background: white;
-    margin: 10px 0px;
-    background: rgb(236,236,236);
-    border-top: 1px solid #8C8C8C;
-    border-right: 1px solid #8C8C8C;
-    border-left: 1px solid #8C8C8C;
-}
-
-/* remove margin for h3 inside title div for layers */ 
-.layerTitle h3 {
-    margin: 0px;
-}
-
-/* remove margins for leaflet elements at the top */
-.leaflet-top {
-    margin: 0;
-}
-
-/* needed to reinstate the margin as leaflet-control-layers override stylings */
-.leaflet-control-layers {
-    border-radius: 0px;
-    margin: 0px;
-    width: 250px;
-    position: relative;
-    top: -20px;
-    border-bottom: 1px solid #8C8C8C;
-    border-right: 1px solid #8C8C8C;
-    border-left: 1px solid #8C8C8C;
-    background: rgb(236,236,236);
-    box-shadow: none;
-}
-
-/* reduce gap between layer title and layer seletor as 'Filter by consequence' is in the div above unlike the other subtitles */
-.leaflet-control-layers-expanded {
-    padding-top: 0;
-}
-
-.leaflet-control-layers-selector {
-    float: left;
 }
 
 .legendDot {
