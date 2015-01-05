@@ -99,6 +99,22 @@ function injury (feature, crashStyle, crashClass) {
     if (feature.properties.tr) {
         crashClass = crashClass + " tr";
     };
+    
+    if (feature.properties.df) {
+        crashClass = crashClass + " df";
+    };
+    
+    if (feature.properties.vf) {
+        crashClass = crashClass + " vf";
+    };
+    
+    if (feature.properties.pf) {
+        crashClass = crashClass + " pf";
+    };
+    
+    if (feature.properties.rf) {
+        crashClass = crashClass + " rf";
+    };
 
     if (feature.properties.h == "Easter Holiday 2014") {
         crashClass = crashClass + " Easter2014";
