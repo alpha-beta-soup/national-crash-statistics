@@ -23,7 +23,6 @@ Please, feel absolutely free. The data is open, and so is this. Get the map work
 ```bash
 cd /path/to/directory/
 git clone https://github.com/alpha-beta-soup/national-crash-statistics
-cd ./source/
 ```
 If you have Python2, then run
 ```bash
