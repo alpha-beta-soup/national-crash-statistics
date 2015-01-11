@@ -86,6 +86,13 @@ input {
     width: 92%;
 }
 
+/*Styling on legend explanation question mark symbol */
+#qmark {
+    height: 13px;
+    width: 13px;
+    position: relative;
+}
+
 /* background div for the button to hide the description */
 #hideDesc {
     height: 32px;
