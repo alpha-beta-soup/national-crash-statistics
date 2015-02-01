@@ -172,7 +172,6 @@ class nztacrash:
         self.fatigue = self.get_factor_involvement(['410','411','412','413','414','415'])
         self.dickhead = self.get_factor_involvement(['430','431','432','433','434','510','511','512','513','514','515','516','517'])
         self.speeding = self.get_factor_involvement(['110','111','112','113','114','115','116','117'])
-        self.slowdriver = self.get_factor_involvement(['182'])
         
     def get_hasLocation(self):
         if self.easting in [0,None] or self.northing in [0,None]:
@@ -569,7 +568,6 @@ class nztacrash:
         'fg': self.fatigue, # Faitgue Boolean
         'dd': self.dickhead, # Dangerous driving Boolean
         'sp': self.speeding, # Speeding Boolean
-        'sd': self.slowdriver, # Travelling unreasonably slowly
         'ij': self.get_worst_injury_text()}, # f,s,m,n >> worst injury as text
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
         

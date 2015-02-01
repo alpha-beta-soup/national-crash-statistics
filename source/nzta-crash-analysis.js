@@ -72,10 +72,6 @@ function injury (feature, crashStyle, crashClass) {
         crashClass = crashClass + " sp";
     };
     
-    if (feature.properties.sd) {
-        crashClass = crashClass + " sd";
-    };
-    
     if (feature.properties.dd) {
         crashClass = crashClass + " dd";
     };
@@ -162,16 +158,6 @@ new L.GeoJSON.AJAX(crashes,{
     }
 
 }).addTo(map);
-
-var sliderControl = L.control.sliderControl({position: "topright", layer: crashes});
-
-//Make sure to add the slider to the map ;-)
-map.addControl(sliderControl);
-
-//And initialize the slider
-sliderControl.startSlider();
-
-$('#slider-timestamp').html(options.markers[ui.value].feature.properties.startDate.substr(0, 19));
 
 //hide function for the sidebar
 $(document).ready(function(){
