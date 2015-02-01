@@ -1,6 +1,3 @@
-//for frontpage image
-$("#frontpage").css("height", $(window).height());
-
 //where, initial zoom level and remove zoom buttons
 var map = L.map('map', {
     zoomControl: false,
@@ -195,10 +192,13 @@ $(document).ready(function(){
     
     });
 
-});
+    $(".glyphicon-globe").click(function(){
 
-//crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
-$(document).ready(function(){
+        $("#frontpage").hide(200);
+
+    });
+
+    //crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
 
     $("#checkArray").click(function(){
 
@@ -241,5 +241,11 @@ $(document).ready(function(){
         };
 
     })
+
+});
+
+//crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
+$(document).ready(function(){
+
 
 });
