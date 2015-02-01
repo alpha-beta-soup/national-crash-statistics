@@ -1,3 +1,6 @@
+//for frontpage image
+$("#frontpage").css("height", $(window).height());
+
 //where, initial zoom level and remove zoom buttons
 var map = L.map('map', {
     zoomControl: false,

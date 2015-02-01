@@ -1,3 +1,42 @@
+#frontpage {
+    background-image: url("../images/CrashImage.jpg");
+    z-index: 3;
+    width: 100%;
+    background-size: cover;
+}
+
+#frontpage-header {
+    font-size: 64px;
+    color: white;
+    font-family: 'Lucida Grande', Geneva, Verdana, sans-serif;
+    font-weight: bolder;
+    margin-top: 25%;
+}
+
+#frontpage-subheader {
+    font-size: 22px;
+    color: white;
+    font-family: 'Lucida Grande', Geneva, Verdana, sans-serif;
+}
+
+#icon-row {
+    margin-top: 100px;
+}
+
+.glyphicon {
+    color: white;
+    font-size: 100px;
+    margin: 0 auto;
+}
+
+.icon-caption {
+    color: white;
+}
+
+.icon-align {
+    text-align: center;
+}
+
 /* hyperlink styling */
 a {
     text-decoration: underline;
@@ -7,14 +46,6 @@ a {
 /* remove margin from default h1 */
 h1 {
     margin: 0;
-}
-
-#controller h3 {
-    margin: 9px 0 6px 12px;
-}
-
-#controller p {
-    margin: 3px 0 3px 3px;
 }
 
 /* full page map setting size, font, z-index and margin */
@@ -33,18 +64,30 @@ html, body, #map {
     z-index: 2;
     right: 0px;
     background: #ECECEC;
-    font-size: 14px;
     margin: 6px;
-    padding: 3px;
     border: 1px solid #8C8C8C;
     -moz-box-shadow: 2px 2px 2px #888888;
     -webkit-box-shadow: 2px 2px 2px #888888;
     box-shadow: 2px 2px 2px #888888;
 }
 
+#controller-content {
+    font-size: 14px;
+    margin: 3px;
+}
+
+#controller-content h3 {
+    margin: 9px 0 6px 12px;
+}
+
 fieldset {
     border: none;
     margin: 0;
+    padding-bottom: 0px;
+}
+
+fieldset p {
+    margin: 3px 3px 3px 0px;
 }
 
 input {
@@ -259,7 +302,6 @@ input {
     margin-left: 3px;
     margin-right: 3px;
 }
-
 
 #injury-icons img {
     height: 30px;

@@ -1,9 +1,30 @@
 <!DOCTYPE html>
     <head>
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />   
-        
-        <meta charset="utf-8" />
 
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         
@@ -25,77 +46,125 @@
 
         <link rel="shortcut icon" href="./icons/crashIcon.ico" >
 
-        <title>NZ Crash Reports</title>
+        <title>NZ Crash Map</title>
     
     </head>
     
     <body>
-        
+
         <!-- contain all div -->
         <div>
             
+            <!-- frontpage div -->
+            <div class="container-fluid" id="frontpage">
+
+                <div class="row">
+                    
+                    <div class="col-md-10 col-md-offset-1 col-sm-12">
+                        
+                        <h1 class="text-center" id="frontpage-header">New Zealand Crash Map</h1>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-md-5 col-md-offset-5 col-sm-12">
+                        
+                        <h3 class="text-center" id="frontpage-subheader">Where and why crashes happen</h3>
+
+                    </div>
+
+                </div>
+ 
+                <div class="row" id="icon-row">
+                    
+                    <div class="col-md-2 col-md-offset-3 icon-align">
+  
+                            <span class="glyphicon glyphicon-info-sign"></span>
+
+                            <p class="icon-caption text-center">More info about this map</p>
+
+                    </div>
+
+                    <div class="col-md-2 col-md-offset-2 icon-align">
+  
+                            <span class="glyphicon glyphicon-globe text-center"></span>
+
+                            <p class="icon-caption text-center">Take me to the map</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
             <!-- map div -->
             <div id="map"></div>
 
             <!-- controller div -->
             <div id="controller">
 
-                <h3><span class="red">Crash</span> events</h3>
+                <div id="controller-content">
 
-                <fieldset id="checkArray">
+                    <h3><span class="red">Crash</span> events</h3>
 
-                    <input type="checkbox" id="allCheck" value="" checked>All crashes</br>
-                    
-                    <p class="bold">Filter by consequence</p>
+                    <fieldset id="checkArray">
 
-                    <input type="checkbox" id="fatalCheck" value='.f'>Fatal<div class='legendDot' id='redDot'></div></br>
+                        <input type="checkbox" id="allCheck" value="" checked>All crashes</br>
+                        
+                        <p class="bold">Filter by consequence</p>
 
-                    <input type="checkbox" id="severveCheck" value='.s'>Severe injuries<div class='legendDot' id='orangeDot'></div></br>
+                        <input type="checkbox" id="fatalCheck" value='.f'>Fatal<div class='legendDot' id='redDot'></div></br>
 
-                    <input type="checkbox" id="minorCheck" value='.m'>Minor injuries<div class='legendDot' id='yellowDot'></div></br>
+                        <input type="checkbox" id="severveCheck" value='.s'>Severe injuries<div class='legendDot' id='orangeDot'></div></br>
 
-                    <input type="checkbox" id="noInjCheck" value='.n'>No injuries<div class='legendDot' id='greenDot'></div></br>
+                        <input type="checkbox" id="minorCheck" value='.m'>Minor injuries<div class='legendDot' id='yellowDot'></div></br>
 
-                    <p class="bold">Filter by factor</p>
+                        <input type="checkbox" id="noInjCheck" value='.n'>No injuries<div class='legendDot' id='greenDot'></div></br>
 
-                    <input type="checkbox" id="touristCheck" value='.to'>Tourist / Recent migrant</br>
+                        <p class="bold">Filter by factor</p>
 
-                    <input type="checkbox" id="alcoholCheck" value='.al'>Alcohol</br>
+                        <input type="checkbox" id="touristCheck" value='.to'>Tourist / Recent migrant</br>
 
-                    <input type="checkbox" id="drugsCheck" value='.dr'>Drugs</br>
+                        <input type="checkbox" id="alcoholCheck" value='.al'>Alcohol</br>
 
-                    <input type="checkbox" id="cellphoneCheck" value='.cp'>Cellphone</br>
+                        <input type="checkbox" id="drugsCheck" value='.dr'>Drugs</br>
 
-                    <input type="checkbox" id="fatigueCheck" value='.fg'>Fatigue</br>
+                        <input type="checkbox" id="cellphoneCheck" value='.cp'>Cellphone</br>
 
-                    <input type="checkbox" id="speedCheck" value='.sp'>Speed</br>
+                        <input type="checkbox" id="fatigueCheck" value='.fg'>Fatigue</br>
 
-                    <input type="checkbox" id="dangerousDrivingCheck" value='.dd'>Dangerous driving</br>
+                        <input type="checkbox" id="speedCheck" value='.sp'>Speed</br>
 
-                    <p class="bold">Filter by party involved</p>
+                        <input type="checkbox" id="dangerousDrivingCheck" value='.dd'>Dangerous driving</br>
 
-                    <input type="checkbox" id="carCheck" value='.ca'>Car / Van / Ute / SUV</br>
+                        <p class="bold">Filter by party involved</p>
 
-                    <input type="checkbox" id="pedestrianCheck" value='.pd'>Pedestrian</br>
+                        <input type="checkbox" id="carCheck" value='.ca'>Car / Van / Ute / SUV</br>
 
-                    <input type="checkbox" id="cyclistCheck" value='.cy'>Cyclist</br>
+                        <input type="checkbox" id="pedestrianCheck" value='.pd'>Pedestrian</br>
 
-                    <input type="checkbox" id="motorcyclistCheck" value='.mc'>Motorcyclist</br>
+                        <input type="checkbox" id="cyclistCheck" value='.cy'>Cyclist</br>
 
-                    <input type="checkbox" id="taxiCheck" value='.tx'>Taxi</br>
+                        <input type="checkbox" id="motorcyclistCheck" value='.mc'>Motorcyclist</br>
 
-                    <input type="checkbox" id="truckCheck" value='.tr'>Truck</br>
+                        <input type="checkbox" id="taxiCheck" value='.tx'>Taxi</br>
 
-                    <p class="bold">Filter by official holiday period</p>
+                        <input type="checkbox" id="truckCheck" value='.tr'>Truck</br>
 
-                    <input type="checkbox" id="easter2014Check" value='.Easter2014'>Easter Holiday 2014</br>
-                    
-                    <input type="checkbox" id="qb2014Check" value='.QB2014'>Queen's Birthday 2014</br>
+                        <p class="bold">Filter by official holiday period</p>
 
-                    <input type="checkbox" id="XmasNY20132014Check" value='.XmasNY2014'>Christmas/New Year 2013-14</br>
+                        <input type="checkbox" id="easter2014Check" value='.Easter2014'>Easter Holiday 2014</br>
+                        
+                        <input type="checkbox" id="qb2014Check" value='.QB2014'>Queen's Birthday 2014</br>
 
+                        <input type="checkbox" id="XmasNY20132014Check" value='.XmasNY2014'>Christmas/New Year 2013-14</br>
 
-                </fieldset>
+                    </fieldset>
+
+                </div>
             
             </div>
 
