@@ -55,6 +55,40 @@
         <!-- contain all div -->
         <div>
             
+            <div class="container-fluid" id="info-box-container">
+
+                <div class="row">
+
+                    <div class="col-md-12" id="info-box-background"></div>
+                    
+                    <div class="col-md-6 col-md-offset-3 col-sm-12 " id="info-box">
+
+                        <button type="button" class="btn" id="close-button">X</button>
+                        
+                        <h2 class="bold">About the New Zealand Crash Map</h2>
+
+                        <h3 class="bold">The data</h3>
+
+                        <p>The data shown on the map were crash reports completed by the New Zealand Police between December 2013 and July 2014. Traffic crash reports are completed by police officers at all road crash scenes, including crashes without injuries. Details of exactly where, when, how and why the crash happened are recorded.</p>
+                        <p>Traffic crash reports provide essential information to a wide range of road safety and road construction partners who are engaged in the constant fight to reduce the approximately 2000 deaths and severe injuries recorded each year.</p>
+                        <p>These data are from the NZ Transport Agency’s Crash Analysis System (CAS).</p>
+
+                        <h3 class="bold">The controls</h3>
+                        
+                        <p>Click on a crash to see detail</br>
+                        Shift + drag mouse for box zoom</br>
+                        Hover over an icon for explanation</p>
+                    
+                        <h3 class="bold">Help improve the map</h3>
+
+                        <p>Find <a href="https://twitter.com/alphabeta_soup" target="_blank"><span class="red">Richard</span></a> and <a href="https://twitter.com/parnelandr" target="_blank"><span class="red">Andrew</span></a> on Twitter, or the project on <a href="https://github.com/alpha-beta-soup/national-crash-statistics" target="_blank"><span class="red">Github</span></a></p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
             <!-- frontpage div -->
             <div class="container-fluid" id="frontpage">
 
@@ -80,7 +114,7 @@
  
                 <div class="row" id="icon-row">
                     
-                    <div class="col-md-2 col-md-offset-3 icon-align">
+                    <div class="col-md-2 col-md-offset-3 icon-align frontpage-button" id="toInfo">
   
                             <span class="glyphicon glyphicon-info-sign"></span>
 
@@ -88,7 +122,7 @@
 
                     </div>
 
-                    <div class="col-md-2 col-md-offset-2 icon-align">
+                    <div class="col-md-2 col-md-offset-2 icon-align frontpage-button" id="toMap">
   
                             <span class="glyphicon glyphicon-globe text-center"></span>
 
@@ -101,7 +135,7 @@
             </div>
 
             <!-- map div -->
-            <div id="map"></div>
+            <div id="map"></div>          
 
             <!-- controller div -->
             <div id="controller">
@@ -168,6 +202,12 @@
             
             </div>
 
+            <div class="front-page-button" id="info-button-on-map">
+                
+                <span class="glyphicon glyphicon-info-sign"></span>
+
+            </div>  
+
             <!-- div for side bar -->
             <div id="sidebar">
 
@@ -190,7 +230,7 @@
 
                             <p>Traffic <span class="red">crashes</span> reports provide essential information to a wide range of road safety and road construction partners who are engaged in the constant fight to reduce the approximately 2000 deaths and severe injuries recorded each year. </p>
 
-                            <p>These data are from the NZ Transport Agency’s <span class="red">Crash</span> Analysis System (CAS).</p>
+                            <p>These data are from the NZ Transport Agency’s <span class="red">Crash</span> Analysis System (CAS).</br></p>
 
                             <!-- <p class="bold"><a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">More information</a></p> -->
                                                        

@@ -1,3 +1,33 @@
+$(document).ready(function(){    
+
+    $("#toMap").click(function(){
+
+        $("#frontpage").hide(200);
+
+    });
+
+    $("#toInfo").click(function(){
+
+        $("#info-box-container").show();
+
+    })
+
+    $("#info-button-on-map").click(function(){
+
+        $("#info-box-container").show();
+
+    })
+    
+    $("#close-button").click(function(){
+
+        $("#info-box-container").hide();
+
+    })
+
+});
+
+
+
 //where, initial zoom level and remove zoom buttons
 var map = L.map('map', {
     zoomControl: false,
@@ -190,12 +220,6 @@ $(document).ready(function(){
 
         }
     
-    });
-
-    $(".glyphicon-globe").click(function(){
-
-        $("#frontpage").hide(200);
-
     });
 
     //crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
