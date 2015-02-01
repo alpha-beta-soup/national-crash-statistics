@@ -191,36 +191,6 @@ new L.GeoJSON.AJAX(crashes,{
 
 //hide function for the sidebar
 $(document).ready(function(){
-    
-    var clicked=false;
-
-    var moveLeft;
-
-    moveLeft = -($("#desc").width());
-
-    $("#circleButton").addClass('rotate');
-    
-    $("#hideDesc").on('click', function(){
-    
-    if(clicked){
-    
-        clicked=false;
-    
-        $("#sidebarContainer").css({"left": 0});
-
-        $("#circleButton").addClass('rotate');
-    
-        } else {
-
-        clicked=true;
-    
-        $("#sidebarContainer").css({"left": moveLeft});
-
-        $("#circleButton").removeClass('rotate');
-
-        }
-    
-    });
 
     //crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
 
@@ -265,11 +235,5 @@ $(document).ready(function(){
         };
 
     })
-
-});
-
-//crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
-$(document).ready(function(){
-
 
 });
