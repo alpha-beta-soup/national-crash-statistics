@@ -1,8 +1,9 @@
+//front page icon buttons and info button on map functionality
 $(document).ready(function(){    
 
     $("#toMap").click(function(){
 
-        $("#frontpage").hide(200);
+        $("#frontpage").hide();
 
     });
 
@@ -26,11 +27,8 @@ $(document).ready(function(){
 
 });
 
-
-
 //where, initial zoom level and remove zoom buttons
 var map = L.map('map', {
-    zoomControl: false,
     continuousWorld: true,
     worldCopyJump: true
     }).setView([-41.17, 174.46], 6);

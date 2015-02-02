@@ -1,3 +1,7 @@
+#all-div {
+    font-family: 'Lucida Grande', Geneva, Verdana, sans-serif;
+}
+
 #frontpage {
     background-image: url("../images/CrashImage.jpg");
     z-index: 4;
@@ -89,9 +93,12 @@ html, body, #map {
     height: 100%;
     width: 100%;
     position: absolute;
-    font-family: Arial, Helvetica, sans-serif;
     z-index: 1;
     margin: 0px;
+}
+
+#controller-row {
+    margin-top: 3px;
 }
 
 #controller {
@@ -99,35 +106,44 @@ html, body, #map {
     position: absolute;
     z-index: 2;
     right: 0px;
+    margin: 10px;
     background: #ECECEC;
-    margin: 6px;
     border: 1px solid #8C8C8C;
-    -moz-box-shadow: 2px 2px 2px #888888;
-    -webkit-box-shadow: 2px 2px 2px #888888;
-    box-shadow: 2px 2px 2px #888888;
+    -moz-box-shadow: 0 0 2px 2px #888888;
+    -webkit-box-shadow: 0 0 2px 2px #888888;
+    box-shadow: 0 0 2px 2px #888888;
 }
 
 #controller-content {
-    font-size: 14px;
+    font-size: 12px;
     margin: 3px;
+    padding: 9px;
 }
 
-#controller-content h3 {
-    margin: 9px 0 6px 12px;
+#controller-content h4 {
+    margin: 0px 0 6px 0px;
+}
+
+#filter-hide-button {
+    margin-bottom: 6px;
 }
 
 fieldset {
     border: none;
-    margin: 0;
-    padding-bottom: 0px;
+    margin: 0px;
+    padding-bottom: 6px;
 }
 
 fieldset p {
-    margin: 3px 3px 3px 0px;
+    margin: 6px 3px 3px 0px;
 }
 
 input {
     font-size: 14px;
+}
+
+.legend-label {
+    margin-left: 3px;
 }
 
 #info-button-on-map {
@@ -139,10 +155,15 @@ input {
 
 #info-button-on-map .glyphicon {
     color: white;
-    font-size: 50px;
+    font-size: 78px;
     margin: 30px;
     cursor: pointer;
     cursor: hand;
+    border-radius: 50px;
+    border: 1px solid #8C8C8C;
+    -moz-box-shadow: 0 0 2px 2px #888888;
+    -webkit-box-shadow: 0 0 2px 2px #888888;
+    box-shadow: 0 0 2px 2px #888888;
 }
 
 .legendDot {
@@ -185,7 +206,6 @@ input {
 
 .leaflet-popup-content-wrapper {
     background: #ECECEC;
-    border-radius: 0px;
     -moz-box-shadow: 0 0 2px 2px #888888;
     -webkit-box-shadow: 0 0 2px 2px #888888;
     box-shadow: 0 0 2px 2px #888888;
@@ -260,6 +280,10 @@ input {
 #streetview-container {
     height: 200px;
     width: 300px;
+}
+
+#vehicle-injury {
+    margin: 3px 0 3px 0;
 }
 
 #vehicle-icons img {

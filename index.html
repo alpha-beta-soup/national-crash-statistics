@@ -53,7 +53,7 @@
     <body>
 
         <!-- contain all div -->
-        <div>
+        <div id="all-div">
             
             <div class="container-fluid" id="info-box-container">
 
@@ -137,69 +137,75 @@
             <!-- map div -->
             <div id="map"></div>          
 
-            <!-- controller div -->
+        <!-- controller div -->
             <div id="controller">
 
                 <div id="controller-content">
 
-                    <h3><span class="red">Crash</span> events</h3>
+                    <h4 class="bold">Crash events</h4>
 
-                    <fieldset id="checkArray">
+                    <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#filter-div" id="filter-hide-button">Toggle filters</button>
+                    
+                    <div id="filter-div" class="collapse in">
 
-                        <input type="checkbox" id="allCheck" value="" checked>All crashes</br>
-                        
-                        <p class="bold">Filter by consequence</p>
+                        <fieldset id="checkArray">
 
-                        <input type="checkbox" id="fatalCheck" value='.f'>Fatal<div class='legendDot' id='redDot'></div></br>
+                            <input type="checkbox" id="allCheck" value="" checked><span class="legend-label">All crashes</span></br>
+                            
+                            <p class="bold">Filter by consequence</p>
 
-                        <input type="checkbox" id="severveCheck" value='.s'>Severe injuries<div class='legendDot' id='orangeDot'></div></br>
+                            <input type="checkbox" id="fatalCheck" value='.f'><span class="legend-label">Fatal</span><div class='legendDot' id='redDot'></div></br>
 
-                        <input type="checkbox" id="minorCheck" value='.m'>Minor injuries<div class='legendDot' id='yellowDot'></div></br>
+                            <input type="checkbox" id="severveCheck" value='.s'><span class="legend-label">Severe injuries</span><div class='legendDot' id='orangeDot'></div></br>
 
-                        <input type="checkbox" id="noInjCheck" value='.n'>No injuries<div class='legendDot' id='greenDot'></div></br>
+                            <input type="checkbox" id="minorCheck" value='.m'><span class="legend-label">Minor injuries</span><div class='legendDot' id='yellowDot'></div></br>
 
-                        <p class="bold">Filter by factor</p>
+                            <input type="checkbox" id="noInjCheck" value='.n'><span class="legend-label">No injuries</span><div class='legendDot' id='greenDot'></div></br>
 
-                        <input type="checkbox" id="touristCheck" value='.to'>Tourist / Recent migrant</br>
+                            <p class="bold">Filter by factor</p>
 
-                        <input type="checkbox" id="alcoholCheck" value='.al'>Alcohol</br>
+                            <input type="checkbox" id="touristCheck" value='.to'><span class="legend-label">Tourist / Recent migrant</span></br>
 
-                        <input type="checkbox" id="drugsCheck" value='.dr'>Drugs</br>
+                            <input type="checkbox" id="alcoholCheck" value='.al'><span class="legend-label">Alcohol</span></br>
 
-                        <input type="checkbox" id="cellphoneCheck" value='.cp'>Cellphone</br>
+                            <input type="checkbox" id="drugsCheck" value='.dr'><span class="legend-label">Drugs</span></br>
 
-                        <input type="checkbox" id="fatigueCheck" value='.fg'>Fatigue</br>
+                            <input type="checkbox" id="cellphoneCheck" value='.cp'><span class="legend-label">Cellphone</span></br>
 
-                        <input type="checkbox" id="speedCheck" value='.sp'>Speed</br>
+                            <input type="checkbox" id="fatigueCheck" value='.fg'><span class="legend-label">Fatigue</span></br>
 
-                        <input type="checkbox" id="dangerousDrivingCheck" value='.dd'>Dangerous driving</br>
+                            <input type="checkbox" id="speedCheck" value='.sp'><span class="legend-label">Speed</span></br>
 
-                        <p class="bold">Filter by party involved</p>
+                            <input type="checkbox" id="dangerousDrivingCheck" value='.dd'><span class="legend-label">Dangerous driving</span></br>
 
-                        <input type="checkbox" id="carCheck" value='.ca'>Car / Van / Ute / SUV</br>
+                            <p class="bold">Filter by party involved</p>
 
-                        <input type="checkbox" id="pedestrianCheck" value='.pd'>Pedestrian</br>
+                            <input type="checkbox" id="carCheck" value='.ca'><span class="legend-label">Car / Van / Ute / SUV</span></br>
 
-                        <input type="checkbox" id="cyclistCheck" value='.cy'>Cyclist</br>
+                            <input type="checkbox" id="pedestrianCheck" value='.pd'><span class="legend-label">Pedestrian</span></br>
 
-                        <input type="checkbox" id="motorcyclistCheck" value='.mc'>Motorcyclist</br>
+                            <input type="checkbox" id="cyclistCheck" value='.cy'><span class="legend-label">Cyclist</span></br>
 
-                        <input type="checkbox" id="taxiCheck" value='.tx'>Taxi</br>
+                            <input type="checkbox" id="motorcyclistCheck" value='.mc'><span class="legend-label">Motorcyclist</span></br>
 
-                        <input type="checkbox" id="truckCheck" value='.tr'>Truck</br>
+                            <input type="checkbox" id="taxiCheck" value='.tx'><span class="legend-label">Taxi</span></br>
 
-                        <p class="bold">Filter by official holiday period</p>
+                            <input type="checkbox" id="truckCheck" value='.tr'><span class="legend-label">Truck</span></br>
 
-                        <input type="checkbox" id="easter2014Check" value='.Easter2014'>Easter Holiday 2014</br>
-                        
-                        <input type="checkbox" id="qb2014Check" value='.QB2014'>Queen's Birthday 2014</br>
+                            <p class="bold">Filter by official holiday period</p>
 
-                        <input type="checkbox" id="XmasNY20132014Check" value='.XmasNY2014'>Christmas/New Year 2013-14</br>
+                            <input type="checkbox" id="easter2014Check" value='.Easter2014'><span class="legend-label">Easter Holiday 2014</span></br>
+                            
+                            <input type="checkbox" id="qb2014Check" value='.QB2014'><span class="legend-label">Queen's Birthday 2014</span></br>
 
-                    </fieldset>
+                            <input type="checkbox" id="XmasNY20132014Check" value='.XmasNY2014'><span class="legend-label">Christmas/New Year 2013-14</span></br>
+
+                        </fieldset>
+
+                    </div>
 
                 </div>
-            
+
             </div>
 
             <div class="front-page-button" id="info-button-on-map">
