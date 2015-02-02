@@ -1,6 +1,34 @@
+//front page icon buttons and info button on map functionality
+$(document).ready(function(){    
+
+    $("#toMap").click(function(){
+
+        $("#frontpage").hide();
+
+    });
+
+    $("#toInfo").click(function(){
+
+        $("#info-box-container").show();
+
+    })
+
+    $("#info-button-on-map").click(function(){
+
+        $("#info-box-container").show();
+
+    })
+    
+    $("#close-button").click(function(){
+
+        $("#info-box-container").hide();
+
+    })
+
+});
+
 //where, initial zoom level and remove zoom buttons
 var map = L.map('map', {
-    zoomControl: false,
     continuousWorld: true,
     worldCopyJump: true
     }).setView([-41.17, 174.46], 6);
@@ -161,41 +189,8 @@ new L.GeoJSON.AJAX(crashes,{
 
 //hide function for the sidebar
 $(document).ready(function(){
-    
-    var clicked=false;
 
-    var moveLeft;
-
-    moveLeft = -($("#desc").width());
-
-    $("#circleButton").addClass('rotate');
-    
-    $("#hideDesc").on('click', function(){
-    
-    if(clicked){
-    
-        clicked=false;
-    
-        $("#sidebarContainer").css({"left": 0});
-
-        $("#circleButton").addClass('rotate');
-    
-        } else {
-
-        clicked=true;
-    
-        $("#sidebarContainer").css({"left": moveLeft});
-
-        $("#circleButton").removeClass('rotate');
-
-        }
-    
-    });
-
-});
-
-//crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
-$(document).ready(function(){
+    //crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
 
     $("#checkArray").click(function(){
 
