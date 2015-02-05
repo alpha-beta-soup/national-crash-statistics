@@ -366,6 +366,20 @@ class nztacrash:
             return '<img src="%s/%s" title="%s">' % (base,icon,title)
         else:
             return ''
+   
+    def trafficControlIcon(self):
+        if self.traf_ctrl not in ['T','S','G','P']:
+            return '' # Empty string
+        decoder = {'T': ['Traffic signals', 'traffic-light.png'],
+            'S': ['Stop sign', 'stop-sign.png'],
+            'G': ['Give way sign', 'give-way.png'],
+            'P': ['School patrol', 'school-patrol.png']}
+        if self.traf_ctrl not in decoder.keys():
+            raise Exception
+        base = './icons/controls'
+        title = decoder[self.traf_ctrl][0]
+        icon = '%s/%s' % (base,decoder[self.traf_ctrl][1])
+        return '<img src="%s" title="%s">' % (icon,title)
             
     def speedLimitIcon(self):
         if self.spd_lim in ['','U']:
@@ -385,12 +399,11 @@ class nztacrash:
         return '<img src="%s" title="%s">' % (icon,title)   
         
     def curveIcon(self):
-        if self.road_curve == None:
-            return '' # Empty string
-        decoder = {'R': ['Straight road', 'straight-curve-icon.svg'],
-            'E': ['Road with an slight curve', 'easy-curve-icon.svg'],
-            'M': ['Road with a moderate curve', 'moderate-curve-icon.svg'],
-            'S': ['Road with a severe bend', 'severe-curve-icon.svg']}
+        if self.road_curve in [None,'R']:
+            return '' # Empty string for NULL or straight
+        decoder = {'E': ['Road with a slight curve', 'easy-curve-icon_v2.png'],
+            'M': ['Road with a moderate curve', 'moderate-curve-icon_v2.png'],
+            'S': ['Road with a severe bend', 'severe-curve-icon_v2.png']}
         if self.road_curve not in decoder.keys():
             raise Exception
         base = './icons/curves'
@@ -401,12 +414,12 @@ class nztacrash:
     def intersectionIcon(self):
         if self.junc_type == None:
             return ''
-        decoder = {'D': ['driveway-icon.svg', 'Driveway'],
-                   'R': ['roundabout-icon.svg', 'Roundabout'],
-                   'X': ['crossroads-icon.svg', 'Crossroads'],
-                   'T': ['t-intersection-icon.svg', 'T-intersection'],
-                   'Y': ['y-intersection.svg', 'Y-intersection'],
-                   'M': ['multi-leg-icon.svg', 'Multi-leg instersection']}
+        decoder = {'D': ['driveway-icon_v2.png', 'Driveway'],
+                   'R': ['roundabout-icon_v2.png', 'Roundabout'],
+                   'X': ['crossroads-icon_v2.png', 'Crossroads'],
+                   'T': ['t-intersection-icon_v2.png', 'T-intersection'],
+                   'Y': ['y-intersection_v2.png', 'Y-intersection'],
+                   'M': ['multi-leg-icon_v2.png', 'Multi-leg instersection']}
         try:
             icon = decoder[self.junc_type][0]
             title = decoder[self.junc_type][1]
@@ -550,7 +563,7 @@ class nztacrash:
         'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
         's': self.__streetview__(), # The Streetview img container and call
         'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-        'e': self.weatherIcon() + self.speedLimitIcon() + self.speedingIcon() + self.intersectionIcon() + self.curveIcon(), # The environment icon imgs
+        'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon(), # The environment icon imgs
         'v': self.__vehicle_icons__(), # Vehicle icon imgs
         'i': self.get_injury_icons(), # Injury icon imgs
         'c': self.make_causes(), # Causes (formatted string)
@@ -780,7 +793,7 @@ class nztacrash:
                     'S': ['weather-snow-icon.svg','Snow'],
                     ' ': None}
         decoder2 = {'F': ['weather-frost-icon.svg','Frost'],
-                    'S': ['weather-wind-icon.svg','Strong Winds'],
+                    'S': ['05-strong-wind-weaher-icon.png','Strong Winds'],
                     ' ': None}
         if len(self.wthr_a) > 2:
             raise Exception # More than 2 weather indicators are not permitted
