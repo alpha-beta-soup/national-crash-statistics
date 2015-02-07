@@ -139,6 +139,10 @@ function injury (feature, crashStyle, crashClass) {
     if (feature.properties.h == "Christmas/New Year 2013-14") {
         crashClass = crashClass + " XmasNY2014";
     };
+    
+    if (feature.properties.ch) {
+        crashClass = crashClass + " ch";
+    };
 
     crashStyle.className = crashClass;
 

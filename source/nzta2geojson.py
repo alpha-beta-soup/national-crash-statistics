@@ -292,6 +292,74 @@ class nztacrash:
             else:
                 retdict[v] = retdict[v] + 1
         return retdict
+        
+    def get_injured_child(self,childAge=15):
+        '''
+        The CAS record has a "PEDage" property, defined as:
+            Age of any pedestrian injured. If more than one pedestrian is
+            injured, the age of the youngest pedestrian below 20 years old is
+            shown; otherwise this shows the age of the oldest pedestrian.
+        This is kinda tricky to deal with, because it is not either the "youngest"
+        or the "oldest" that is recorded, and it is only recorded for pedestrians
+        (and cyclists in another property, "CYCage").
+        
+        Thus, this method returns a Boolean indicating whether a child* has
+        been injured, on foot or on a bike. Where the maximum age of a "child"
+        is given by the `childAge` parameter.
+        '''
+        if self.pers_age1 != None and self.pers_age1 <= childAge:
+            # A child pedestrian was injred
+            return True
+        elif self.pers_age2 != None and self.pers_age2 <= childAge:
+            # A child cyclist was injured
+            return True
+        else:
+            return False
+            
+    def get_injured_child_age(self):
+        '''
+        See method self.get_injured_child().
+        This method returns the age(s) of the injured child(ren).
+        '''
+        if self.get_injured_child() == True:
+            # Either (or both) a child walking or (and) a child on a bike were
+            # injured.
+            if self.pers_age1 != None and self.pers_age2 != None:
+                # BOTH
+                youngest = min(self.pers_age1,self.pers_age2)
+            elif self.pers_age1 != None:
+                youngest = self.pers_age1
+            elif self.pers_age2 != None:
+                youngest = self.pers_age2
+            else:
+                raise Exception
+            return int(youngest)
+        else:
+            return None
+    
+    def get_injured_child_icon(self):
+        '''
+        See method self.get_injured_child().
+        This method returns the path to an icon indicating that the crash
+        involved a child, with the hover text including their age.
+        '''
+        if self.get_injured_child() == True:
+            base = './icons/injuries'
+            icon = 'child.svg'
+            age = self.get_injured_child_age()
+            if age == 1:
+                title = 'A one year old infant was harmed'
+            elif age < 13:
+                title = 'A %s year old child was harmed' % age
+            elif age >= 13 and age < 20:
+                title = 'A %s year old teenager was harmed' % age
+            else:
+                # Nothing else prepared
+                raise Exception
+            return '<img src="%s/%s" title="%s"> ' % (base,icon,title)
+        else:
+            # Return an empty string
+            return ''
     
     def __vehicle_icons__(self):
         '''Returns a series of <img> tags and paths representing icons of the 
@@ -369,6 +437,10 @@ class nztacrash:
    
     def trafficControlIcon(self):
         if self.traf_ctrl not in ['T','S','G','P']:
+            if self.traf_ctrl != None:
+                if len(self.traf_ctrl) > 1:
+                    # Only one type of control is anticipated
+                    raise Exception
             return '' # Empty string
         decoder = {'T': ['Traffic signals', 'traffic-light.png'],
             'S': ['Stop sign', 'stop-sign.png'],
@@ -563,7 +635,7 @@ class nztacrash:
         'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
         's': self.__streetview__(), # The Streetview img container and call
         'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-        'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon(), # The environment icon imgs
+        'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon(), # The environment icon imgs
         'v': self.__vehicle_icons__(), # Vehicle icon imgs
         'i': self.get_injury_icons(), # Injury icon imgs
         'c': self.make_causes(), # Causes (formatted string)
@@ -581,6 +653,7 @@ class nztacrash:
         'fg': self.fatigue, # Faitgue Boolean
         'dd': self.dickhead, # Dangerous driving Boolean
         'sp': self.speeding, # Speeding Boolean
+        'ch': self.get_injured_child(), # Child pedestrian/cyclist Boolean
         'ij': self.get_worst_injury_text()}, # f,s,m,n >> worst injury as text
         'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
         
