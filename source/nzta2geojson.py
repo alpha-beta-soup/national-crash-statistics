@@ -344,8 +344,8 @@ class nztacrash:
         involved a child, with the hover text including their age.
         '''
         if self.get_injured_child() == True:
-            base = './icons/injuries'
-            icon = 'child.svg'
+            base = './icons/other'
+            icon = 'children.png'
             age = self.get_injured_child_age()
             if age == 1:
                 title = 'A one year old infant was harmed'
