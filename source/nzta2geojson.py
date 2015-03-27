@@ -1078,19 +1078,15 @@ def get_official_holiday_periods():
     Non-injury chrases are not considered when reporting the road toll, so the
     filter on this should pre-exclude non-injury crashes.
     '''
-    hols = {'Christmas/New Year 2013-14': (datetime.datetime(2013,12,24,16), datetime.datetime(2014,1,3,4)),
-        'Christmas/New Year 2014-15': (datetime.datetime(2014,12,24,16), datetime.datetime(2015,1,5,6)),
-        'Labour Weekend 2013': (datetime.datetime(2013,10,25,16), datetime.datetime(2013,10,29,6)),
+    hols = {'Christmas/New Year 2014-15': (datetime.datetime(2014,12,24,16), datetime.datetime(2015,1,5,6)),
         'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6)),
-        'Queen\'s Birthday 2013': (datetime.datetime(2013,5,31,16), datetime.datetime(2013,6,4,6)),
         'Queen\'s Birthday 2014': (datetime.datetime(2014,5,30,16), datetime.datetime(2014,6,3,6)),
-        'Easter Holiday 2013': (datetime.datetime(2013,3,28,16), datetime.datetime(2013,4,6,6)),
         'Easter Holiday 2014': (datetime.datetime(2014,4,17,16), datetime.datetime(2014,4,22,6))}
     return hols
     
 def main(data,causes,streets,holidays):
-    global_start = datetime.date(2013,12,1)
-    global_end = datetime.date(2014,12,31)
+    global_start = datetime.date(2014,8,1)
+    global_end = datetime.date(2015,3,1)
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
     feature_collection = {"type": "FeatureCollection","features": []}
@@ -1117,8 +1113,8 @@ def main(data,causes,streets,holidays):
 
 if __name__ == '__main__':
     # Set paths
-    data = ['../data/crash-data-2014-partial.csv',
-        '../data/crash-data-2013.csv']
+    data = ['../data/crash-data-2014.csv',
+        '../data/crash-data-2015-partial.csv']
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
     holidays = get_official_holiday_periods()
