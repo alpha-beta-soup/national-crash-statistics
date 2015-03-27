@@ -127,17 +127,13 @@ function injury (feature, crashStyle, crashClass) {
     if (feature.properties.tr) {
         crashClass = crashClass + " tr";
     };
-
-    if (feature.properties.h == "Easter Holiday 2014") {
-        crashClass = crashClass + " Easter2014";
+    
+    if (feature.properties.h == "Labour Weekend 2014") {
+        crashClass = crashClass + " Labour2014";
     };
 
-    if (feature.properties.h == "Queen's Birthday 2014") {
-        crashClass = crashClass + " QB2014";
-    };
-
-    if (feature.properties.h == "Christmas/New Year 2013-14") {
-        crashClass = crashClass + " XmasNY2014";
+    if (feature.properties.h == "Christmas/New Year 2014-15") {
+        crashClass = crashClass + " XmasNY2015";
     };
     
     if (feature.properties.ch) {

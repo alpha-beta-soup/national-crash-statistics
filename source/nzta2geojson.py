@@ -1079,9 +1079,7 @@ def get_official_holiday_periods():
     filter on this should pre-exclude non-injury crashes.
     '''
     hols = {'Christmas/New Year 2014-15': (datetime.datetime(2014,12,24,16), datetime.datetime(2015,1,5,6)),
-        'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6)),
-        'Queen\'s Birthday 2014': (datetime.datetime(2014,5,30,16), datetime.datetime(2014,6,3,6)),
-        'Easter Holiday 2014': (datetime.datetime(2014,4,17,16), datetime.datetime(2014,4,22,6))}
+        'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6))}
     return hols
     
 def main(data,causes,streets,holidays):
