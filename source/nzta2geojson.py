@@ -88,11 +88,16 @@ class nztacrash:
             lon_correction = 355966
             self.easting += lon_correction
             self.northing += lat_correction
+            self.chathams = True
+        else:
+            self.chathams = False
         
         self.proj = pyproj.Proj(init='epsg:2193') # NZTM projection
         
         if self.hasLocation == True:
             self.lat, self.lon = self.proj(self.easting, self.northing, inverse=True) # Lat/lon
+            if self.chathams == True:
+                self.lon * -1
         else:
             logging.warning('Crash does not have XY location, so is not added to GeoJSON')
             self.lat, self.lon = None, None
