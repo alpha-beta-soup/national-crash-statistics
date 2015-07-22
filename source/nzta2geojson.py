@@ -1087,9 +1087,7 @@ def get_official_holiday_periods():
         'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6))}
     return hols
 
-def main(data,causes,streets,holidays):
-    global_start = datetime.date(2014,8,1)
-    global_end = datetime.date(2015,3,1)
+def main(data,causes,streets,holidays,global_start,global_end):
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
     feature_collection = {"type": "FeatureCollection","features": []}
@@ -1115,9 +1113,10 @@ def main(data,causes,streets,holidays):
         outfile.close()
 
 if __name__ == '__main__':
+    global_start = datetime.date(2000,1,1)
+    global_end = datetime.date(2015,3,31)
     # Set paths
-    start_year, end_year = 2000, 2015
-    data = ['../data/crash-data-{i}.csv'.format(i=i) if i < 2015 else '../data/crash-data-{i}-partial.csv'.format(i=i) for i in xrange(start_year, end_year + 1)]
+    data = ['../data/crash-data-{i}.csv'.format(i=i) if i < 2015 else '../data/crash-data-{i}-partial.csv'.format(i=i) for i in xrange(global_start.year, global_end + 1)]
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
     holidays = get_official_holiday_periods()
