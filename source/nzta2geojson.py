@@ -388,6 +388,7 @@ class nztacrash:
                    'P': ['moped-icon.svg', 'Moped'],
                    'S': ['bicycle-icon.svg', 'Bicycle'],
                    'O': [other, 'Miscellaneous Vehicle'],
+                   'U': [other, 'Miscellaneous Vehicle'],
                    'E': ['pedestrian-icon.svg', 'Pedestrian'],
                    'K': [other, 'Skateboard, inline skater, etc.'],
                    'Q': ['equestrian-icon.svg', 'equestrian'],
@@ -541,6 +542,7 @@ class nztacrash:
            'P': '<strong>moped rider</strong>',
            'S': '<strong>cyclist</strong>',
            'O': 'driver of the <strong>vehicle</strong> of unknown type',
+           'U': 'driver of the <strong>vehicle</strong> of unknown type',
            'E': '<strong>pedestrian</strong>',
            'K': '<strong>skater</strong>',
            'Q': '<strong>equestrian</strong>',
@@ -548,7 +550,7 @@ class nztacrash:
 
         # Keep track of the numbers of each mode we see, so the text can be formed
         # using ordinal text ('the first car', etc.)
-        modes, mode_counter = ['C','V','X','B','L','4','T','M','P','S','E','K','Q','H','O'], {}
+        modes, mode_counter = decoder.keys(), {}
         for m in modes:
             mode_counter[m] = 0 # Initially 0, gets incremented
 
@@ -668,7 +670,7 @@ class nztacrash:
         decoder = {'A': ('Overtaking and lane change', {'A': 'Pulling out or changing lane to right', 'B': 'Head on', 'C': 'Cutting in or changing lane to left', 'D': 'Lost control (overtaking vehicle)', 'E': 'Side road', 'F': 'Lost control (overtaken vehicle)', 'G': 'Weaving in heavy traffic', 'O': 'Other'}),
                  'B': ('Head on',{'A': 'On straight', 'B': 'Cutting corner', 'C': 'Swinging wide', 'D': 'Both cutting corner and swining wide, or unknown', 'E': 'Lost control on straight', 'F': 'Lost control on curve', 'O': 'Other'}),
                  'C': ('Lost control or off road (straight roads)',{'A': 'Out of control on roadway', 'B': 'Off roadway to left', 'C': 'Off roadway to right', 'O': 'Other'}),
-                 'D': ('Cornering',{'A': 'Lost control turning right', 'B': 'Lost control turning left', 'C':' Missed intersection or end of road', 'O': 'Other'}),
+                 'D': ('Cornering',{'A': 'Lost control turning right', 'B': 'Lost control turning left', 'C':'Missed intersection or end of road', 'O': 'Other'}),
                  'E': ('Collision with obstruction',{'A': 'Parked vehicle', 'B': 'Crash or broken down', 'C': 'Non-vehicular obstructions (including animals)', 'D': 'Workman\'s vehicle', 'E': 'Opening door', 'O': 'Other'}),
                  'F': ('Rear end',{'A': 'Slower vehicle', 'B': 'Cross traffic', 'C': 'Pedestrian', 'D': 'Queue', 'E': 'Signals', 'F': 'Other', 'O': 'Other'}),
                  'G': ('Turning versus same direction',{'A': 'Rear of left turning vehicle', 'B': 'Left turn side swipe', 'C': 'Stopped or turning from left side', 'D': 'Near centre line', 'E': 'Overtaking vehicle', 'F': 'Two turning', 'O': 'Other'}),
@@ -706,6 +708,7 @@ class nztacrash:
                                'S': 'bicycle',
                                'K': 'skateboard/in-line skater/etc.',
                                'O': 'other/unknown',
+                               'U': 'other/unknown',
                                'E': 'pedestrian'}
                 except KeyError:
                     return None
@@ -1023,6 +1026,9 @@ class nztacrash:
                 causecodes = retdict[vehicle]
                 for causecode in causecodes:
                     # Get the pretty explanations
+                    if causecode == '999':
+                        # This is not even recorded in the NZTA's documentation...
+                        continue
                     explanation = self.causedecoder[causecode][1] # String
                     if explanation[0] == "'":
                         # It begins with a possessive apostrophe, so add a space
@@ -1087,27 +1093,31 @@ def get_official_holiday_periods():
         'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6))}
     return hols
 
-def main(data,causes,streets,holidays,global_start,global_end):
+def get_crashes(file, causes, streets, holidays, global_start, global_end):
+    '''
+    Generates 'valid' crash records from a crash CSV
+    '''
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
+    with open(file, 'rb') as crashcsv:
+        crashreader = csv.reader(crashcsv, delimiter=',')
+        header = crashreader.next()
+        for crash in crashreader:
+            Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
+            # Only add features with a location
+            # And that are within the acceptable date range
+            if Crash.crash_date == None or Crash.hasLocation == False:
+                continue
+            if not (global_start <= Crash.crash_date <= global_end):
+                continue
+            yield Crash
+
+def main(data, causes, streets, holidays, global_start, global_end):
     feature_collection = {"type": "FeatureCollection","features": []}
     with open('../data/data.geojson', 'w') as outfile:
         for d in data: # For each CSV of source data
-            # Open and read the CSV of crash events
-            with open(d, 'rb') as crashcsv:
-                crashreader = csv.reader(crashcsv, delimiter=',')
-                header = crashreader.next()
-
-                for crash in crashreader:
-                    Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
-                    # Collect crash descriptions and locations into the feature collection
-                    # Only add features with a location
-                    # And that are within the acceptable date range
-                    if Crash.crash_date == None or Crash.hasLocation == False:
-                        continue
-                    if global_start <= Crash.crash_date <= global_end:
-                        feature_collection["features"].append(Crash.__geo_interface__())
-                crashcsv.close()
+            for crash in get_crashes(d, causes, streets, holidays, global_start, global_end):
+                feature_collection["features"].append(crash.__geo_interface__())
         # Write the geojson output
         outfile.write(json.dumps(feature_collection, separators=(',',':')))
         outfile.close()
@@ -1116,16 +1126,16 @@ if __name__ == '__main__':
     global_start = datetime.date(2000,1,1)
     global_end = datetime.date(2015,3,31)
     # Set paths
-    data = ['../data/crash-data-{i}.csv'.format(i=i) if i < 2015 else '../data/crash-data-{i}-partial.csv'.format(i=i) for i in xrange(global_start.year, global_end + 1)]
+    data = ['../data/crash-data-{i}.csv'.format(i=i) if i < 2015 else '../data/crash-data-{i}-partial.csv'.format(i=i) for i in xrange(global_start.year, global_end.year + 1)]
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
     holidays = get_official_holiday_periods()
 
     # Set up error logging
     logger = 'crash_error.log'
-    with open(logger,'w'):
+    with open(logger, 'w'):
         pass # Clear the log from previous runs
-    logging.basicConfig(filename=logger,level=logging.DEBUG)
+    logging.basicConfig(filename=logger, level=logging.DEBUG)
 
     # Run main function
-    main(data,causes,streets,holidays,global_start,global_end)
+    main(data, causes, streets, holidays, global_start, global_end)
