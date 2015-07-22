@@ -1128,4 +1128,4 @@ if __name__ == '__main__':
     logging.basicConfig(filename=logger,level=logging.DEBUG)
 
     # Run main function
-    main(data,causes,streets,holidays)
+    main(data,causes,streets,holidays,global_start,global_end)
