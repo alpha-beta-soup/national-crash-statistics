@@ -1,5 +1,5 @@
 //front page icon buttons and info button on map functionality
-$(document).ready(function(){    
+$(document).ready(function(){
 
     $("#toMap").click(function(){
 
@@ -18,7 +18,7 @@ $(document).ready(function(){
         $("#info-box-container").show();
 
     })
-    
+
     $("#close-button").click(function(){
 
         $("#info-box-container").hide();
@@ -37,7 +37,7 @@ var map = L.map('map', {
 //base map tiles, zoom and attribution
 L.tileLayer(
     //found other base maps here: http://wiki.openstreetmap.org/wiki/OpenLayers
-    'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png' //toner stamen 
+    'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png' //toner stamen
     , {
     maxZoom: 18,
     minZoom: 5,
@@ -57,23 +57,23 @@ var crashClass = ''
 
 //conditional styling by injury type
 function injury (feature, crashStyle, crashClass) {
-    
+
     if (feature.properties.ij == 'f') {
         crashStyle.fillColor = "#ff1a1a";
         crashClass = crashClass + "f";
-    
+
     } else if (feature.properties.ij == 's') {
         crashStyle.fillColor = "#ff821a";
         crashClass = crashClass + "s";
-    
+
     } else if (feature.properties.ij == 'm') {
         crashStyle.fillColor = "#a7ee18";
         crashClass = crashClass + "m";
-    
+
     } else if (feature.properties.ij == 'n') {
         crashStyle.fillColor = "#15CC15";
         crashClass = crashClass + "n";
-    
+
     };
 
     if (feature.properties.to) {
@@ -90,8 +90,8 @@ function injury (feature, crashStyle, crashClass) {
 
     if (feature.properties.cp) {
         crashClass = crashClass + " cp";
-    };   
-    
+    };
+
     if (feature.properties.fg) {
         crashClass = crashClass + " fg";
     };
@@ -99,7 +99,7 @@ function injury (feature, crashStyle, crashClass) {
     if (feature.properties.sp) {
         crashClass = crashClass + " sp";
     };
-    
+
     if (feature.properties.dd) {
         crashClass = crashClass + " dd";
     };
@@ -127,7 +127,7 @@ function injury (feature, crashStyle, crashClass) {
     if (feature.properties.tr) {
         crashClass = crashClass + " tr";
     };
-    
+
     if (feature.properties.h == "Labour Weekend 2014") {
         crashClass = crashClass + " Labour2014";
     };
@@ -135,7 +135,7 @@ function injury (feature, crashStyle, crashClass) {
     if (feature.properties.h == "Christmas/New Year 2014-15") {
         crashClass = crashClass + " XmasNY2015";
     };
-    
+
     if (feature.properties.ch) {
         crashClass = crashClass + " ch";
     };
@@ -146,7 +146,7 @@ function injury (feature, crashStyle, crashClass) {
 }
 
 //pop-up text function different if other parties involved. Bound to when events are retrieved from data
-function popUpText (row, layer) {      
+function popUpText (row, layer) {
     return '<span class="crash-location">' + row.properties.t + "</span>" +
            '<span class="date">' + row.properties.d + ", " + row.properties.dt + "</span>" +
            '<span class="time">' + row.properties.ti + '</span>' +
@@ -155,7 +155,7 @@ function popUpText (row, layer) {
            '<span><div id="streetview-container">' + row.properties.s+ '</div></span>' +
            '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' +
            '<span class="causes-text">' + row.properties.c + '</span>'
-};        
+};
 
 //path to the crash geojson from nzta2geojson.py
 var crashes = "./data/data.geojson"
@@ -163,20 +163,20 @@ var crashes = "./data/data.geojson"
 //create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
 var layers = {};
 
-//layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] = 
+//layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] =
 
 new L.GeoJSON.AJAX(crashes,{
-    
+
     pointToLayer: function(feature, latlng) {
-            
+
         return new L.CircleMarker(latlng, injury(feature, crashStyle, crashClass))
 
     },
-    
+
     onEachFeature: function(feature, layer) {
-        
+
         layer.bindPopup(popUpText(feature), {offset: L.point(0, -2), autoPanPadding: L.point(0, 10)})
-    
+
     },
 
     filter: function(feature, layer) {
@@ -197,11 +197,11 @@ $(document).ready(function(){
         $(function () {
 
             $('#allCheck').on('click', function () {
-        
+
                 $(this).closest('fieldset').find(':checkbox').prop('checked', false);
-            
+
             });
-        
+
         });
 
         var crashClassSelected = 'path';
@@ -209,9 +209,9 @@ $(document).ready(function(){
         $(crashClassSelected).css('display', 'none');
 
         $("#checkArray input[type=checkbox]").each(
-            
+
             function() {
-            
+
                 if($(this).is(':checked')) {
 
                     crashClassSelected = crashClassSelected + $(this).val();

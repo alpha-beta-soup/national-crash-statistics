@@ -17,19 +17,19 @@ def empty(string):
     if string in ['', ' ', None]:
         return True
     return False
-    
+
 def formatInteger(integerstring):
     if empty(integerstring):
         return None
     return int(integerstring)
-    
+
 def formatString(string):
     # NOTE: be careful stripping encoded strings, which may have empty values
     # representing unknown values for particular values
     if empty(string):
         return None
     return string
-    
+
 def formatDate(datestring):
     '''Returns a datetime.date object when given a date as a string of the form
     DD/MM/YYYY (e.g. 30/01/2014)'''
@@ -59,15 +59,20 @@ def formatNiceTime(time):
         return ''
     t = str(time).split(":")
     return "%s:%s" % (t[0],t[1])
-    
+
 def formatCrashTime(crashtime, dateobj):
     '''Returns a datetime.time object when given a time as a string from the
     `row`. These are purportedly recorded "in 24-hour time", but are lacking
     leading zeros in the dataset, which is addressed here.'''
     if empty(crashtime):
         return None
-    return datetime.datetime.strptime(str(dateobj)+" "+'0'*(4-len(crashtime))+crashtime,'%Y-%m-%d %H%M').time()
-    
+    dt = str(dateobj)
+    ct = '0'*(4-len(crashtime)) + crashtime
+    if ct.strip() == '':
+        return datetime.datetime.strptime('{}'.format(dt), '%Y-%m-%d').time()
+    else:
+        return datetime.datetime.strptime('{} {}'.format(dt, ct.strip()), '%Y-%m-%d %H%M').time()
+
 def check_offroad(crash_road):
     '''Applies a check for 'Z': the flat for offroad indicator, and corrects
     strings representing these places so that they're a bit nicer to read.'''
@@ -93,7 +98,7 @@ def check_offroad(crash_road):
         # Join it back up to a proper description
         crash_road = ' '.join(crash_road)
     return crash_road
-    
+
 def streetExpander(road,streetdecoder):
     '''Input: 'St John St' (for example)
     Output: St John Street'''
@@ -125,7 +130,7 @@ def formatNiceRoad(road):
     BCH = beach
     DWY = driveway
     DWAY = driveway'''
-    
+
     def striplinearref(linref):
         '''Fixes references to State Highways, by removing the linear referencing information'''
         if '/' not in linref:
@@ -154,7 +159,7 @@ def formatNiceRoad(road):
                     linref[i] = "State Highway %s" % r.split('/')[0]
             SH = ' '.join(linref)
         return SH
-        
+
     def expander(road):
         '''Takes `road' (street of crash as ordered list of strings) and runs
         them past checks for acronyms and abbreviations known to exist in the data.
@@ -207,7 +212,7 @@ def formatNiceRoad(road):
             road[i] = rd
         # Join road to a single string and return
         return ' '.join(road)
-        
+
     return expander(striplinearref(road).split(' '))
 
 def formatStringList(listofstrings, delim=None):
@@ -224,14 +229,14 @@ def formatStringList(listofstrings, delim=None):
         return [str(s) for s in listofstrings.split(delim) if not empty(s)]
     elif delim == None:
         return list(listofstrings)
-        
+
 def round_down(integer, base):
     '''Rounds an `integer` down to the nearest `base`
     E.g. round_down(19,10) >>> 10
          round_down(19,5)  >>> 15
          round_down(10,10) >>> 10'''
     return integer - (integer % base)
-    
+
 def grammar(singular, plural, integer):
     '''Returns the string `singular` if integer == 1; else it returns `plural`
     if integer > 1.

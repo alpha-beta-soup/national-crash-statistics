@@ -5,15 +5,8 @@
 =================
 A Python script to read the New Zealand Transport Agency crash data into a
 GeoJSON, to be styled and filtered for presentation in a Leaflet map.
-
-Depends
-=======
-pyproj
-geojson
 '''
 
-import pyproj
-import geojson
 import json
 import csv
 import string
@@ -21,7 +14,15 @@ import generalFunctions as genFunc
 import re
 import logging
 import datetime
-     
+import pytz
+
+import pyproj
+import geojson
+import ephem
+import mx.DateTime
+
+import moon
+
 class nztacrash:
     '''A crash recorded by NZTA'''
     def __init__(self, row, causedecoder, streetdecoder, holidays):
@@ -31,20 +32,20 @@ class nztacrash:
         appropriate values: dates are no longer strings, they are datetimes,
         empty values are no longer ' ' but actual Nonetypes. One day government
         agencies will give out SQLite files by default. Until then...
-        
+
         Also requires the parameter `causedecoder`, which is the output of
         the function causeDecoderCSV(). This should be the output of this function,
         to avoid running it each tim an nztacrash object is instantiated.
         '''
         # Output of causeDecoderCSV()
         self.causedecoder = causedecoder
-        
+
         # Output of streetDecoderCSV()
         self.streetdecoder = streetdecoder
-        
+
         # Official Holiday Periods
         self.holidays = holidays
-        
+
         # Original data
         self.row = row
         self.tla_name = genFunc.formatString(row[0])
@@ -75,12 +76,12 @@ class nztacrash:
         self.crash_min_cnt = genFunc.formatInteger(row[24]) # Number of people with minor injuries
         self.pers_age1 = genFunc.formatInteger(row[25])
         self.pers_age2 = genFunc.formatInteger(row[26])
-        
+
         # Spatial information
         self.easting = genFunc.formatInteger(row[27]) # NZTM
         self.northing = genFunc.formatInteger(row[28]) # NZTM
         self.hasLocation = self.get_hasLocation()
-        
+
         # Approximate correction for Chatham Islands, which NZTA has offset
         if self.tla_name == 'Chatham Islands County' and self.hasLocation:
              # In units of the projection system (NZTM)
@@ -91,11 +92,11 @@ class nztacrash:
             self.chathams = True
         else:
             self.chathams = False
-        
+
         self.proj = pyproj.Proj(init='epsg:2193') # NZTM projection
-        
+
         if self.hasLocation == True:
-            self.lat, self.lon = self.proj(self.easting, self.northing, inverse=True) # Lat/lon
+            self.lon, self.lat = self.proj(self.easting, self.northing, inverse=True) # Lon/lat
             if self.chathams == True:
                 self.lon * -1
         else:
@@ -104,7 +105,7 @@ class nztacrash:
 
         # Google Streetview API key
         self.api = open('google-streetview-api-key','r').read()
-        
+
         # Derived and associated data
         self.keyvehicle = self.getKeyVehicle(decode=False)
         self.keyvehicle_decoded = self.getKeyVehicle(decode=True)
@@ -118,7 +119,8 @@ class nztacrash:
         self.light_decoded = self.decodeLight()
         self.wthr_a_decoded = self.decodeWeather()
         self.junc_type_decoded = self.decodeJunction()
-        
+        self.daytime = self.get_daylight()
+
         # Some booleans (good for filters)
         if self.crash_fatal_cnt > 0:
             self.fatal = True
@@ -140,7 +142,7 @@ class nztacrash:
             self.injuries_none = True
         else:
             self.injuries_none = False
-            
+
         # Now assign booleans to identify the worst (and only the worst) injury
         self.worst_fatal = False # Default
         self.worst_severe = False # Default
@@ -156,11 +158,11 @@ class nztacrash:
                     self.worst_minor = True
         if self.injuries_none:
             self.worst_none = True
-            
+
         # Official holiday period information
         self.holiday = self.get_holiday()
         self.holiday_name = self.get_holiday_period()
-        
+
         # Party involvement
         self.pedestrian = self.get_mode_involvement(['E','K','H']) # Pedestrian, skater, wheeled pedestrian
         self.cyclist = self.get_mode_involvement(['S']) # Cyclist
@@ -168,7 +170,7 @@ class nztacrash:
         self.taxi = self.get_mode_involvement(['X']) # Taxi/taxi van
         self.truck = self.get_mode_involvement(['T']) # Truck
         self.car = self.get_mode_involvement(['C','V','4']) # Car, van/ute, SUV
-        
+
         # Roles and factors
         self.tourist = self.get_factor_involvement(['404','731'])
         self.alcohol = self.get_factor_involvement(['101','102','103','104','105'])
@@ -177,7 +179,9 @@ class nztacrash:
         self.fatigue = self.get_factor_involvement(['410','411','412','413','414','415'])
         self.dickhead = self.get_factor_involvement(['430','431','432','433','434','510','511','512','513','514','515','516','517'])
         self.speeding = self.get_factor_involvement(['110','111','112','113','114','115','116','117'])
-        
+
+        self.get_daylight()
+
     def get_hasLocation(self):
         if self.easting in [0,None] or self.northing in [0,None]:
             # If either coordinate is invalid, accident does not have location
@@ -185,7 +189,7 @@ class nztacrash:
             return False
         else:
             return True
-       
+
     def get_crash_road(self):
         crash_road = genFunc.formatString(self.row[1])
         if crash_road != None and crash_road[0:3] != 'SH ':
@@ -196,7 +200,7 @@ class nztacrash:
         crash_road = genFunc.check_offroad(crash_road)
         crash_road = genFunc.streetExpander(crash_road,self.streetdecoder)
         return crash_road
-        
+
     def get_crash_dow(self):
         '''Returns a full text representation of the English day of the week,
         e.g. "Monday"'''
@@ -204,16 +208,63 @@ class nztacrash:
             return self.crash_date.strftime("%A")
         else:
             return None
-    
-    def get_crash_datetime(self):
+
+    def get_crash_datetime(self, as_utc=False):
         '''Returns a datetime.datetime object expressing the date and time of the
         crash, if the crash has both of those attributes. If it does not, this
-        returns None'''
+        returns None.
+
+        Note, the original data has time in Pacific/Auckland timezone, which
+        means at daylight savings transition periods, the UTC time is
+        ambiguous for one hour. UTC time can be returned with the as_utc flag.
+        '''
         if self.crash_date != None and self.crash_time != None:
-            return datetime.datetime.combine(self.crash_date,self.crash_time)
+            local_dt = datetime.datetime.combine(self.crash_date, self.crash_time)
         else:
             return None
-   
+        if not as_utc:
+            return local_dt
+        else:
+            return pytz.timezone('Pacific/Auckland').localize(local_dt, is_dst=True).astimezone(pytz.utc)
+
+    def get_daylight(self, twilight='civil', elev=0, temp=15.0, pressure=1010):
+        '''Returns boolean indicating whether the accident occurred at a time
+        when there was sunlight.'''
+        assert twilight in ['civil', 'nautical', 'astronomical']
+        if self.hasLocation is False or self.crash_datetime is None:
+            return
+        twilights = {
+            'civil': -6,
+            'nautical': -12,
+            'astronomical': -18
+        }
+        observer = ephem.Observer()
+        observer.date = self.get_crash_datetime(as_utc=True).strftime(
+            '%Y-%m-%d %H:%M:%S'
+        )
+        observer.lon = str(self.lon)
+        observer.lat = str(self.lat)
+        observer.elev = elev
+        observer.pressure = pressure
+        observer.temp = temp
+        observer.horizon = str(twilights[twilight])
+
+        next_sunrise = datetime.datetime.strptime(str(
+            observer.next_rising(ephem.Sun(), use_center=True)
+        ), '%Y/%m/%d %H:%M:%S').replace(tzinfo=pytz.UTC)
+        next_sunset = datetime.datetime.strptime(str(
+            observer.next_setting(ephem.Sun(), use_center=True)
+        ), '%Y/%m/%d %H:%M:%S').replace(tzinfo=pytz.UTC)
+
+        return next_sunset < next_sunrise
+
+    def get_moon(self):
+        '''Returns a Moon when the accident occurred (see moon.py for
+        properties and methods)'''
+        if self.crash_datetime is None:
+            return
+        return moon.MoonPhase(mx.DateTime.DateTimeFrom(self.crash_datetime))
+
     def get_holiday(self):
         '''Returns a Boolean indicating whether the accident involved a severe
         injury AND occured during an official holiday period.'''
@@ -226,7 +277,7 @@ class nztacrash:
             if start <= self.crash_datetime <= end:
                 return True
         return False
-        
+
     def get_holiday_period(self):
         '''If self.get_holiday is True, then this function returns the name of
         the holiday period in which it occurred, otherwise it returns an empty
@@ -237,7 +288,7 @@ class nztacrash:
             start, end = self.holidays[hp][0], self.holidays[hp][1]
             if start <= self.crash_datetime <= end:
                 return hp
-     
+
     def get_spd_lim(self):
         '''Speed limit can either be a number (integer is returned) or a character,
         as both 'U' and 'LSZ' are also valid speed limits.'''
@@ -246,7 +297,7 @@ class nztacrash:
         except:
             spd_lim = genFunc.formatString(self.row[21]) # String
         return spd_lim
-        
+
     def get_side_road(self):
         side_road = genFunc.formatString(self.row[5])
         if side_road != None and side_road[0:3] != 'SH ':
@@ -257,11 +308,11 @@ class nztacrash:
         side_road = genFunc.check_offroad(side_road)
         side_road = genFunc.streetExpander(side_road,self.streetdecoder)
         return side_road
-        
+
     def get_mode_involvement(self, mode_list):
         '''Returns a boolean indicating whether the key vehicle or any of the
         secondary vehicles were of the same type of vehicle/person as any of the
-        modes supplies in mode_list (a list of modes). Used to determine if a 
+        modes supplies in mode_list (a list of modes). Used to determine if a
         pedestrian was involved in an accident, for example.'''
         if self.keyvehicle in mode_list:
             return 1
@@ -270,7 +321,7 @@ class nztacrash:
                 if m in mode_list:
                     return 1
         return 0
-            
+
     def get_factor_involvement(self, factor_list):
         '''Returns a boolean indicating whether any of the 3-digit factor codes
         listed in the factor_list parameter (list of strings) have been cited to
@@ -283,7 +334,7 @@ class nztacrash:
             else:
                 pass
         return 0
-        
+
     def get_number_of_vehicles(self):
         '''Returns integers representing the numbers of the different types of vehicles
         involved in the accident. Returns None if this information cannot be obtained'''
@@ -297,7 +348,7 @@ class nztacrash:
             else:
                 retdict[v] = retdict[v] + 1
         return retdict
-        
+
     def get_injured_child(self,childAge=15):
         '''
         The CAS record has a "PEDage" property, defined as:
@@ -307,7 +358,7 @@ class nztacrash:
         This is kinda tricky to deal with, because it is not either the "youngest"
         or the "oldest" that is recorded, and it is only recorded for pedestrians
         (and cyclists in another property, "CYCage").
-        
+
         Thus, this method returns a Boolean indicating whether a child* has
         been injured, on foot or on a bike. Where the maximum age of a "child"
         is given by the `childAge` parameter.
@@ -320,7 +371,7 @@ class nztacrash:
             return True
         else:
             return False
-            
+
     def get_injured_child_age(self):
         '''
         See method self.get_injured_child().
@@ -341,7 +392,7 @@ class nztacrash:
             return int(youngest)
         else:
             return None
-    
+
     def get_injured_child_icon(self):
         '''
         See method self.get_injured_child().
@@ -365,9 +416,9 @@ class nztacrash:
         else:
             # Return an empty string
             return ''
-    
+
     def __vehicle_icons__(self):
-        '''Returns a series of <img> tags and paths representing icons of the 
+        '''Returns a series of <img> tags and paths representing icons of the
         vehicles and people involved in the accident.'''
         vehicles = self.get_number_of_vehicles()
         if vehicles in [None,'',' ']:
@@ -400,7 +451,7 @@ class nztacrash:
             multiplier = vehicles[v]
             ret += '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
         return ret
-    
+
     def get_worst_injury_text(self):
         if self.worst_fatal:
             return 'f' # Fatal
@@ -412,7 +463,7 @@ class nztacrash:
             return 'n' # no injury
         else:
             return '' # no data
-        
+
     def get_injury_icons(self):
         if self.injuries_none:
             return ''
@@ -427,7 +478,7 @@ class nztacrash:
         ret += add_img('Severe injury','Severe injury',icons['severe'],self.crash_sev_cnt)
         ret += add_img('Minor injury','Minor injury',icons['minor'],self.crash_min_cnt)
         return ret
-    
+
     def speedingIcon(self):
         '''If speeding was a factor, returns the HTML <img> tag for the speeding icon,
         else returns an empty string.'''
@@ -439,7 +490,7 @@ class nztacrash:
             return '<img src="%s/%s" title="%s">' % (base,icon,title)
         else:
             return ''
-   
+
     def trafficControlIcon(self):
         if self.traf_ctrl not in ['T','S','G','P']:
             if self.traf_ctrl != None:
@@ -457,7 +508,7 @@ class nztacrash:
         title = decoder[self.traf_ctrl][0]
         icon = '%s/%s' % (base,decoder[self.traf_ctrl][1])
         return '<img src="%s" title="%s">' % (icon,title)
-            
+
     def speedLimitIcon(self):
         if self.spd_lim in ['','U']:
             # No information, or unknown
@@ -473,8 +524,8 @@ class nztacrash:
         base = './icons/speed-limits'
         title = alt
         icon = '%s/limit_%s.svg' % (base,self.spd_lim)
-        return '<img src="%s" title="%s">' % (icon,title)   
-        
+        return '<img src="%s" title="%s">' % (icon,title)
+
     def curveIcon(self):
         if self.road_curve in [None,'R']:
             return '' # Empty string for NULL or straight
@@ -487,7 +538,7 @@ class nztacrash:
         title = decoder[self.road_curve][0]
         icon = '%s/%s' % (base,decoder[self.road_curve][1])
         return '<img src="%s" title="%s">' % (icon,title)
-                
+
     def intersectionIcon(self):
         if self.junc_type == None:
             return ''
@@ -505,8 +556,31 @@ class nztacrash:
         base = './icons/junctions'
         icon = '%s/%s' % (base, icon)
         return '<img src="%s" title="%s">' % (icon,title)
-              
-    def __streetview__(self):
+
+    def __streetview__(self, w=300, h=200, fov=120, pitch=-15, alt='Click to go to Google Streetview', title=None):
+        '''Creates the Google Streetview API request
+        fov : Field of view, max 120
+        pitch : Up or down angle relative to the Streetview vehicle'''
+        # # TODO fov
+        # if self.hasLocation == False:
+        #     return None
+        # link = 'http://maps.google.com/?cbll={lat},{lon}&cbp=12,20.09,,0,5&layer=c'.format(
+        #     lon=self.lon,
+        #     lat=self.lat
+        # )
+        # if title is None:
+        #     title = alt
+        # anchor = '<a href="{link}" title="{title}" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size={w}x{h}&location={lat},{lon}&pitch={pitch}&key={key}"></a>'.format(
+        #     link=link,
+        #     title=title,
+        #     w=w,
+        #     h=h,
+        #     lon=self.lon,
+        #     lat=self.lat,
+        #     pitch=pitch,
+        #     key=self.api
+        # )
+        # return anchor
         '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
             return None
@@ -518,8 +592,8 @@ class nztacrash:
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
         alt = 'Click to go to Google Streetview'
         title = alt
-        return '<a href="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,title,w,h,self.lon,self.lat,pitch,self.api)
-    
+        return '<a href="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,title,w,h,self.lat,self.lon,pitch,self.api)
+
     def make_causes(self):
         '''
         Returns a nice, readable string of the "factors and roles" of the accident
@@ -528,7 +602,7 @@ class nztacrash:
         vehicles_dict = {}
         for i,v in enumerate(string.ascii_uppercase):
             vehicles_dict[v] = i # {'A': 0, 'B': 1, 'C': 2}
-            
+
         # Map the modes to a text about tbe kind of controller
         decoder = {'C': 'driver of the <strong>car</strong>',
            'V': 'driver of the <strong>van/ute</strong>',
@@ -541,25 +615,25 @@ class nztacrash:
            'P': '<strong>moped rider</strong>',
            'S': '<strong>cyclist</strong>',
            'O': 'driver of the <strong>vehicle</strong> of unknown type',
-           'E': '<strong>pedestrian</strong>', 
+           'E': '<strong>pedestrian</strong>',
            'K': '<strong>skater</strong>',
            'Q': '<strong>equestrian</strong>',
            'H': '<strong>wheeled pedestrian</strong>'}
-        
+
         # Keep track of the numbers of each mode we see, so the text can be formed
         # using ordinal text ('the first car', etc.)
         modes, mode_counter = ['C','V','X','B','L','4','T','M','P','S','E','K','Q','H','O'], {}
         for m in modes:
             mode_counter[m] = 0 # Initially 0, gets incremented
-        
+
         def find_mode(v,vehicle_counts,mode_counter):
             '''Takes the vehicle code 'A', 'B', etc. and returns the mode of that
             party (e.g. 'car', 'truck')'''
-            
+
             if v == 'Environment' or v == '+':
                 # The environment is not a mode
                 return None
-            
+
             # Expand the list of modes involved, in order 'A' ... 'Z'
             if self.secondaryvehicles_decoded == None:
                 vehicle_map = [self.keyvehicle_decoded]
@@ -568,27 +642,27 @@ class nztacrash:
                 index = vehicles_dict[v] # Gets the index position to insert the vehicle
                 vehicle_map = [self.keyvehicle_decoded] + self.secondaryvehicles_decoded[:]
                 vehicle_map_coded = [self.keyvehicle] + self.secondaryvehicles[:]
-                
+
             # Make a version of the mode to included in the causes
             # This ensures that multiple versions of the same mode get labelled
             # appropriately
             if vehicles_dict[v] > len(vehicle_map)-1:
                 # There are more parties involved than vehicles listed
-                logging.warning('There are more given parties than listed vehicles, so cause attribution has not been conducted: Crash ID %s' % self.crash_id) 
+                logging.warning('There are more given parties than listed vehicles, so cause attribution has not been conducted: Crash ID %s' % self.crash_id)
                 return None
-                
+
             mode_v = vehicle_map_coded[vehicles_dict[v]]
             mode = vehicle_map[vehicles_dict[v]]
             # Increase the mode counter appropriately
             mode_counter[mode_v] = mode_counter[mode_v] + 1
-            
+
             if vehicle_counts[mode_v] == 1:
                 # Then there is only one type of this vehicle involved
                 the_mode = 'The %s' % decoder[mode_v]
             elif vehicle_counts[mode_v] > 1:
                 # Then there is multiple instances of this type of vehicle involved
                 the_mode = 'The %s' % decoder[mode_v].replace('<strong>', '<strong>%s ' % genFunc.ordinal(mode_counter[mode_v]))
-  
+
             # Finally, replace '1st' with 'first', etc.
             ordinal_text = {'1st':'first','2nd':'second','3rd':'third',
                 '4th':'fourth','5th':'fifth','6th':'sixth',
@@ -597,9 +671,9 @@ class nztacrash:
                 if s in the_mode:
                     the_mode = the_mode.replace(s,ordinal_text[s])
             return (the_mode, mode_counter)
-            
+
         vehicle_counts = self.get_number_of_vehicles() # {'C': 1, 'V': 1}
-        
+
         the_text = ''
         causesdict_decoded_sorted = self.causesdict_decoded.keys()
         causesdict_decoded_sorted.sort()
@@ -623,15 +697,15 @@ class nztacrash:
                     the_text += '%s %s.<br>' % (mode,r[1])
         #raw_input("pause")
         return the_text
-    
+
     def __geo_interface__(self):
-        '''
+        '''geojson
         Returns a geojson object representing the point.
         '''
         if self.hasLocation is False:
             # Can't add it to the map if it does not have a location
             return None
-            
+
         return {'type': 'Feature',
         'properties': {
         't': self.tla_name, # Name of Territorial Local Authority
@@ -640,7 +714,7 @@ class nztacrash:
         'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
         's': self.__streetview__(), # The Streetview img container and call
         'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-        'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon(), # The environment icon imgs
+        'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon() + self.moonIcon(), # The environment icon imgs
         'v': self.__vehicle_icons__(), # Vehicle icon imgs
         'i': self.get_injury_icons(), # Injury icon imgs
         'c': self.make_causes(), # Causes (formatted string)
@@ -659,9 +733,11 @@ class nztacrash:
         'dd': self.dickhead, # Dangerous driving Boolean
         'sp': self.speeding, # Speeding Boolean
         'ch': self.get_injured_child(), # Child pedestrian/cyclist Boolean
-        'ij': self.get_worst_injury_text()}, # f,s,m,n >> worst injury as text
-        'geometry': {'type': 'Point', 'coordinates': (self.lat, self.lon)}}
-        
+        'ij': self.get_worst_injury_text(), # f,s,m,n >> worst injury as text
+        'dy': self.daytime # Daytime
+        },
+        'geometry': {'type': 'Point', 'coordinates': (self.lon, self.lat)}}
+
     def decodeMovement(self):
         '''Decodes self.mvmt into a human-readable form.
         Movement applies to left and right hand bends, curves, or turns.'''
@@ -684,7 +760,7 @@ class nztacrash:
             return (decoder[self.mvmt[0]][0], decoder[self.mvmt[0]][1][self.mvmt[1]])
         except KeyError:
             return None
-        
+
     def getKeyVehicle(self, decode=False):
         '''Returns the key vehicle code (or the decoded value), which is one part
         of self.vehicles'''
@@ -712,7 +788,7 @@ class nztacrash:
                 return decoder[code]
         else:
             return None
-    
+
     def getKeyVehicleMovement(self, decode=False):
         '''Returns the key vehicle movement (or the decoded value), which is the
         second part of self.vehicles'''
@@ -729,7 +805,7 @@ class nztacrash:
                         return None
                 except KeyError:
                     return None
-                
+
     def getSecondaryVehicles(self, decode=False):
         '''Returns the secondary vehicle type codes (or the decoded values)
         as a list of strings'''
@@ -762,20 +838,20 @@ class nztacrash:
         else:
             # There were no other vehicles
             return None
-            
+
     def getObjectsStruck(self, decode=False):
         '''Returns the objects struck as a list, or their decoded value, also
         as a list.
-        
+
         During a crash the vehicle(s) involved may strike objects either in the
         roadway or on the roadside. Since the same vehicle might not have
         struck all the objects involved, each object is linked to the vehicle
         that hit it, but this is not shown on the listing.
-        
+
         The coded crash listings show only the first three objects struck. The
         same object type may appear twice but only if it has been struck by
         different vehicles.
-        
+
         Note:
         If one vehicle strikes the same object type more than once (i.e. 2
         parked cars) then only the first is coded.
@@ -810,7 +886,7 @@ class nztacrash:
             return [decoder[o] for o in self.objects_struck]
         except KeyError:
             return None
-            
+
     def get_crashroad(self):
         if self.crash_intsn == 'I':
             # The crash happened at an intersection
@@ -823,7 +899,7 @@ class nztacrash:
                 # Only one road provided
                 crashroad = self.crash_road
         return crashroad
-        
+
     def decodeLight(self):
         '''Takes self.light (a list of strings) and applies a decoder to it,
         returning a list of strings that are human-readable.'''
@@ -837,7 +913,7 @@ class nztacrash:
                     'N': 'No street lights present',
                     ' ': None}
         return [decoder1[self.light[0]], decoder2[self.light[1]]]
-       
+
     def decodeWeather(self):
         '''Takes self.wthr_a (a list of strings) and applies a decoder to it,
         returning a list of strings that are human-readable.'''
@@ -854,12 +930,27 @@ class nztacrash:
             return [decoder1[self.wthr_a[0]], decoder2[self.wthr_a[1]]]
         except KeyError:
             return None
-    
+
+    def moonIcon(self, night_only=True):
+        '''Returns an SVG icon representing the phase of the moon when the
+        accident occurred. By default returns empty string if accident occured
+        during daylight.'''
+        if (night_only and not self.daytime) and self.crash_datetime is not None:
+            moon = self.get_moon()
+            base = './icons/moon'
+            return '<img src="{base}/m{phase}.svg" title="{title}">'.format(
+                base=base,
+                phase=int(moon.phase * 26 + 0.5),
+                title=moon.phase_text + ' moon'
+            )
+        else:
+            return ''
+
     def weatherIcon(self):
         '''Takes self.wthr_a (a list of strings) and applies a decoder to it,
         return a list of strings that represent paths to PNG icons that represent
         the weather.'''
-        if self.light[0] in ['T', 'D']: 
+        if self.light[0] in ['T', 'D']:
             # If not daytime
             light = 'Night'
         else:
@@ -911,11 +1002,11 @@ class nztacrash:
         if icon2 != None:
             ret += '<img src="%s/%s" title="%s">' % (base,icon2,title2)
         return ret
-        
+
     def decodeJunction(self):
         '''Takes self.junc_type (a single-character string) and applies a decoder to
         it, returning a human-readable string.
-        
+
         Note:
         When one of the vehicles involved is attempting to enter or leave a
         driveway at an intersection location, the driveway code takes
@@ -932,25 +1023,25 @@ class nztacrash:
             return decoder[self.junc_type]
         except KeyError:
             return None
-        
+
     def projectedpt(self, target=pyproj.Proj(init='epsg:3728')):
         '''Takes the original NZTM point coordinates, and transforms them into
         a `target` pyproj.Proj() projected coordinate system, returning the
         crash location as a tuple (X,Y) (Easting,Northing)
-        
+
         Example `target`: pyproj.Proj(init='epsg:3857') (Web Mercator) (Default)
         '''
         if self.easting != None and self.northing != None:
             xt, yt = pyproj.transform(self.proj, target, self.easting, self.northing)
             return (xt, yt)
-            
+
     def getCauses(self, decode=False):
         '''Returns the causes of the crash, and the vehicle to which the (in)action
         is ascribed to as a dictionary in the following structure:
         {'A': [(Subject, 'Cause1'), (Subject, 'Cause2')],
          'B': [(Subject, 'Cause3'],
          'Environment': [(Subject, 'Cause4')]}
-         
+
         <Subject> in the above indicates if the cause (which is written in a nice,
         grammatical structure, requires a subject to be used at the beginning of
         the string in order to be grammatical. If False, the string must be used
@@ -958,9 +1049,9 @@ class nztacrash:
         to the actions of a particular person, or it is better presented as a
         generality. This is an interpretation of the original data. Previous versions
         of this function retained the exact text used in the reports. These have
-        not been opted for because they were difficult for users to read and 
+        not been opted for because they were difficult for users to read and
         understand.
-         
+
         If decode == False: codes are used in the returned dictionary.
         Else if decode == True: the codes are converted to human-readable string
         values in the returned dictionary.
@@ -968,8 +1059,8 @@ class nztacrash:
         for vehicle 2, etc., and 'Environment' for the factors not attributed
         to any particular vehicle. 'A', 'B' etc. only exist if appropriate,
         but 'Environment' always exists, but with None if there are no
-        environmental factors. 
-         
+        environmental factors.
+
         The factor codes are a set of three digit numerical codes that identify
         reasons why the crash occurred.
         They are grouped into related categories, (see Appendix 2). These
@@ -1034,7 +1125,7 @@ class nztacrash:
                         decodedretdict[vehicle].append((subject, explanation))
             retdict = decodedretdict
         return retdict
-    
+
 def causeDecoderCSV(data):
     '''
     Reads a CSV, dervied from a PDF (!) of crash cause codes and their text
@@ -1074,21 +1165,22 @@ def streetDecoderCSV(data):
             decode = coderow[0]
             retdict[code] = decode
     return retdict
-    
+
 def get_official_holiday_periods():
     '''
     See: http://www.transport.govt.nz/research/roadtoll/#holiday
     (#Holiday road toll information)
-    
+
     Non-injury chrases are not considered when reporting the road toll, so the
     filter on this should pre-exclude non-injury crashes.
     '''
     hols = {'Christmas/New Year 2014-15': (datetime.datetime(2014,12,24,16), datetime.datetime(2015,1,5,6)),
         'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6))}
     return hols
-    
+
 def main(data,causes,streets,holidays):
-    global_start = datetime.date(2014,8,1)
+    # TODO config yaml
+    global_start = datetime.date(2000,1,1)
     global_end = datetime.date(2015,3,1)
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
@@ -1099,7 +1191,7 @@ def main(data,causes,streets,holidays):
             with open(d, 'rb') as crashcsv:
                 crashreader = csv.reader(crashcsv, delimiter=',')
                 header = crashreader.next()
-                
+
                 for crash in crashreader:
                     Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
                     # Collect crash descriptions and locations into the feature collection
@@ -1115,20 +1207,19 @@ def main(data,causes,streets,holidays):
         outfile.close()
 
 if __name__ == '__main__':
+    # TODO specify paths with os.path
     # Set paths
-    data = ['../data/crash-data-2014.csv',
-        '../data/crash-data-2015-partial.csv']
+    data = ['../data/crash-data-{}.csv'.format(y) for y in range(2000,2015)]
+    data.append('../data/crash-data-2015-partial.csv')
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
     holidays = get_official_holiday_periods()
-    
+
     # Set up error logging
     logger = 'crash_error.log'
     with open(logger,'w'):
         pass # Clear the log from previous runs
     logging.basicConfig(filename=logger,level=logging.DEBUG)
-    
+
     # Run main function
     main(data,causes,streets,holidays)
-
-
