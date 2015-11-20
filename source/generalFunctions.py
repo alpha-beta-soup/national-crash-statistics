@@ -63,15 +63,16 @@ def formatNiceTime(time):
 def formatCrashTime(crashtime, dateobj):
     '''Returns a datetime.time object when given a time as a string from the
     `row`. These are purportedly recorded "in 24-hour time", but are lacking
-    leading zeros in the dataset, which is addressed here.'''
+    leading zeros in the dataset, which is addressed here.
+    Returns None if string is malformed or empty.'''
     if empty(crashtime):
         return None
-    dt = str(dateobj)
-    ct = '0'*(4-len(crashtime)) + crashtime
-    if ct.strip() == '':
-        return datetime.datetime.strptime('{}'.format(dt), '%Y-%m-%d').time()
-    else:
-        return datetime.datetime.strptime('{} {}'.format(dt, ct.strip()), '%Y-%m-%d %H%M').time()
+    try:
+        return datetime.datetime.strptime(str(dateobj)+" "+'0'*(4-len(crashtime))+crashtime,'%Y-%m-%d %H%M').time()
+    except:
+        # Error parsing time from malformed string, returns None
+        # TODO log
+        return None
 
 def check_offroad(crash_road):
     '''Applies a check for 'Z': the flat for offroad indicator, and corrects

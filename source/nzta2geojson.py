@@ -14,14 +14,15 @@ import generalFunctions as genFunc
 import re
 import logging
 import datetime
-import pytz
 
+import pytz
 import pyproj
 import geojson
 import ephem
 import mx.DateTime
 
 import moon
+
 
 class nztacrash:
     '''A crash recorded by NZTA'''
@@ -179,8 +180,6 @@ class nztacrash:
         self.fatigue = self.get_factor_involvement(['410','411','412','413','414','415'])
         self.dickhead = self.get_factor_involvement(['430','431','432','433','434','510','511','512','513','514','515','516','517'])
         self.speeding = self.get_factor_involvement(['110','111','112','113','114','115','116','117'])
-
-        self.get_daylight()
 
     def get_hasLocation(self):
         if self.easting in [0,None] or self.northing in [0,None]:
@@ -439,6 +438,7 @@ class nztacrash:
                    'P': ['moped-icon.svg', 'Moped'],
                    'S': ['bicycle-icon.svg', 'Bicycle'],
                    'O': [other, 'Miscellaneous Vehicle'],
+                   'U': [other, 'Miscellaneous Vehicle'],
                    'E': ['pedestrian-icon.svg', 'Pedestrian'],
                    'K': [other, 'Skateboard, inline skater, etc.'],
                    'Q': ['equestrian-icon.svg', 'equestrian'],
@@ -561,27 +561,6 @@ class nztacrash:
         '''Creates the Google Streetview API request
         fov : Field of view, max 120
         pitch : Up or down angle relative to the Streetview vehicle'''
-        # # TODO fov
-        # if self.hasLocation == False:
-        #     return None
-        # link = 'http://maps.google.com/?cbll={lat},{lon}&cbp=12,20.09,,0,5&layer=c'.format(
-        #     lon=self.lon,
-        #     lat=self.lat
-        # )
-        # if title is None:
-        #     title = alt
-        # anchor = '<a href="{link}" title="{title}" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size={w}x{h}&location={lat},{lon}&pitch={pitch}&key={key}"></a>'.format(
-        #     link=link,
-        #     title=title,
-        #     w=w,
-        #     h=h,
-        #     lon=self.lon,
-        #     lat=self.lat,
-        #     pitch=pitch,
-        #     key=self.api
-        # )
-        # return anchor
-        '''Creates the Google Streetview API request'''
         if self.hasLocation == False:
             return None
         # Params for the Streetview API (not styling)
@@ -591,8 +570,18 @@ class nztacrash:
         pitch = -15 # Up or down angle relative to the Streetview vehicle
         link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
         alt = 'Click to go to Google Streetview'
-        title = alt
-        return '<a href="%s" title="%s" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size=%sx%s&location=%s,%s&pitch=%s&key=%s"></a>' % (link,title,w,h,self.lat,self.lon,pitch,self.api)
+        if title is None:
+            title = alt
+        return '<a href="{link}" title="{title}" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size={w}x{h}&location={lat},{lon}&pitch={pitch}&key={key}"></a>'.format(
+            link=link,
+            title=title,
+            w=w,
+            h=h,
+            lat=self.lat,
+            lon=self.lon,
+            pitch=pitch,
+            key=self.api
+        )
 
     def make_causes(self):
         '''
@@ -615,6 +604,7 @@ class nztacrash:
            'P': '<strong>moped rider</strong>',
            'S': '<strong>cyclist</strong>',
            'O': 'driver of the <strong>vehicle</strong> of unknown type',
+           'U': 'driver of the <strong>vehicle</strong> of unknown type',
            'E': '<strong>pedestrian</strong>',
            'K': '<strong>skater</strong>',
            'Q': '<strong>equestrian</strong>',
@@ -622,7 +612,7 @@ class nztacrash:
 
         # Keep track of the numbers of each mode we see, so the text can be formed
         # using ordinal text ('the first car', etc.)
-        modes, mode_counter = ['C','V','X','B','L','4','T','M','P','S','E','K','Q','H','O'], {}
+        modes, mode_counter = decoder.keys(), {}
         for m in modes:
             mode_counter[m] = 0 # Initially 0, gets incremented
 
@@ -706,37 +696,42 @@ class nztacrash:
             # Can't add it to the map if it does not have a location
             return None
 
-        return {'type': 'Feature',
-        'properties': {
-        't': self.tla_name, # Name of Territorial Local Authority
-        'd': self.crash_dow, # Crash daw of the week
-        'dt': genFunc.formatNiceDate(self.crash_date), # The date, nicely formatted
-        'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
-        's': self.__streetview__(), # The Streetview img container and call
-        'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-        'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon() + self.moonIcon(), # The environment icon imgs
-        'v': self.__vehicle_icons__(), # Vehicle icon imgs
-        'i': self.get_injury_icons(), # Injury icon imgs
-        'c': self.make_causes(), # Causes (formatted string)
-        'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
-        'cy': self.cyclist, # Cyclist Boolean
-        'pd': self.pedestrian, # Pedestrian Boolean
-        'mc': self.motorcyclist, # Motorcyclist Boolean
-        'tx': self.taxi, # Taxi Boolean
-        'tr': self.truck, # Truck Boolean
-        'ca': self.car, # Car, van, ute, SUV
-        'to': self.tourist, # Tousit Boolean
-        'al': self.alcohol, # Alcohol Boolean
-        'dr': self.drugs, # Drugs Boolean
-        'cp': self.cellphone, # Cellphone Boolean
-        'fg': self.fatigue, # Faitgue Boolean
-        'dd': self.dickhead, # Dangerous driving Boolean
-        'sp': self.speeding, # Speeding Boolean
-        'ch': self.get_injured_child(), # Child pedestrian/cyclist Boolean
-        'ij': self.get_worst_injury_text(), # f,s,m,n >> worst injury as text
-        'dy': self.daytime # Daytime
-        },
-        'geometry': {'type': 'Point', 'coordinates': (self.lon, self.lat)}}
+        return {
+            'type': 'Feature',
+            'properties': {
+                't': self.tla_name, # Name of Territorial Local Authority
+                'd': self.crash_dow, # Crash daw of the week
+                'dt': genFunc.formatNiceDate(self.crash_date), # The date, nicely formatted
+                'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
+                's': self.__streetview__(), # The Streetview img container and call
+                'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
+                'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon() + self.moonIcon(), # The environment icon imgs
+                'v': self.__vehicle_icons__(), # Vehicle icon imgs
+                'i': self.get_injury_icons(), # Injury icon imgs
+                'c': self.make_causes(), # Causes (formatted string)
+                'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
+                'cy': self.cyclist, # Cyclist Boolean
+                'pd': self.pedestrian, # Pedestrian Boolean
+                'mc': self.motorcyclist, # Motorcyclist Boolean
+                'tx': self.taxi, # Taxi Boolean
+                'tr': self.truck, # Truck Boolean
+                'ca': self.car, # Car, van, ute, SUV
+                'to': self.tourist, # Tousit Boolean
+                'al': self.alcohol, # Alcohol Boolean
+                'dr': self.drugs, # Drugs Boolean
+                'cp': self.cellphone, # Cellphone Boolean
+                'fg': self.fatigue, # Faitgue Boolean
+                'dd': self.dickhead, # Dangerous driving Boolean
+                'sp': self.speeding, # Speeding Boolean
+                'ch': self.get_injured_child(), # Child pedestrian/cyclist Boolean
+                'ij': self.get_worst_injury_text(), # f,s,m,n >> worst injury as text
+                'dy': self.daytime # Daytime
+            },
+            'geometry': {
+                'type': 'Point',
+                'coordinates': (self.lon, self.lat)
+            }
+        }
 
     def decodeMovement(self):
         '''Decodes self.mvmt into a human-readable form.
@@ -744,7 +739,7 @@ class nztacrash:
         decoder = {'A': ('Overtaking and lane change', {'A': 'Pulling out or changing lane to right', 'B': 'Head on', 'C': 'Cutting in or changing lane to left', 'D': 'Lost control (overtaking vehicle)', 'E': 'Side road', 'F': 'Lost control (overtaken vehicle)', 'G': 'Weaving in heavy traffic', 'O': 'Other'}),
                  'B': ('Head on',{'A': 'On straight', 'B': 'Cutting corner', 'C': 'Swinging wide', 'D': 'Both cutting corner and swining wide, or unknown', 'E': 'Lost control on straight', 'F': 'Lost control on curve', 'O': 'Other'}),
                  'C': ('Lost control or off road (straight roads)',{'A': 'Out of control on roadway', 'B': 'Off roadway to left', 'C': 'Off roadway to right', 'O': 'Other'}),
-                 'D': ('Cornering',{'A': 'Lost control turning right', 'B': 'Lost control turning left', 'C':' Missed intersection or end of road', 'O': 'Other'}),
+                 'D': ('Cornering',{'A': 'Lost control turning right', 'B': 'Lost control turning left', 'C':'Missed intersection or end of road', 'O': 'Other'}),
                  'E': ('Collision with obstruction',{'A': 'Parked vehicle', 'B': 'Crash or broken down', 'C': 'Non-vehicular obstructions (including animals)', 'D': 'Workman\'s vehicle', 'E': 'Opening door', 'O': 'Other'}),
                  'F': ('Rear end',{'A': 'Slower vehicle', 'B': 'Cross traffic', 'C': 'Pedestrian', 'D': 'Queue', 'E': 'Signals', 'F': 'Other', 'O': 'Other'}),
                  'G': ('Turning versus same direction',{'A': 'Rear of left turning vehicle', 'B': 'Left turn side swipe', 'C': 'Stopped or turning from left side', 'D': 'Near centre line', 'E': 'Overtaking vehicle', 'F': 'Two turning', 'O': 'Other'}),
@@ -782,6 +777,7 @@ class nztacrash:
                                'S': 'bicycle',
                                'K': 'skateboard/in-line skater/etc.',
                                'O': 'other/unknown',
+                               'U': 'other/unknown',
                                'E': 'pedestrian'}
                 except KeyError:
                     return None
@@ -1114,6 +1110,9 @@ class nztacrash:
                 causecodes = retdict[vehicle]
                 for causecode in causecodes:
                     # Get the pretty explanations
+                    if causecode == '999':
+                        # This is not even recorded in the NZTA's documentation...
+                        continue
                     explanation = self.causedecoder[causecode][1] # String
                     if explanation[0] == "'":
                         # It begins with a possessive apostrophe, so add a space
@@ -1178,48 +1177,52 @@ def get_official_holiday_periods():
         'Labour Weekend 2014': (datetime.datetime(2014,10,24,16), datetime.datetime(2014,10,28,6))}
     return hols
 
-def main(data,causes,streets,holidays):
-    # TODO config yaml
-    global_start = datetime.date(2000,1,1)
-    global_end = datetime.date(2015,3,1)
+
+def get_crashes(file, causes, streets, holidays, global_start, global_end):
+    '''
+    Generates 'valid' crash records from a crash CSV
+    '''
     causedecoder = causeDecoderCSV(causes) # Decode the coded values
     streetdecoder = streetDecoderCSV(streets)
+    with open(file, 'rb') as crashcsv:
+        crashreader = csv.reader(crashcsv, delimiter=',')
+        header = crashreader.next()
+        for crash in crashreader:
+            Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
+            # Only add features with a location
+            # And that are within the acceptable date range
+            if Crash.crash_date == None or Crash.hasLocation == False:
+                continue
+            if not (global_start <= Crash.crash_date <= global_end):
+                continue
+            yield Crash
+
+def main(data, causes, streets, holidays, global_start, global_end):
     feature_collection = {"type": "FeatureCollection","features": []}
     with open('../data/data.geojson', 'w') as outfile:
         for d in data: # For each CSV of source data
-            # Open and read the CSV of crash events
-            with open(d, 'rb') as crashcsv:
-                crashreader = csv.reader(crashcsv, delimiter=',')
-                header = crashreader.next()
-
-                for crash in crashreader:
-                    Crash = nztacrash(crash, causedecoder, streetdecoder, holidays)
-                    # Collect crash descriptions and locations into the feature collection
-                    # Only add features with a location
-                    # And that are within the acceptable date range
-                    if Crash.crash_date == None or Crash.hasLocation == False:
-                        continue
-                    if global_start <= Crash.crash_date <= global_end:
-                        feature_collection["features"].append(Crash.__geo_interface__())
-                crashcsv.close()
+            for crash in get_crashes(d, causes, streets, holidays, global_start, global_end):
+                feature_collection["features"].append(crash.__geo_interface__())
         # Write the geojson output
         outfile.write(json.dumps(feature_collection, separators=(',',':')))
         outfile.close()
 
 if __name__ == '__main__':
     # TODO specify paths with os.path
+    global_start = datetime.date(2015,1,1)
+    global_end = datetime.date(2015,3,31)
     # Set paths
-    data = ['../data/crash-data-{}.csv'.format(y) for y in range(2000,2015)]
-    data.append('../data/crash-data-2015-partial.csv')
+    data = ['../data/crash-data-{i}.csv'.format(i=i) if i < 2015 else '../data/crash-data-{i}-partial.csv'.format(i=i) for i in xrange(global_start.year, global_end.year + 1)]
     causes = '../data/decoders/cause-decoder.csv'
     streets = '../data/decoders/NZ-post-street-types.csv'
     holidays = get_official_holiday_periods()
 
     # Set up error logging
     logger = 'crash_error.log'
-    with open(logger,'w'):
+    with open(logger, 'w'):
         pass # Clear the log from previous runs
-    logging.basicConfig(filename=logger,level=logging.DEBUG)
+
+    logging.basicConfig(filename=logger, level=logging.DEBUG)
 
     # Run main function
-    main(data,causes,streets,holidays)
+    main(data, causes, streets, holidays, global_start, global_end)
