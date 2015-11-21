@@ -2,3 +2,4 @@
 *.hidden
 /archive
 /venv
+/bower_components

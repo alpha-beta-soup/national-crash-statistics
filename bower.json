@@ -1,0 +1,23 @@
+{
+  "name": "national-crash-statistics",
+  "version": "0.0.0",
+  "homepage": "https://github.com/alpha-beta-soup/national-crash-statistics",
+  "authors": [
+    "alpha-beta-soup <richard.m.law@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "jqueryui": "~1.11.4",
+    "leaflet-ajax": "~2.0.0",
+    "leaflet": "~0.7.7"
+  }
+}
