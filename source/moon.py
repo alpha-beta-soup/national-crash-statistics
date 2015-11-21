@@ -276,7 +276,7 @@ def phase(phase_date=DateTime.now()):
     #
     # Calculation of the Moon's inclination
     # unused for phase calculation.
-    
+
     # Corrected longitude of the node
     # NP = MN - 0.16 * sin(torad(M))
 
@@ -482,8 +482,6 @@ def truephase(k, tphase):
             tphase)
 
     return DateTime.DateTimeFromJDN(pt)
-# truephase()
-
 
 def kepler(m, ecc):
     """Solve the equation of Kepler."""

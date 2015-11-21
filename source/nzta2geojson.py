@@ -402,15 +402,23 @@ class nztacrash:
             base = './icons/other'
             icon = 'children.png'
             age = self.get_injured_child_age()
+            article = 'an' if age in [8, 11] else 'a'
             if age == 1:
-                title = 'A one year old infant was harmed'
+                title = '{a} one year old infant was harmed'.format(
+                    a=article
+                )
             elif age < 13:
-                title = 'A %s year old child was harmed' % age
+                title = '{a} {age} year old child was harmed'.format(
+                    a=article, age=age
+                )
             elif age >= 13 and age < 20:
-                title = 'A %s year old teenager was harmed' % age
+                title = '{a} {age} year old teenager was harmed'.format(
+                    a=article, age=age
+                )
             else:
                 # Nothing else prepared
-                raise Exception
+                # TODO log
+                return ''
             return '<img src="%s/%s" title="%s"> ' % (base,icon,title)
         else:
             # Return an empty string
