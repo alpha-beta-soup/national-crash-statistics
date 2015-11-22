@@ -576,7 +576,10 @@ class nztacrash:
         w = 300
         fov = 120 # Field of view, max 120
         pitch = -15 # Up or down angle relative to the Streetview vehicle
-        link = 'http://maps.google.com/?cbll=%s,%s&cbp=12,20.09,,0,5&layer=c' % (self.lon,self.lat)
+        link = 'http://maps.google.com/?cbll={lat},{lon}&cbp=12,20.09,,0,5&layer=c'.format(
+            lat=self.lat,
+            lon=self.lon
+        )
         alt = 'Click to go to Google Streetview'
         if title is None:
             title = alt
