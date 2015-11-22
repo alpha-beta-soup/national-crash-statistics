@@ -1,117 +1,102 @@
-injury = (feature, crashStyle, crashClass) ->
-  # conditional styling by injury type
-  if feature.properties.ij == 'f'
-    crashStyle.fillColor = '#ff1a1a'
-    crashClass = crashClass + 'f'
-  else if feature.properties.ij == 's'
-    crashStyle.fillColor = '#ff821a'
-    crashClass = crashClass + 's'
-  else if feature.properties.ij == 'm'
-    crashStyle.fillColor = '#a7ee18'
-    crashClass = crashClass + 'm'
-  else if feature.properties.ij == 'n'
-    crashStyle.fillColor = '#15CC15'
-    crashClass = crashClass + 'n'
-  if feature.properties.to
-    crashClass = crashClass + ' to'
-  if feature.properties.al
-    crashClass = crashClass + ' al'
-  if feature.properties.dr
-    crashClass = crashClass + ' dr'
-  if feature.properties.cp
-    crashClass = crashClass + ' cp'
-  if feature.properties.fg
-    crashClass = crashClass + ' fg'
-  if feature.properties.sp
-    crashClass = crashClass + ' sp'
-  if feature.properties.dd
-    crashClass = crashClass + ' dd'
-  if feature.properties.ca
-    crashClass = crashClass + ' ca'
-  if feature.properties.pd
-    crashClass = crashClass + ' pd'
-  if feature.properties.cy
-    crashClass = crashClass + ' cy'
-  if feature.properties.mc
-    crashClass = crashClass + ' mc'
-  if feature.properties.tx
-    crashClass = crashClass + ' tx'
-  if feature.properties.tr
-    crashClass = crashClass + ' tr'
-  if feature.properties.h == 'Labour Weekend 2014'
-    crashClass = crashClass + ' Labour2014'
-  if feature.properties.h == 'Christmas/New Year 2014-15'
-    crashClass = crashClass + ' XmasNY2015'
-  if feature.properties.ch
-    crashClass = crashClass + ' ch'
-  crashStyle.className = crashClass
-  crashStyle
-
-#pop-up text function different if other parties involved. Bound to when events are retrieved from data
-
-get_popup = (row, layer) ->
-  '<span class="crash-location">' + row.properties.t + '</span>' + '<span class="date">' + row.properties.d + ', ' + row.properties.dt + '</span>' + '<span class="time">' + row.properties.ti + '</span>' + '<span><div id="environment-icons">' + row.properties.e + '</div></span>' + '<span class="road">' + row.properties.r + '</span>' + '<span><div id="streetview-container">' + row.properties.s + '</div></span>' + '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' + '<span class="causes-text">' + row.properties.c + '</span>'
-
-$(document).ready ->
-  $('#toMap').click ->
-    $('#frontpage').hide()
-    return
-  $('#toInfo').click ->
-    $('#info-box-container').show()
-    return
-  $('#info-button-on-map').click ->
-    $('#info-box-container').show()
-    return
-  $('#close-button').click ->
-    $('#info-box-container').hide()
-    return
-  return
-#where, initial zoom level and remove zoom buttons
-map = L.map('map',
-  continuousWorld: true
-  worldCopyJump: true).setView([
-  -41.17
-  174.46
-], 6)
-#base map tiles, zoom and attribution
-L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png',
-  maxZoom: 18
-  minZoom: 5
-  attribution: 'Crash data from <a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">NZTA</a>, under <a href="https://creativecommons.org/licenses/by/3.0/nz/">CC BY 3.0 NZ</a>, presented with changes | Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> | Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>').addTo map
-#styles for crash points
-crashStyle =
-  radius: 5
-  fillOpacity: 0.9
-  stroke: false
-#string for classes
-crashClass = ''
-#path to the crash geojson from nzta2geojson.py
 crashes = './data/data.geojson'
-#create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
-layers = {}
-#layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] =
+# TODO get a cause decoder as json
+injuryColours = {
+  'f': '#ff1a1a',
+  's': '#ff821a',
+  'm': '#a7ee18',
+  'n': '#15CC15'
+}
+boolean_properties = ['to', 'al', 'dr', 'cp', 'dr', 'cp', 'fg', 'sp', 'dd', 'ca', 'pd', 'cy', 'mc', 'tx', 'tr', 'ch']
+holidays = {
+  'Labour Weekend 2014': 'Labour2014'
+  'Christmas/New Year 2014-15': 'XmasNY2015'
+}
+
+getPointStyleOptions = (feature) ->
+  options = {}
+  options.radius = 5
+  options.fillOpacity = 0.9
+  options.stroke = false
+  options.fillColor = injuryColours[feature.properties.ij]
+  classes = [feature.properties.ij]
+  for prop in boolean_properties
+    if feature.properties[prop]? and feature.properties[prop]
+      classes.push(prop)
+  for holiday in holidays
+    if feature.properties.h == holiday[0]
+      classes.push(holiday[1])
+  options.className = classes.join(' ')
+  return options
+
+makeElem = (elem, inner, _class, _id) ->
+  e = document.createElement(elem)
+  if _class?
+    e.className = _class
+  if _id?
+    e.id = _id
+  if inner?
+    if typeof(inner) is 'string'
+      e.innerHTML = inner
+    else
+      e.innerHTML = inner.outerHTML
+  return e
+
+getPopup = (feature) ->
+  crash_location = makeElem('span', feature.properties.t, 'crash-location')
+  crash_date = makeElem('span', [feature.properties.d, feature.properties.dt].join(', '), 'date')
+  crash_time = makeElem('span', feature.properties.ti, 'time')
+  environment_icons = makeElem('span', makeElem('div', feature.properties.e, undefined, 'environment-icons'))
+  road = makeElem('span', feature.properties.r, 'road')
+  streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
+  vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
+  causes_text = makeElem('span', feature.properties.c, 'causes-text')
+  return (e.outerHTML for e in [
+    crash_location,
+    crash_date,
+    crash_time,
+    environment_icons,
+    road,
+    streetview,
+    vehicles_and_injuries,
+    causes_text,
+  ]).join('')
+
+get_map = (mapdiv, centre, zoom) ->
+  mapdiv = if mapdiv? then mapdiv else 'map'
+  centre = if centre? then centre else [-41.17, 174.46]
+  zoom = if zoom? then zoom else 6
+  map = L.map mapdiv,
+    continuousWorld: true
+    worldCopyJump: true
+  .setView centre, zoom
+
+get_attribution = (nzta, stamen, osm) ->
+  attr = []
+  if nzta or !nzta?
+    attr.push 'Crash data from <a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">NZTA</a>, under <a href="https://creativecommons.org/licenses/by/3.0/nz/">CC BY 3.0 NZ</a>, presented with changes'
+  if stamen or !stamen?
+    attr.push 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>'
+  if osm or !osm?
+    attr.push 'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
+  return attr.join(' | ')
+
+get_tileLayer = (maxZoom, minZoom) ->
+  L.tileLayer 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png',
+    maxZoom: if maxZoom? then maxZoom else 18
+    minZoom: if minZoom? then minZoom else 5
+    attribution: get_attribution()
 
 onEachFeature = (feature, layer) ->
   # bind click
   layer.on 'click', (e) ->
-    layer.bindPopup get_popup(feature),
+    layer.bindPopup getPopup(feature),
       # offset: L.point(0, -2)
       autoPanPadding: L.point(0, 10)
     layer.openPopup()
     return
   return
 
-gj = new L.GeoJSON.AJAX crashes,
-  pointToLayer: (feature, latlng) ->
-    return new L.CircleMarker latlng, injury(feature, crashStyle, crashClass)
-  filter: (feature, layer) ->
-    return true
-  onEachFeature: onEachFeature
-
-gj.addTo map
-
-#hide function for the sidebar
-$(document).ready ->
+sidebar_hide = ->
   #crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
   $('#checkArray').click ->
     $ ->
@@ -133,10 +118,38 @@ $(document).ready ->
     return
   return
 
-$('.filter-collapse').on 'click', ->
+frontpage_control = () ->
+  $('#toMap').click ->
+    $('#frontpage').hide()
+    return
+  $('#toInfo').click ->
+    $('#info-box-container').show()
+    return
+  $('#info-button-on-map').click ->
+    $('#info-box-container').show()
+    return
+  $('#close-button').click ->
+    $('#info-box-container').hide()
+    return
+
+chevron_control = () ->
+  $('.filter-collapse').on 'click', ->
     $($(this).children()[0]).toggleClass('glyphicon-chevron-down')
     $($(this).children()[0]).toggleClass('glyphicon-chevron-up')
 
+$(document).ready ->
+  frontpage_control()
+  sidebar_hide()
+  chevron_control()
+  return
 
-# ---
-# generated by js2coffee 2.1.0
+map = get_map()
+get_tileLayer().addTo map
+
+new L.GeoJSON.AJAX crashes,
+  pointToLayer: (feature, latlng) ->
+    cm = new L.CircleMarker latlng, getPointStyleOptions(feature)
+  filter: (feature, layer) ->
+    return true
+  onEachFeature: onEachFeature
+.addTo map

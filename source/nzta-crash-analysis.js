@@ -1,135 +1,130 @@
-var crashClass, crashStyle, crashes, get_popup, gj, injury, layers, map, onEachFeature;
-
-injury = function(feature, crashStyle, crashClass) {
-  if (feature.properties.ij === 'f') {
-    crashStyle.fillColor = '#ff1a1a';
-    crashClass = crashClass + 'f';
-  } else if (feature.properties.ij === 's') {
-    crashStyle.fillColor = '#ff821a';
-    crashClass = crashClass + 's';
-  } else if (feature.properties.ij === 'm') {
-    crashStyle.fillColor = '#a7ee18';
-    crashClass = crashClass + 'm';
-  } else if (feature.properties.ij === 'n') {
-    crashStyle.fillColor = '#15CC15';
-    crashClass = crashClass + 'n';
-  }
-  if (feature.properties.to) {
-    crashClass = crashClass + ' to';
-  }
-  if (feature.properties.al) {
-    crashClass = crashClass + ' al';
-  }
-  if (feature.properties.dr) {
-    crashClass = crashClass + ' dr';
-  }
-  if (feature.properties.cp) {
-    crashClass = crashClass + ' cp';
-  }
-  if (feature.properties.fg) {
-    crashClass = crashClass + ' fg';
-  }
-  if (feature.properties.sp) {
-    crashClass = crashClass + ' sp';
-  }
-  if (feature.properties.dd) {
-    crashClass = crashClass + ' dd';
-  }
-  if (feature.properties.ca) {
-    crashClass = crashClass + ' ca';
-  }
-  if (feature.properties.pd) {
-    crashClass = crashClass + ' pd';
-  }
-  if (feature.properties.cy) {
-    crashClass = crashClass + ' cy';
-  }
-  if (feature.properties.mc) {
-    crashClass = crashClass + ' mc';
-  }
-  if (feature.properties.tx) {
-    crashClass = crashClass + ' tx';
-  }
-  if (feature.properties.tr) {
-    crashClass = crashClass + ' tr';
-  }
-  if (feature.properties.h === 'Labour Weekend 2014') {
-    crashClass = crashClass + ' Labour2014';
-  }
-  if (feature.properties.h === 'Christmas/New Year 2014-15') {
-    crashClass = crashClass + ' XmasNY2015';
-  }
-  if (feature.properties.ch) {
-    crashClass = crashClass + ' ch';
-  }
-  crashStyle.className = crashClass;
-  return crashStyle;
-};
-
-get_popup = function(row, layer) {
-  return '<span class="crash-location">' + row.properties.t + '</span>' + '<span class="date">' + row.properties.d + ', ' + row.properties.dt + '</span>' + '<span class="time">' + row.properties.ti + '</span>' + '<span><div id="environment-icons">' + row.properties.e + '</div></span>' + '<span class="road">' + row.properties.r + '</span>' + '<span><div id="streetview-container">' + row.properties.s + '</div></span>' + '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' + '<span class="causes-text">' + row.properties.c + '</span>';
-};
-
-$(document).ready(function() {
-  $('#toMap').click(function() {
-    $('#frontpage').hide();
-  });
-  $('#toInfo').click(function() {
-    $('#info-box-container').show();
-  });
-  $('#info-button-on-map').click(function() {
-    $('#info-box-container').show();
-  });
-  $('#close-button').click(function() {
-    $('#info-box-container').hide();
-  });
-});
-
-map = L.map('map', {
-  continuousWorld: true,
-  worldCopyJump: true
-}).setView([-41.17, 174.46], 6);
-
-L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
-  maxZoom: 18,
-  minZoom: 5,
-  attribution: 'Crash data from <a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">NZTA</a>, under <a href="https://creativecommons.org/licenses/by/3.0/nz/">CC BY 3.0 NZ</a>, presented with changes | Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> | Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
-}).addTo(map);
-
-crashStyle = {
-  radius: 5,
-  fillOpacity: 0.9,
-  stroke: false
-};
-
-crashClass = '';
+var boolean_properties, chevron_control, crashes, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_map, get_tileLayer, holidays, injuryColours, makeElem, map, onEachFeature, sidebar_hide;
 
 crashes = './data/data.geojson';
 
-layers = {};
+injuryColours = {
+  'f': '#ff1a1a',
+  's': '#ff821a',
+  'm': '#a7ee18',
+  'n': '#15CC15'
+};
+
+boolean_properties = ['to', 'al', 'dr', 'cp', 'dr', 'cp', 'fg', 'sp', 'dd', 'ca', 'pd', 'cy', 'mc', 'tx', 'tr', 'ch'];
+
+holidays = {
+  'Labour Weekend 2014': 'Labour2014',
+  'Christmas/New Year 2014-15': 'XmasNY2015'
+};
+
+getPointStyleOptions = function(feature) {
+  var classes, holiday, i, j, len, len1, options, prop;
+  options = {};
+  options.radius = 5;
+  options.fillOpacity = 0.9;
+  options.stroke = false;
+  options.fillColor = injuryColours[feature.properties.ij];
+  classes = [feature.properties.ij];
+  for (i = 0, len = boolean_properties.length; i < len; i++) {
+    prop = boolean_properties[i];
+    if ((feature.properties[prop] != null) && feature.properties[prop]) {
+      classes.push(prop);
+    }
+  }
+  for (j = 0, len1 = holidays.length; j < len1; j++) {
+    holiday = holidays[j];
+    if (feature.properties.h === holiday[0]) {
+      classes.push(holiday[1]);
+    }
+  }
+  options.className = classes.join(' ');
+  return options;
+};
+
+makeElem = function(elem, inner, _class, _id) {
+  var e;
+  e = document.createElement(elem);
+  if (_class != null) {
+    e.className = _class;
+  }
+  if (_id != null) {
+    e.id = _id;
+  }
+  if (inner != null) {
+    if (typeof inner === 'string') {
+      e.innerHTML = inner;
+    } else {
+      e.innerHTML = inner.outerHTML;
+    }
+  }
+  return e;
+};
+
+getPopup = function(feature) {
+  var causes_text, crash_date, crash_location, crash_time, e, environment_icons, road, streetview, vehicles_and_injuries;
+  crash_location = makeElem('span', feature.properties.t, 'crash-location');
+  crash_date = makeElem('span', [feature.properties.d, feature.properties.dt].join(', '), 'date');
+  crash_time = makeElem('span', feature.properties.ti, 'time');
+  environment_icons = makeElem('span', makeElem('div', feature.properties.e, void 0, 'environment-icons'));
+  road = makeElem('span', feature.properties.r, 'road');
+  streetview = makeElem('span', makeElem('div', feature.properties.s, void 0, 'streetview-container'));
+  vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, void 0, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, void 0, 'injury-icons').outerHTML + makeElem('div', void 0, void 0, 'clear').outerHTML, void 0, 'vehicle-injury'));
+  causes_text = makeElem('span', feature.properties.c, 'causes-text');
+  return ((function() {
+    var i, len, ref, results;
+    ref = [crash_location, crash_date, crash_time, environment_icons, road, streetview, vehicles_and_injuries, causes_text];
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      e = ref[i];
+      results.push(e.outerHTML);
+    }
+    return results;
+  })()).join('');
+};
+
+get_map = function(mapdiv, centre, zoom) {
+  var map;
+  mapdiv = mapdiv != null ? mapdiv : 'map';
+  centre = centre != null ? centre : [-41.17, 174.46];
+  zoom = zoom != null ? zoom : 6;
+  return map = L.map(mapdiv, {
+    continuousWorld: true,
+    worldCopyJump: true
+  }).setView(centre, zoom);
+};
+
+get_attribution = function(nzta, stamen, osm) {
+  var attr;
+  attr = [];
+  if (nzta || (nzta == null)) {
+    attr.push('Crash data from <a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">NZTA</a>, under <a href="https://creativecommons.org/licenses/by/3.0/nz/">CC BY 3.0 NZ</a>, presented with changes');
+  }
+  if (stamen || (stamen == null)) {
+    attr.push('Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>');
+  }
+  if (osm || (osm == null)) {
+    attr.push('Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>');
+  }
+  return attr.join(' | ');
+};
+
+get_tileLayer = function(maxZoom, minZoom) {
+  return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
+    maxZoom: maxZoom != null ? maxZoom : 18,
+    minZoom: minZoom != null ? minZoom : 5,
+    attribution: get_attribution()
+  });
+};
 
 onEachFeature = function(feature, layer) {
   layer.on('click', function(e) {
-    layer.bindPopup(get_popup(feature), {
+    layer.bindPopup(getPopup(feature), {
       autoPanPadding: L.point(0, 10)
     });
     layer.openPopup();
   });
 };
 
-gj = new L.GeoJSON.AJAX(crashes, {
-  pointToLayer: function(feature, latlng) {
-    return new L.CircleMarker(latlng, injury(feature, crashStyle, crashClass));
-  },
-  filter: function(feature, layer) {
-    return true;
-  },
-  onEachFeature: onEachFeature
-});
-
-gj.addTo(map);
-
-$(document).ready(function() {
+sidebar_hide = function() {
   $('#checkArray').click(function() {
     var crashClassSelected;
     $(function() {
@@ -151,9 +146,47 @@ $(document).ready(function() {
       $('#allCheck').prop('checked', false);
     }
   });
+};
+
+frontpage_control = function() {
+  $('#toMap').click(function() {
+    $('#frontpage').hide();
+  });
+  $('#toInfo').click(function() {
+    $('#info-box-container').show();
+  });
+  $('#info-button-on-map').click(function() {
+    $('#info-box-container').show();
+  });
+  return $('#close-button').click(function() {
+    $('#info-box-container').hide();
+  });
+};
+
+chevron_control = function() {
+  return $('.filter-collapse').on('click', function() {
+    $($(this).children()[0]).toggleClass('glyphicon-chevron-down');
+    return $($(this).children()[0]).toggleClass('glyphicon-chevron-up');
+  });
+};
+
+$(document).ready(function() {
+  frontpage_control();
+  sidebar_hide();
+  chevron_control();
 });
 
-$('.filter-collapse').on('click', function() {
-  $($(this).children()[0]).toggleClass('glyphicon-chevron-down');
-  return $($(this).children()[0]).toggleClass('glyphicon-chevron-up');
-});
+map = get_map();
+
+get_tileLayer().addTo(map);
+
+new L.GeoJSON.AJAX(crashes, {
+  pointToLayer: function(feature, latlng) {
+    var cm;
+    return cm = new L.CircleMarker(latlng, getPointStyleOptions(feature));
+  },
+  filter: function(feature, layer) {
+    return true;
+  },
+  onEachFeature: onEachFeature
+}).addTo(map);
