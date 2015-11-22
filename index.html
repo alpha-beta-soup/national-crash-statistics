@@ -7,15 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" href="./icons/crashIcon.ico" >
   <title>NZ Crash Map</title>
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="./bower_components/bootstrap/dist/js/bootstrap.min.css">
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <!-- jQuery -->
   <script src="./bower_components/jquery/dist/jquery.min.js"></script>
   <!-- jQueryUI -->
   <script type="text/javascript" src="./bower_components/jqueryui/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="./bower_components/jqueryui/themes/smoothness/jquery-ui.min.css" />
+  <!-- Bootstrap -->
+  <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/js/bootstrap.min.css">
   <!-- Leaflet -->
   <script src="./bower_components/leaflet/dist/leaflet.js"></script>
   <link rel="stylesheet" type="text/css" href="./bower_components/leaflet/dist/leaflet.css" />
@@ -77,37 +78,86 @@
     <!-- controller div -->
     <div id="controller">
       <div id="controller-content">
-        <h4 class="bold">Crash events</h4>
-        <button type="button" class="btn btn-sm" data-toggle="collapse" data-target="#filter-div" id="filter-hide-button">Toggle filters</button>
+        <h4 class="bold">Crash events
+        <button type="button" class="btn btn-md filter-collapse" data-toggle="collapse" data-target="#filter-div" id="filter-hide-button">
+            <span class="glyphicon glyphicon-chevron-down" ></span>
+        </button>
+        </h4>
         <div id="filter-div" class="collapse in">
           <fieldset id="checkArray">
             <input type="checkbox" id="allCheck" value="" checked><span class="legend-label">All crashes</span></br>
-            <p class="bold">Filter by consequence</p>
-            <input type="checkbox" id="fatalCheck" value='.f'><span class="legend-label">Fatal</span><div class='legendDot' id='redDot'></div></br>
-            <input type="checkbox" id="severveCheck" value='.s'><span class="legend-label">Severe injuries</span><div class='legendDot' id='orangeDot'></div></br>
-            <input type="checkbox" id="minorCheck" value='.m'><span class="legend-label">Minor injuries</span><div class='legendDot' id='yellowDot'></div></br>
-            <input type="checkbox" id="noInjCheck" value='.n'><span class="legend-label">No injuries</span><div class='legendDot' id='greenDot'></div></br>
-            <p class="bold">Filter by factor</p>
-            <input type="checkbox" id="touristCheck" value='.to'><span class="legend-label">Tourist / Recent migrant</span></br>
-            <input type="checkbox" id="alcoholCheck" value='.al'><span class="legend-label">Alcohol</span></br>
-            <input type="checkbox" id="drugsCheck" value='.dr'><span class="legend-label">Drugs</span></br>
-            <input type="checkbox" id="cellphoneCheck" value='.cp'><span class="legend-label">Cellphone</span></br>
-            <input type="checkbox" id="fatigueCheck" value='.fg'><span class="legend-label">Fatigue</span></br>
-            <input type="checkbox" id="speedCheck" value='.sp'><span class="legend-label">Speed</span></br>
-            <input type="checkbox" id="dangerousDrivingCheck" value='.dd'><span class="legend-label">Dangerous driving</span></br>
-            <p class="bold">Filter by party involved</p>
-            <input type="checkbox" id="carCheck" value='.ca'><span class="legend-label">Car / Van / Ute / SUV</span></br>
-            <input type="checkbox" id="pedestrianCheck" value='.pd'><span class="legend-label">Pedestrian</span></br>
-            <input type="checkbox" id="cyclistCheck" value='.cy'><span class="legend-label">Cyclist</span></br>
-            <input type="checkbox" id="motorcyclistCheck" value='.mc'><span class="legend-label">Motorcyclist</span></br>
-            <input type="checkbox" id="taxiCheck" value='.tx'><span class="legend-label">Taxi</span></br>
-            <input type="checkbox" id="truckCheck" value='.tr'><span class="legend-label">Truck</span></br>
-            <p class="bold">Filter by official holiday period</p>
-            <input type="checkbox" id="labour2014Check" value='.Labour2014'><span class="legend-label">Labour Weekend 2014</span></br>
-            <input type="checkbox" id="XmasNY20142015Check" value='.XmasNY2015'><span class="legend-label">Christmas/New Year 2014-15</span></br>
-            <p class="bold">Special filters</p>
-            <input type="checkbox" id="childCheck" value='.ch'><span class="legend-label">Child pedestrian or cyclist</span></br>
+            <p class="bold">
+                Filter by consequence
+                <button type="button" class="btn btn-xs filter-collapse" data-toggle="collapse" data-target="#collapse-consequence">
+                    <span class="glyphicon glyphicon-chevron-down" ></span>
+                </button>
+            </p>
+            <div id="collapse-consequence" class="collapse in" >
+                <input type="checkbox" id="fatalCheck" value='.f'><span class="legend-label">Fatal</span><div class='legendDot' id='redDot'></div></br>
+                <input type="checkbox" id="severveCheck" value='.s'><span class="legend-label">Severe injuries</span><div class='legendDot' id='orangeDot'></div></br>
+                <input type="checkbox" id="minorCheck" value='.m'><span class="legend-label">Minor injuries</span><div class='legendDot' id='yellowDot'></div></br>
+                <input type="checkbox" id="noInjCheck" value='.n'><span class="legend-label">No injuries</span><div class='legendDot' id='greenDot'></div></br>
+            </div>
+            <p class="bold">
+                Filter by factor
+                <button type="button" class="btn btn-xs filter-collapse" data-toggle="collapse" data-target="#collapse-factor">
+                    <span class="glyphicon glyphicon-chevron-up" ></span>
+                </button>
+            </p>
+            <div id="collapse-factor" class="collapse">
+                <input type="checkbox" id="touristCheck" value='.to'><span class="legend-label">Tourist / Recent migrant</span></br>
+                <input type="checkbox" id="alcoholCheck" value='.al'><span class="legend-label">Alcohol</span></br>
+                <input type="checkbox" id="drugsCheck" value='.dr'><span class="legend-label">Drugs</span></br>
+                <input type="checkbox" id="cellphoneCheck" value='.cp'><span class="legend-label">Cellphone</span></br>
+                <input type="checkbox" id="fatigueCheck" value='.fg'><span class="legend-label">Fatigue</span></br>
+                <input type="checkbox" id="speedCheck" value='.sp'><span class="legend-label">Speed</span></br>
+                <input type="checkbox" id="dangerousDrivingCheck" value='.dd'><span class="legend-label">Dangerous driving</span></br>
+            </div>
+            <p class="bold">
+                Filter by party involved
+                <button type="button" class="btn btn-xs filter-collapse" data-toggle="collapse" data-target="#collapse-factor">
+                    <span class="glyphicon glyphicon-chevron-up" ></span>
+                </button>
+            </p>
+            <div id="collapse-party" class="collapse">
+                <input type="checkbox" id="carCheck" value='.ca'><span class="legend-label">Car / Van / Ute / SUV</span></br>
+                <input type="checkbox" id="pedestrianCheck" value='.pd'><span class="legend-label">Pedestrian</span></br>
+                <input type="checkbox" id="cyclistCheck" value='.cy'><span class="legend-label">Cyclist</span></br>
+                <input type="checkbox" id="motorcyclistCheck" value='.mc'><span class="legend-label">Motorcyclist</span></br>
+                <input type="checkbox" id="taxiCheck" value='.tx'><span class="legend-label">Taxi</span></br>
+                <input type="checkbox" id="truckCheck" value='.tr'><span class="legend-label">Truck</span></br>
+            </div>
+            <p class="bold">
+                Filter by official holiday period
+                <button type="button" class="btn btn-xs filter-collapse" data-toggle="collapse" data-target="#collapse-factor">
+                    <span class="glyphicon glyphicon-chevron-up" ></span>
+                </button>
+            </p>
+            <div id="collapse-holiday" class="collapse">
+                <input type="checkbox" id="labour2014Check" value='.Labour2014'><span class="legend-label">Labour Weekend 2014</span></br>
+                <input type="checkbox" id="XmasNY20142015Check" value='.XmasNY2015'><span class="legend-label">Christmas/New Year 2014-15</span></br>
+            </div>
+            <p class="bold">
+                Special filters
+                <button type="button" class="btn btn-xs filter-collapse" data-toggle="collapse" data-target="#collapse-factor">
+                    <span class="glyphicon glyphicon-chevron-up" ></span>
+                </button>
+            </p>
+            <div id="colapse-special" class="collapse">
+                <input type="checkbox" id="childCheck" value='.ch'><span class="legend-label">Child pedestrian or cyclist</span></br>
+            </div>
           </fieldset>
+          <div>
+              <p id="meta-ad">
+                  <strong>Advertise your website here for $5/month</strong> to support improvements and planned web hosting! <a href="mailto:richard.m.law@gmail.com?Subject=Advertising%20on%20NZ%20Crash%20Map" target="_top">Get in touch!</a> <br>
+              </p>
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                  <input type="hidden" name="cmd" value="_s-xclick">
+                  <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
+                  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                  <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+              </form>
+          </div>
         </div>
       </div>
     </div>

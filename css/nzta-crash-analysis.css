@@ -26,6 +26,12 @@
     font-family: 'Lucida Grande', Geneva, Verdana, sans-serif;
 }
 
+#meta-ad {
+    padding-top:15px;
+    font-size:85%;
+    width:220px;
+}
+
 #icon-row {
     margin-top: 100px;
 }
@@ -35,7 +41,7 @@
     cursor: hand;
 }
 
-.glyphicon {
+.frontpage-button .glyphicon {
     color: white;
     font-size: 100px;
     margin: 0 auto;
@@ -153,7 +159,7 @@ input {
 
 #info-button-on-map .glyphicon {
     color: white;
-    font-size: 78px;
+    font-size: 60px;
     margin: 30px;
     cursor: pointer;
     cursor: hand;

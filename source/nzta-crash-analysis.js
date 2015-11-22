@@ -146,3 +146,9 @@ $(document).ready(function() {
     }
   });
 });
+
+$('.filter-collapse').on('click', function() {
+  console.log($(this).children());
+  $($(this).children()[0]).toggleClass('glyphicon-chevron-down');
+  return $($(this).children()[0]).toggleClass('glyphicon-chevron-up');
+});
