@@ -1,7 +1,5 @@
-#front page icon buttons and info button on map functionality
-#conditional styling by injury type
-
 injury = (feature, crashStyle, crashClass) ->
+  # conditional styling by injury type
   if feature.properties.ij == 'f'
     crashStyle.fillColor = '#ff1a1a'
     crashClass = crashClass + 'f'
@@ -51,7 +49,7 @@ injury = (feature, crashStyle, crashClass) ->
 
 #pop-up text function different if other parties involved. Bound to when events are retrieved from data
 
-popUpText = (row, layer) ->
+get_popup = (row, layer) ->
   '<span class="crash-location">' + row.properties.t + '</span>' + '<span class="date">' + row.properties.d + ', ' + row.properties.dt + '</span>' + '<span class="time">' + row.properties.ti + '</span>' + '<span><div id="environment-icons">' + row.properties.e + '</div></span>' + '<span class="road">' + row.properties.r + '</span>' + '<span><div id="streetview-container">' + row.properties.s + '</div></span>' + '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' + '<span class="causes-text">' + row.properties.c + '</span>'
 
 $(document).ready ->
@@ -92,17 +90,26 @@ crashes = './data/data.geojson'
 #create layers, bind popups (auto pan padding around popup to allow for streetview image) and filter the data. Add to map when clicked in the selector. One for each selection. Probably a more efficient way to do this
 layers = {}
 #layers["All crashes<div id='clear'></div><h4>Filter by consequence</h4>"] =
-new (L.GeoJSON.AJAX)(crashes,
-  pointToLayer: (feature, latlng) ->
-    new (L.CircleMarker)(latlng, injury(feature, crashStyle, crashClass))
-  onEachFeature: (feature, layer) ->
-    layer.bindPopup popUpText(feature),
-      offset: L.point(0, -2)
+
+onEachFeature = (feature, layer) ->
+  # bind click
+  layer.on 'click', (e) ->
+    layer.bindPopup get_popup(feature),
+      # offset: L.point(0, -2)
       autoPanPadding: L.point(0, 10)
+    layer.openPopup()
     return
+  return
+
+gj = new L.GeoJSON.AJAX crashes,
+  pointToLayer: (feature, latlng) ->
+    return new L.CircleMarker latlng, injury(feature, crashStyle, crashClass)
   filter: (feature, layer) ->
-    true
-).addTo map
+    return true
+  onEachFeature: onEachFeature
+
+gj.addTo map
+
 #hide function for the sidebar
 $(document).ready ->
   #crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
@@ -127,7 +134,6 @@ $(document).ready ->
   return
 
 $('.filter-collapse').on 'click', ->
-    console.log $(this).children()
     $($(this).children()[0]).toggleClass('glyphicon-chevron-down')
     $($(this).children()[0]).toggleClass('glyphicon-chevron-up')
 

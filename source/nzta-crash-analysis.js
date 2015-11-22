@@ -1,4 +1,4 @@
-var crashClass, crashStyle, crashes, injury, layers, map, popUpText;
+var crashClass, crashStyle, crashes, get_popup, gj, injury, layers, map, onEachFeature;
 
 injury = function(feature, crashStyle, crashClass) {
   if (feature.properties.ij === 'f') {
@@ -66,7 +66,7 @@ injury = function(feature, crashStyle, crashClass) {
   return crashStyle;
 };
 
-popUpText = function(row, layer) {
+get_popup = function(row, layer) {
   return '<span class="crash-location">' + row.properties.t + '</span>' + '<span class="date">' + row.properties.d + ', ' + row.properties.dt + '</span>' + '<span class="time">' + row.properties.ti + '</span>' + '<span><div id="environment-icons">' + row.properties.e + '</div></span>' + '<span class="road">' + row.properties.r + '</span>' + '<span><div id="streetview-container">' + row.properties.s + '</div></span>' + '<span><div id="vehicle-injury"><div id="vehicle-icons">' + row.properties.v + '</div><div id="injury-icons">' + row.properties.i + '</div><div id="clear"></div></div></span>' + '<span class="causes-text">' + row.properties.c + '</span>';
 };
 
@@ -108,20 +108,26 @@ crashes = './data/data.geojson';
 
 layers = {};
 
-new L.GeoJSON.AJAX(crashes, {
+onEachFeature = function(feature, layer) {
+  layer.on('click', function(e) {
+    layer.bindPopup(get_popup(feature), {
+      autoPanPadding: L.point(0, 10)
+    });
+    layer.openPopup();
+  });
+};
+
+gj = new L.GeoJSON.AJAX(crashes, {
   pointToLayer: function(feature, latlng) {
     return new L.CircleMarker(latlng, injury(feature, crashStyle, crashClass));
   },
-  onEachFeature: function(feature, layer) {
-    layer.bindPopup(popUpText(feature), {
-      offset: L.point(0, -2),
-      autoPanPadding: L.point(0, 10)
-    });
-  },
   filter: function(feature, layer) {
     return true;
-  }
-}).addTo(map);
+  },
+  onEachFeature: onEachFeature
+});
+
+gj.addTo(map);
 
 $(document).ready(function() {
   $('#checkArray').click(function() {
@@ -148,7 +154,6 @@ $(document).ready(function() {
 });
 
 $('.filter-collapse').on('click', function() {
-  console.log($(this).children());
   $($(this).children()[0]).toggleClass('glyphicon-chevron-down');
   return $($(this).children()[0]).toggleClass('glyphicon-chevron-up');
 });
