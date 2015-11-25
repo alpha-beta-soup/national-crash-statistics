@@ -255,7 +255,7 @@ class nztacrash:
             observer.next_setting(ephem.Sun(), use_center=True)
         ), '%Y/%m/%d %H:%M:%S').replace(tzinfo=pytz.UTC)
 
-        return next_sunset < next_sunrise
+        return int(next_sunset < next_sunrise)
 
     def get_moon(self):
         '''Returns a Moon when the accident occurred (see moon.py for
