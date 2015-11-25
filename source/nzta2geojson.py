@@ -364,12 +364,12 @@ class nztacrash:
         '''
         if self.pers_age1 != None and self.pers_age1 <= childAge:
             # A child pedestrian was injred
-            return True
+            return 1
         elif self.pers_age2 != None and self.pers_age2 <= childAge:
             # A child cyclist was injured
-            return True
+            return 1
         else:
-            return False
+            return 0
 
     def get_injured_child_age(self):
         '''
