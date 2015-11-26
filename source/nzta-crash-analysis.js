@@ -93,7 +93,14 @@ get_causes_text = function(causes, modes, vehicles) {
     for (i = 0, len = explanations.length; i < len; i++) {
       expl = explanations[i];
       if (mode != null) {
-        n = modes_n[mode] > 1 ? stringify_number(modes_n[mode]) : '';
+        if (modes_n[mode] > 1) {
+          n = stringify_number(modes_n[mode]);
+        }
+        if (modes_n[mode] === 1 && vehicles[mode] > 1) {
+          n = stringify_number(modes_n[mode]);
+        } else {
+          n = '';
+        }
         t = "The " + mode_decoder[mode]['display_text'] + ' ' + cause_decoder[expl]['Pretty'] + '.<br>';
         causes_text.push(t.replace(/<strong>/, n + " <strong>"));
       } else {

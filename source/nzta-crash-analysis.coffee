@@ -66,7 +66,16 @@ get_causes_text = (causes, modes, vehicles) ->
     for expl in explanations
       if mode?
         # Explanation with an associated mode
-        n = if modes_n[mode] > 1 then stringify_number(modes_n[mode]) else ''
+        if modes_n[mode] > 1
+          # "The second car" if this is at least the second car
+          n = stringify_number(modes_n[mode])
+        if modes_n[mode] == 1 and vehicles[mode] > 1
+          # "The first car" if this is the first example of a car,
+          # but there are more to come
+          n = stringify_number(modes_n[mode])
+        else
+          # "The car": this is the first and only instance of a particular mode
+          n = ''
         t = "The " + mode_decoder[mode]['display_text'] + ' ' + cause_decoder[expl]['Pretty'] + '.<br>'
         causes_text.push t.replace /<strong>/, "#{n} <strong>"
       else
