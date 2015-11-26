@@ -69,7 +69,7 @@ get_causes_text = (causes, modes, vehicles) ->
         if modes_n[mode] > 1
           # "The second car" if this is at least the second car
           n = stringify_number(modes_n[mode])
-        if modes_n[mode] == 1 and vehicles[mode] > 1
+        else if modes_n[mode] == 1 and vehicles[mode] > 1
           # "The first car" if this is the first example of a car,
           # but there are more to come
           n = stringify_number(modes_n[mode])

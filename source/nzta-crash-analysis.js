@@ -95,8 +95,7 @@ get_causes_text = function(causes, modes, vehicles) {
       if (mode != null) {
         if (modes_n[mode] > 1) {
           n = stringify_number(modes_n[mode]);
-        }
-        if (modes_n[mode] === 1 && vehicles[mode] > 1) {
+        } else if (modes_n[mode] === 1 && vehicles[mode] > 1) {
           n = stringify_number(modes_n[mode]);
         } else {
           n = '';
