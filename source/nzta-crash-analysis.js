@@ -226,10 +226,10 @@ cause_decoder = void 0;
 mode_decoder = void 0;
 
 get_decoder = function() {
-  $.getJSON('../data/decoders/cause-decoder.json', function(data) {
+  $.getJSON('./data/decoders/cause-decoder.json', function(data) {
     return cause_decoder = data;
   });
-  return $.getJSON('../data/decoders/mode-decoder.json', function(data) {
+  return $.getJSON('./data/decoders/mode-decoder.json', function(data) {
     return mode_decoder = data;
   });
 };

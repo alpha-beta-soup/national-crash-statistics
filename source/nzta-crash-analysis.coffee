@@ -181,9 +181,9 @@ $(document).ready ->
 cause_decoder = undefined
 mode_decoder = undefined
 get_decoder = () ->
-  $.getJSON '../data/decoders/cause-decoder.json', (data) ->
+  $.getJSON './data/decoders/cause-decoder.json', (data) ->
     cause_decoder = data
-  $.getJSON '../data/decoders/mode-decoder.json', (data) ->
+  $.getJSON './data/decoders/mode-decoder.json', (data) ->
     mode_decoder = data
 
 get_decoder()
