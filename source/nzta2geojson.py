@@ -116,6 +116,7 @@ class nztacrash:
         self.secondaryvehicles_decoded = self.getSecondaryVehicles(decode=True)
         self.causesdict = self.getCauses(decode=False)
         self.causesdict_decoded = self.getCauses(decode=True)
+        self.party_vehicle_map = self.mapVehicles()
         self.objects_struck_decoded = self.getObjectsStruck()
         self.light_decoded = self.decodeLight()
         self.wthr_a_decoded = self.decodeWeather()
@@ -279,10 +280,9 @@ class nztacrash:
 
     def get_holiday_period(self):
         '''If self.get_holiday is True, then this function returns the name of
-        the holiday period in which it occurred, otherwise it returns an empty
-        string'''
+        the holiday period in which it occurred, otherwise it returns None'''
         if self.holiday == False or self.crash_datetime == None:
-            return ''
+            return None
         for hp in self.holidays.keys():
             start, end = self.holidays[hp][0], self.holidays[hp][1]
             if start <= self.crash_datetime <= end:
@@ -348,7 +348,7 @@ class nztacrash:
                 retdict[v] = retdict[v] + 1
         return retdict
 
-    def get_injured_child(self,childAge=15):
+    def get_injured_child(self, childAge=15):
         '''
         The CAS record has a "PEDage" property, defined as:
             Age of any pedestrian injured. If more than one pedestrian is
@@ -474,7 +474,7 @@ class nztacrash:
 
     def get_injury_icons(self):
         if self.injuries_none:
-            return ''
+            return None
         base = './icons/injuries'
         icons = {'fatal': 'RedMan2.svg',
                  'severe': 'OrangeMan2.svg',
@@ -594,111 +594,6 @@ class nztacrash:
             key=self.api
         )
 
-    def make_causes(self):
-        '''
-        Returns a nice, readable string of the "factors and roles" of the accident
-        '''
-        # Map letters to index positions
-        vehicles_dict = {}
-        for i,v in enumerate(string.ascii_uppercase):
-            vehicles_dict[v] = i # {'A': 0, 'B': 1, 'C': 2}
-
-        # Map the modes to a text about tbe kind of controller
-        decoder = {'C': 'driver of the <strong>car</strong>',
-           'V': 'driver of the <strong>van/ute</strong>',
-           'X': '<strong>taxi/taxi van driver</strong>',
-           'B': '<strong>bus driver</strong>',
-           'L': '<strong>school bus driver</strong>',
-           '4': 'driver of the <strong>SUV/4X4</strong>',
-           'T': '<strong>truck driver</strong>',
-           'M': '<strong>motorcyclist</strong>',
-           'P': '<strong>moped rider</strong>',
-           'S': '<strong>cyclist</strong>',
-           'O': 'driver of the <strong>vehicle</strong> of unknown type',
-           'U': 'driver of the <strong>vehicle</strong> of unknown type',
-           'E': '<strong>pedestrian</strong>',
-           'K': '<strong>skater</strong>',
-           'Q': '<strong>equestrian</strong>',
-           'H': '<strong>wheeled pedestrian</strong>'}
-
-        # Keep track of the numbers of each mode we see, so the text can be formed
-        # using ordinal text ('the first car', etc.)
-        modes, mode_counter = decoder.keys(), {}
-        for m in modes:
-            mode_counter[m] = 0 # Initially 0, gets incremented
-
-        def find_mode(v,vehicle_counts,mode_counter):
-            '''Takes the vehicle code 'A', 'B', etc. and returns the mode of that
-            party (e.g. 'car', 'truck')'''
-
-            if v == 'Environment' or v == '+':
-                # The environment is not a mode
-                return None
-
-            # Expand the list of modes involved, in order 'A' ... 'Z'
-            if self.secondaryvehicles_decoded == None:
-                vehicle_map = [self.keyvehicle_decoded]
-                vehicle_map_coded = [self.keyvehicle]
-            else:
-                index = vehicles_dict[v] # Gets the index position to insert the vehicle
-                vehicle_map = [self.keyvehicle_decoded] + self.secondaryvehicles_decoded[:]
-                vehicle_map_coded = [self.keyvehicle] + self.secondaryvehicles[:]
-
-            # Make a version of the mode to included in the causes
-            # This ensures that multiple versions of the same mode get labelled
-            # appropriately
-            if vehicles_dict[v] > len(vehicle_map)-1:
-                # There are more parties involved than vehicles listed
-                logging.warning('There are more given parties than listed vehicles, so cause attribution has not been conducted: Crash ID %s' % self.crash_id)
-                return None
-
-            mode_v = vehicle_map_coded[vehicles_dict[v]]
-            mode = vehicle_map[vehicles_dict[v]]
-            # Increase the mode counter appropriately
-            mode_counter[mode_v] = mode_counter[mode_v] + 1
-
-            if vehicle_counts[mode_v] == 1:
-                # Then there is only one type of this vehicle involved
-                the_mode = 'The %s' % decoder[mode_v]
-            elif vehicle_counts[mode_v] > 1:
-                # Then there is multiple instances of this type of vehicle involved
-                the_mode = 'The %s' % decoder[mode_v].replace('<strong>', '<strong>%s ' % genFunc.ordinal(mode_counter[mode_v]))
-
-            # Finally, replace '1st' with 'first', etc.
-            ordinal_text = {'1st':'first','2nd':'second','3rd':'third',
-                '4th':'fourth','5th':'fifth','6th':'sixth',
-                '7th':'seventh','8th':'eighth','9th':'ninth'}
-            for s in ordinal_text.keys(): # More?
-                if s in the_mode:
-                    the_mode = the_mode.replace(s,ordinal_text[s])
-            return (the_mode, mode_counter)
-
-        vehicle_counts = self.get_number_of_vehicles() # {'C': 1, 'V': 1}
-
-        the_text = ''
-        causesdict_decoded_sorted = self.causesdict_decoded.keys()
-        causesdict_decoded_sorted.sort()
-        for v in causesdict_decoded_sorted:
-            fmode = find_mode(v,vehicle_counts,mode_counter)
-            if fmode != None:
-                # A vehicle
-                mode, mode_counter = fmode[0], fmode[1]
-            else:
-                mode = fmode # None; the Environment
-            for r in self.causesdict_decoded[v]:
-                if r[1] == 'FALSE':
-                    # The cause is NULL
-                    continue
-                subject = r[0]
-                if subject is False:
-                    # Explanation does not require a subject
-                    the_text += '%s.<br>' % (r[1])
-                else:
-                    # Explanation requires a subject
-                    the_text += '%s %s.<br>' % (mode,r[1])
-        #raw_input("pause")
-        return the_text
-
     def __geo_interface__(self):
         '''geojson
         Returns a geojson object representing the point.
@@ -719,7 +614,6 @@ class nztacrash:
                 'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon() + self.moonIcon(), # The environment icon imgs
                 'v': self.__vehicle_icons__(), # Vehicle icon imgs
                 'i': self.get_injury_icons(), # Injury icon imgs
-                'c': self.make_causes(), # Causes (formatted string)
                 'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
                 'cy': self.cyclist, # Cyclist Boolean
                 'pd': self.pedestrian, # Pedestrian Boolean
@@ -736,7 +630,10 @@ class nztacrash:
                 'sp': self.speeding, # Speeding Boolean
                 'ch': self.get_injured_child(), # Child pedestrian/cyclist Boolean
                 'ij': self.get_worst_injury_text(), # f,s,m,n >> worst injury as text
-                'dy': self.daytime # Daytime
+                'dy': self.daytime, # Daytime
+                'causes': self.causesdict, # {'A': [100,101], 'Environment': [400]}
+                'vehicles': self.get_number_of_vehicles(), # {'C': 2, 'T': 1}
+                'modes': self.mapVehicles() # {'A': 'C', 'B': 'T'}
             },
             'geometry': {
                 'type': 'Point',
@@ -1042,12 +939,62 @@ class nztacrash:
             xt, yt = pyproj.transform(self.proj, target, self.easting, self.northing)
             return (xt, yt)
 
+    def mapVehicles(self, decode=False):
+        '''
+        Returns the partis A...Z as a dictionary indicating their mode, e.g.:
+        {
+            'A': 'C',
+            'B': 'T'
+        }
+
+        If decode:
+        {
+            'A': 'car',
+            'B': 'truck'
+        }
+
+        NOTE: A is the primary vehicle
+        '''
+        # Map letters to index positions
+        decoder = {'C': 'car',
+            'V': 'van/ute',
+            'X': 'taxi/taxi van driver',
+            'B': 'bus',
+            'L': 'school bus',
+            '4': 'SUV/4X4',
+            'T': 'truck',
+            'M': 'motorcycle',
+            'P': 'moped',
+            'S': 'bicycle',
+            'O': 'vehicle of unknown type',
+            'U': 'vehicle of unknown type',
+            'E': 'pedestrian',
+            'K': 'skater',
+            'Q': 'equestrian',
+            'H': 'wheeled pedestrian'
+        }
+        modes = {'A': self.keyvehicle}
+        if self.secondaryvehicles is not None:
+            for i, v in enumerate(self.secondaryvehicles):
+                modes[string.ascii_uppercase[i+1]] = v
+        if decode:
+            for k in modes.keys():
+                modes[k] = decoder[modes[k]]
+        return modes
+
     def getCauses(self, decode=False):
         '''Returns the causes of the crash, and the vehicle to which the (in)action
-        is ascribed to as a dictionary in the following structure:
+        is ascribed to as a dictionary.
+
+        If decode, returns in the following structure:
         {'A': [(Subject, 'Cause1'), (Subject, 'Cause2')],
          'B': [(Subject, 'Cause3'],
          'Environment': [(Subject, 'Cause4')]}
+
+        If not decode, returns in the following structure:
+        {'A': [causecode1, causecode2],
+        'B': [causecode3],
+        'Environment': [causecode4]}
 
         <Subject> in the above indicates if the cause (which is written in a nice,
         grammatical structure, requires a subject to be used at the beginning of
@@ -1059,9 +1006,6 @@ class nztacrash:
         not been opted for because they were difficult for users to read and
         understand.
 
-        If decode == False: codes are used in the returned dictionary.
-        Else if decode == True: the codes are converted to human-readable string
-        values in the returned dictionary.
         In either case, the keys of the dictionary are 'A' for vehicle 1, 'B'
         for vehicle 2, etc., and 'Environment' for the factors not attributed
         to any particular vehicle. 'A', 'B' etc. only exist if appropriate,

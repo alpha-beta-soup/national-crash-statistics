@@ -1,4 +1,4 @@
-var boolean_properties, chevron_control, crashes, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_map, get_tileLayer, holidays, injuryColours, makeElem, map, onEachFeature, sidebar_hide;
+var boolean_properties, cause_decoder, chevron_control, crashes, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_decoder, get_map, get_tileLayer, holidays, injuryColours, makeElem, map, mode_decoder, onEachFeature, sidebar_hide, special, stringify_number;
 
 crashes = './data/data.geojson';
 
@@ -14,6 +14,20 @@ boolean_properties = ['to', 'al', 'dr', 'cp', 'dr', 'cp', 'fg', 'sp', 'dd', 'ca'
 holidays = {
   'Labour Weekend 2014': 'Labour2014',
   'Christmas/New Year 2014-15': 'XmasNY2015'
+};
+
+special = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelvth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
+
+deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
+
+stringify_number = function(n) {
+  if (n < 20) {
+    return special[n];
+  }
+  if (n % 10 === 0) {
+    return deca[Math.floor(n / 10) - 2] + 'ieth';
+  }
+  return deca[Math.floor(n / 10) - 2] + 'y-' + special[n % 10];
 };
 
 getPointStyleOptions = function(feature) {
@@ -59,6 +73,37 @@ makeElem = function(elem, inner, _class, _id) {
   return e;
 };
 
+get_causes_text = function(causes, modes, vehicles) {
+  var causes_text, expl, explanations, i, len, mode, modes_n, n, party, t;
+  causes_text = [];
+  modes_n = {};
+  if (!cause_decoder || !mode_decoder) {
+    return;
+  }
+  for (party in causes) {
+    explanations = causes[party];
+    mode = modes.hasOwnProperty(party) ? modes[party] : null;
+    if (mode != null) {
+      if (modes_n.hasOwnProperty(mode)) {
+        modes_n[mode] += 1;
+      } else {
+        modes_n[mode] = 1;
+      }
+    }
+    for (i = 0, len = explanations.length; i < len; i++) {
+      expl = explanations[i];
+      if (mode != null) {
+        n = modes_n[mode] > 1 ? stringify_number(modes_n[mode]) : '';
+        t = "The " + mode_decoder[mode]['display_text'] + ' ' + cause_decoder[expl]['Pretty'] + '.<br>';
+        causes_text.push(t.replace(/<strong>/, n + " <strong>"));
+      } else {
+        causes_text.push(cause_decoder[expl]['Pretty'] + '.<br>');
+      }
+    }
+  }
+  return causes_text.join('');
+};
+
 getPopup = function(feature) {
   var causes_text, crash_date, crash_location, crash_time, e, environment_icons, road, streetview, vehicles_and_injuries;
   crash_location = makeElem('span', feature.properties.t, 'crash-location');
@@ -68,7 +113,7 @@ getPopup = function(feature) {
   road = makeElem('span', feature.properties.r, 'road');
   streetview = makeElem('span', makeElem('div', feature.properties.s, void 0, 'streetview-container'));
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, void 0, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, void 0, 'injury-icons').outerHTML + makeElem('div', void 0, void 0, 'clear').outerHTML, void 0, 'vehicle-injury'));
-  causes_text = makeElem('span', feature.properties.c, 'causes-text');
+  causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text');
   return ((function() {
     var i, len, ref, results;
     ref = [crash_location, crash_date, crash_time, environment_icons, road, streetview, vehicles_and_injuries, causes_text];
@@ -175,6 +220,21 @@ $(document).ready(function() {
   sidebar_hide();
   chevron_control();
 });
+
+cause_decoder = void 0;
+
+mode_decoder = void 0;
+
+get_decoder = function() {
+  $.getJSON('../data/decoders/cause-decoder.json', function(data) {
+    return cause_decoder = data;
+  });
+  return $.getJSON('../data/decoders/mode-decoder.json', function(data) {
+    return mode_decoder = data;
+  });
+};
+
+get_decoder();
 
 map = get_map();
 

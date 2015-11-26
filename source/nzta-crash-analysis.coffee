@@ -1,5 +1,4 @@
 crashes = './data/data.geojson'
-# TODO get a cause decoder as json
 injuryColours = {
   'f': '#ff1a1a',
   's': '#ff821a',
@@ -11,6 +10,15 @@ holidays = {
   'Labour Weekend 2014': 'Labour2014'
   'Christmas/New Year 2014-15': 'XmasNY2015'
 }
+
+special = ['zeroth','first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelvth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth']
+deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet']
+stringify_number = (n) ->
+  if n < 20
+    return special[n]
+  if n % 10 == 0
+    return deca[Math.floor(n/10)-2] + 'ieth'
+  return deca[Math.floor(n/10)-2] + 'y-' + special[n%10]
 
 getPointStyleOptions = (feature) ->
   options = {}
@@ -41,7 +49,33 @@ makeElem = (elem, inner, _class, _id) ->
       e.innerHTML = inner.outerHTML
   return e
 
+get_causes_text = (causes, modes, vehicles) ->
+  # TODO when there are more given parties than listed modes?
+  # TODO make more elegant
+  causes_text = []
+  modes_n = {}
+  if !cause_decoder or !mode_decoder
+    return
+  for party, explanations of causes
+    mode = if modes.hasOwnProperty(party) then modes[party] else null
+    if mode?
+      if modes_n.hasOwnProperty(mode)
+        modes_n[mode] += 1
+      else
+        modes_n[mode] = 1
+    for expl in explanations
+      if mode?
+        # Explanation with an associated mode
+        n = if modes_n[mode] > 1 then stringify_number(modes_n[mode]) else ''
+        t = "The " + mode_decoder[mode]['display_text'] + ' ' + cause_decoder[expl]['Pretty'] + '.<br>'
+        causes_text.push t.replace /<strong>/, "#{n} <strong>"
+      else
+        # Explanation with no party or mode
+        causes_text.push cause_decoder[expl]['Pretty'] + '.<br>'
+  return causes_text.join('')
+
 getPopup = (feature) ->
+  # Decode the values in feature.properties.causes_dict.A
   crash_location = makeElem('span', feature.properties.t, 'crash-location')
   crash_date = makeElem('span', [feature.properties.d, feature.properties.dt].join(', '), 'date')
   crash_time = makeElem('span', feature.properties.ti, 'time')
@@ -49,7 +83,7 @@ getPopup = (feature) ->
   road = makeElem('span', feature.properties.r, 'road')
   streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
-  causes_text = makeElem('span', feature.properties.c, 'causes-text')
+  causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text')
   return (e.outerHTML for e in [
     crash_location,
     crash_date,
@@ -58,7 +92,7 @@ getPopup = (feature) ->
     road,
     streetview,
     vehicles_and_injuries,
-    causes_text,
+    causes_text
   ]).join('')
 
 get_map = (mapdiv, centre, zoom) ->
@@ -143,6 +177,16 @@ $(document).ready ->
   chevron_control()
   return
 
+# Load the JSON decoders
+cause_decoder = undefined
+mode_decoder = undefined
+get_decoder = () ->
+  $.getJSON '../data/decoders/cause-decoder.json', (data) ->
+    cause_decoder = data
+  $.getJSON '../data/decoders/mode-decoder.json', (data) ->
+    mode_decoder = data
+
+get_decoder()
 map = get_map()
 get_tileLayer().addTo map
 
