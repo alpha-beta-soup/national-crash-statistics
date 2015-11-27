@@ -1,0 +1,1716 @@
+'100':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had used alcohol or drugs and was impaired'
+'101':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was suspected of being under the influence of alcohol'
+'102':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was tested for alcohol, but found to be below the legal limit'
+'103':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was above the legal alcohol limit (or refused the test)'
+'104':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an alcohol test but the result is unknown'
+'105':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was intoxicated (or had an intoxicated passenger)'
+'106':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'tested negative for drugs and alcohol'
+'107':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a drug test, but the result is unknown'
+'108':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'is suspected to have been using drugs'
+'109':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was impaired by drugs'
+'110':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was driving too fast for the conditions'
+'111':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control travelling too fast while cornering'
+'112':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control travelling too fast for the conditions on the straight'
+'113':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling too fast and failed to give way at an intersection'
+'114':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to give way at a railway crossing'
+'115':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control when passing a stationary school bus'
+'116':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling in excess of a temporary speed limit'
+'117':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling too fast past at a crash or emergency'
+'120':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left'
+'121':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left and swung wide on a bend'
+'122':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left and swung wide at an intersection'
+'123':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left cutting a corner on a bend'
+'124':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left cutting a corner at an intersection'
+'125':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left on a straight section of road'
+'126':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left and crossed a raised median'
+'127':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left, travelling too far abreast of another road user'
+'128':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to keep left, wandering or wobbling'
+'129':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to maintain lateral clearance'
+'130':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control'
+'131':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control when turning'
+'132':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control while breaking heavily'
+'133':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control accelerating heavily'
+'134':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control when returning to a sealed road from an unsealed shoulder'
+'135':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control due to road conditions'
+'136':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control due to a vehicle fault'
+'137':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control attempting to avoid another vehicle, person or obstacle on the roadway'
+'138':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control on an unsealed road'
+'139':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control at the end of a sealed section of road'
+'140':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to signal their intended movement in time'
+'141':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to signal their intended movement, when pulling over to the left'
+'142':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to signal their intended movement, when turning left'
+'143':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to signal their intended movement, when pulling over to the right'
+'144':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to signal their intended movement, when turning right'
+'145':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to give the correct signal'
+'150':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control while overtaking'
+'151':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control while overtaking a line of traffic'
+'152':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was overtaking deliberately in the face of oncoming traffic'
+'153':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was overtaking and failed to notice oncoming traffic'
+'154':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was overtaking and misjudged the speed the oncoming traffic was travelling at, or the distance between them'
+'155':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was overtaking on a no-passing line'
+'156':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'overtook without sufficient visibility'
+'157':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was recklessly overtaking at an intersection'
+'158':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was overtaking on the left without due care'
+'159':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'cut in suddenly after overtaking'
+'160':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was signalling a right turn'
+'161':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was signalling a right turn without care at a pedestrian crossing'
+'170':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned from the wrong lane or position'
+'171':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned right from the incorrect lane'
+'172':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned left from the incorrect lane'
+'173':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'travelled straight ahead when they should not have been, from a turning lane or flush median'
+'174':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was turning right from the left-hand side of the road'
+'175':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned left from near the centreline'
+'176':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned into the incorrect lane'
+'177':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was weaving in and out or cut in on a multi-lane road'
+'178':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'moved left to avoid a slow vehicle'
+'179':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was controlling a long vehicle and it was tracking the outside lane'
+'180':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control in line of traffic'
+'181':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was following too closely to the vehicle in front'
+'182':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling unreasonably slowly'
+'183':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to give a cyclist at least 1.5m of space'
+'184':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not merge or diverge correctly'
+'190':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'made a sudden action'
+'191':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'braked suddenly'
+'192':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned left suddenly'
+'193':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'turned right suddenly'
+'194':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'suddenly swerved in order to avoid a pedestrian'
+'195':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'swerved suddenly in order to avoid an animal'
+'196':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'swerved suddenly to avoid an accident or broken-down vehicle'
+'197':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'suddenly swerved to avoid a vehicle'
+'198':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'swerved to avoid an object (for an unknown reason)'
+'199':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'swerved to avoid an oncoming emergency vehicle'
+'200':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'made a forbidden movement'
+'201':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling the wrong way'
+'202':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'performed a U turn when it was prohibited'
+'203':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'entered (exited) through an exit (entry)'
+'204':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was driving or riding on the footpath'
+'205':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was on the wrong side of the road'
+'206':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'ignored a ''no entry'' sign'
+'207':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'made a forbidden movement in a car park'
+'208':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling in the cycle lane'
+'209':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was travelling in the bus/transit lane when they were not entitled to'
+'210':
+  Category: 'Driver control'
+  'Requires Subject': 'TRUE'
+  Pretty: 'road their bicycle across a pedestrian crossing (or with the pedestrian signal)'
+'300':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to give way'
+'301':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to give way at a stop sign'
+'302':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way at a controlled intersection'
+'303':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way when turning into non-turning traffic'
+'304':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way when deemed turning by markings (not geom'
+'305':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way turning left (under the road rules used prior to 5am 25 March 2014)'
+'306':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop for a pedestrian on a crossing'
+'307':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way to pedestrians walking on the pedestrian phase'
+'308':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way when entering a road from a driveway'
+'309':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way to traffic coming from the right-hand side'
+'310':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to yield on a one lane bridge or road'
+'311':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way to a pedestrian on the footpath or verge'
+'312':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was entering the roadway from something other than a driveway or intersection and did not give way'
+'313':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give precedence to an emergency vehicle'
+'314':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to give way (waved through)'
+'315':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way when turning right to opposing left-turning traffic (under the road rules used prior to 5am 25 March 2014)'
+'316':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not give way to approaching traffic or traffic turning from the left (under the road rules used prior to 5am 25 March 2014)'
+'320':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop'
+'321':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop at a stop sign'
+'322':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'ran a red light'
+'323':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'ignored a red turning arrow'
+'324':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'ignored a steady amber light'
+'325':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'ignored an amber arrow'
+'326':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop at flashing red lights'
+'327':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop for police or for a flag-person'
+'328':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop for a school patrol or at a kea crossing'
+'330':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was inattentive'
+'331':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice a stationary or slowing vehicle in front'
+'332':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice a bend in the road'
+'333':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice the indication of the vehicle in front'
+'334':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice the traffic lights'
+'335':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice an intersection or its stop/give way control'
+'336':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice a sign or road marking'
+'337':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice a warning sign'
+'338':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice a direction or information sign or marking'
+'339':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice road works signs'
+'340':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice lane use arrows'
+'341':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not notice an obstruction'
+'350':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their attention diverted'
+'351':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their attention diverted by their passengers'
+'352':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted by scenery or by people outside of the vehicle'
+'353':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted by other traffic'
+'354':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their attention diverted by an animal or insect in the vehicle'
+'355':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted because they were trying to find an intersection, house number or their destination'
+'356':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted by advertising or signs'
+'357':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had road rage'
+'358':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted by a cigarette/radio/heater/AC/glove box/object under their feet/etc.'
+'359':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was on their cellphone'
+'360':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'FALSE'
+  Pretty: 'FALSE'
+'361':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted by a navigation device'
+'362':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was distracted by a radio communications device'
+'363':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was dazzled'
+'370':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not see or look for another party until it was too late'
+'371':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was not watching behind when reversing'
+'372':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not check their blindspot when changing lanes or making a U turn'
+'373':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not check their blindspot when pulling out from a park'
+'374':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not check their blindspot when opening a door or leaving their vehicle'
+'375':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not check for traffic coming from another direction when required to give  way'
+'376':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not check for pedestrians when required to give way to them'
+'377':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their visibility obstructed by other vehicles'
+'378':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their visibility obstructed by roadside features'
+'379':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not check for oncoming traffic when first in a queue and receiving the green light'
+'380':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed, distance, size and/or position of another party'
+'381':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed, distance, size and/or position of a vehicle coming from behind or alongside'
+'382':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed, distance, size and/or position of another vehicle coming from another direction and who had right of way'
+'383':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the movement or intention of a pedestrian'
+'384':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed, distance, size and/or position of a towed vehicle, or of their own vehicle while towing something'
+'385':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed, distance, size and/or position of an obstacle'
+'386':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed, distance, size and/or position of their own vehicle'
+'387':
+  Category: 'Vehicle conflicts'
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the intentions of another party'
+'400':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was inexperienced'
+'401':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was inexperienced at driving in fast, complex or heavy traffic'
+'402':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was new to driving'
+'403':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was driving an unfamiliar vehicle'
+'404':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was an international visitor or recent migrant and failed to adjust to NZ''s road rules and conditions'
+'405':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was an inexperienced driving under instruction'
+'406':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was inexperienced at towing a trailer or other vehicle'
+'407':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was inexperienced and over-reacted'
+'408':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was an unsupervised child cyclist'
+'410':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was fatigued, drowsy, or fell asleep at the wheel'
+'411':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was fatigued, drowsy, or fell asleep at the wheel due to a long trip'
+'412':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was fatigued, drowsy, or fell asleep at the wheel due to a lack of sleep'
+'413':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was fatigued, drowsy, or fell asleep at the wheel due to breathing in exhaust  fumes'
+'414':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was fatigued, drowsy, or fell asleep at the wheel because they had just worked for a long period of time'
+'415':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was fatigued, drowsy, or fell asleep at the wheel because they exceeded their driving hours'
+'420':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'used vehicle controls incorrectly'
+'421':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'started their car in gear'
+'422':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'stalled their engine'
+'423':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'pressed on the wrong pedal'
+'424':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'used their footrest incorrectly'
+'425':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'saw their ignition turn off, and the steering locked'
+'426':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not have their lights on'
+'427':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their foot slip or catch under the pedal'
+'428':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not fully apply their parking brake'
+'429':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not secure their trailer coupling or safety chain'
+'430':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was showing off'
+'431':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was racing'
+'432':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was playing chicken'
+'433':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was drifting or doing wheel spins'
+'434':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was driving intimidatingly'
+'440':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was parked or stopped'
+'441':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was parked or stopped in an inadequately lit street or carpark'
+'442':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'parked or stopped at a point of limited visibility'
+'443':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not park or stop as close as practicable to the side of the road'
+'444':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'parked or stopped on the wrong side of the road'
+'445':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was double parked'
+'446':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'parked or stopped in a no stopping area'
+'447':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not stop clear of a rail crossing'
+'448':
+  Category: 'General driver'
+  'Requires Subject': 'TRUE'
+  Pretty: 'parked or stopped in a bike or bus/transit lane'
+'500':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an illness or disability that affected their ability to drive safely'
+'501':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'suffered a sudden medical emergency (heart attack, epilepsy, etc.)'
+'502':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was physically disabled'
+'503':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had defective vision'
+'504':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a (not sudden) medical illness (influenza, diabetes, etc.)'
+'505':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'suffered from a mental illness (depression, psychosis, etc.)'
+'506':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was attempting suicide'
+'507':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was elderly'
+'510':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'intentionally or criminally caused the collision'
+'511':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'committed homicide'
+'512':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'intentionally caused the collision'
+'513':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'committed suicide'
+'514':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was evading police'
+'515':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an object deliberately thrown at or dropped on them, or was shot at'
+'516':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'deliberately threw an object from the vehicle, or one of their passengers did'
+'517':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was driving a stolen car'
+'520':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a passenger boarding or leaving the vehicle, or someone was unsafely travelling in the moving vehicle'
+'521':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had someone attempting to board their moving vehicle'
+'522':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had someone intentionally leaving their moving vehicle'
+'523':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had someone riding in an insecure position'
+'524':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a passenger interfere with their control'
+'525':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a door opened inadvertently'
+'526':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had too many passengers'
+'527':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a child playing in the parked vehicle'
+'530':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'performed a miscellaneous action that contributed to the accident or to an injury'
+'531':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: '(or one or more of their passengers) drowned'
+'532':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: '(or one or more of their passengers) was thrown from the vehicle'
+'533':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not keep to the verge'
+'534':
+  Category: 'General person'
+  'Requires Subject': 'TRUE'
+  Pretty: 'was wearing dark clothing'
+'600':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had faulty or dirty lights and/or reflectors'
+'601':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had dazzling headlights'
+'602':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had inadequate or no headlights'
+'603':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had sudden headlight failure'
+'604':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had faulty or absent brake lights or indicators'
+'605':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had inadequate or absent tail lights'
+'606':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had inadequate or no reflectors'
+'607':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had obscured lights or reflectors'
+'610':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an issue with their brakes'
+'611':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had parking brake failure'
+'612':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a defective parking brake'
+'613':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had service brake failure'
+'614':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a defective service brake'
+'615':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'jack-knifed their vehicle'
+'620':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an issue with their steering'
+'621':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had defective steering controls'
+'622':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had sudden steering failure'
+'630':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an issue with their tyres'
+'631':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'suffered a puncture or blow-out'
+'632':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had worn tread on their tyre'
+'633':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was using the incorrect tyre type for their vehicle'
+'634':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was using a space saver tyre, or mixed tread'
+'640':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an issue with their windscreen or a mirror'
+'641':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a shattered windscreen'
+'642':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a dirty windscreen or rear window'
+'643':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had not correctly adjusted their rear vision mirror'
+'644':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not have a rear vision mirror'
+'645':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a misted/frosted windscreen or rear vision mirror'
+'646':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had inadequate or no sun visors'
+'647':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'lacked or had inadequate windscreen wipers'
+'648':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an issue with their visor, glasses, goggles, or screen'
+'650':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'faced a mechanical issue'
+'651':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'suffered engine failure'
+'652':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'experienced transmission failure'
+'653':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a jammed accelerator or throttle'
+'660':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an issue with the body or chassis of their vehicle'
+'661':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a failure of their vehicle''s body, chassis or frame'
+'662':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had suspension failure'
+'663':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a faulty door catch or their door was not shut properly'
+'664':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was using inadequate mudguards'
+'665':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an inadequate tow coupling'
+'666':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an inadequate (or lacked a) safety chain'
+'667':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their bonnet catch fail'
+'668':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a wheel come off'
+'669':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a broken axle'
+'670':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a vehicle of inconspicuous colour'
+'671':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a significant blind spot'
+'672':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their seatbelt or restraint fail'
+'673':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an airbag that failed to fully inflate'
+'680':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a dangerous load'
+'681':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an interfering load'
+'682':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a load that was not well secured or that moved'
+'683':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an overhanging load'
+'684':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a load obscuring their vision'
+'685':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an overhanging load whose dimensions were not adequately indicated'
+'686':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an oversize vehicle (or their load was)'
+'687':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was carrying a load that was too heavy'
+'688':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was towing a vehicle or trailer that was too heavy or incompatible'
+'690':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a miscellaneous vehicle issue'
+'691':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was an emergency vehicle attending an emergency'
+'692':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their vehicle catch fire'
+'693':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was being towed'
+'694':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a faulty airbag which contributed to the crash or to an injury'
+'695':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not have a seatbelt'
+'696':
+  Category: Vehicles
+  'Requires Subject': 'TRUE'
+  Pretty: 'was carrying dangerous goods'
+'700':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was walking along the road'
+'701':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not keep to the footpath'
+'702':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not keep to the side of the road'
+'703':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was walking along the road not facing oncoming traffic'
+'704':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was walking along the road on the inside edge of a blind corner'
+'705':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was a wheeled pedestrian behaving inconsiderately or dangerously on the footpath'
+'710':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was crossing the road'
+'711':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was crossing the road, heedless of traffic'
+'712':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'stepped out from behind parked vehicles'
+'713':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'ran across the road heedless of traffic'
+'714':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'failed to use the pedestrian crossing less than 20 metres away'
+'715':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was waiting on the roadway waiting for moving traffic to subside'
+'716':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was confused by the traffic, or stepped back'
+'717':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'stepped out suddenly onto the pedestrian crossing'
+'718':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'did not comply with traffic signals or a school patrol'
+'719':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed and/or distance of a vehicle'
+'720':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'did something miscellaneous that contributed to the accident'
+'721':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was pushing, working on or unloading a vehicle'
+'722':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was playing on the road, or was there unnecessarily'
+'723':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was working on the road'
+'724':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was wearing dark clothing'
+'725':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their vision obscured by an umbrella or their clothing'
+'726':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was a child that had escaped from supervision'
+'727':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was an unsupervised child'
+'728':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was sitting or lying on the road'
+'729':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was moving to or from a school bus (the speed limit past stationary school buses on either side of the street is 20 km/h)'
+'730':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was behind a reversing or otherwise manoeuvring vehicle'
+'731':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'was visiting from overseas'
+'732':
+  Category: Pedestrian
+  'Requires Subject': 'TRUE'
+  Pretty: 'had their attention diverted by a cigarette/phone/music/etc.'
+'800':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Conditions were slippery'
+'801':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'It was raining'
+'802':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'It was frosty or icy'
+'803':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'It was snowing or hailing'
+'804':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was loose material on the seal, so it was slippery'
+'805':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was mud'
+'806':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The conditions were slippery due to oil/diesel/fuel on the road'
+'807':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Painted markings made the road slippery'
+'808':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road was slippery as it had been recently graded'
+'809':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road was slippery as the surface was bleeding or defective'
+'810':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was an issue with the road surface'
+'811':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road surface was potholed'
+'812':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road surface was uneven'
+'813':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road was composed of deep, loose metal'
+'814':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road had a high crown'
+'815':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road curve was not well banked'
+'816':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The edge of the road was poorly defined or gave way'
+'817':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road was under construction or was being maintained'
+'818':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road was unusually narrow'
+'819':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was broken glass on the road'
+'820':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'A clear view of the road surface was not possible as it was obstructed'
+'821':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road surface could not be seen due to a fallen tree or branch'
+'822':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road surface could not be seen due to a slip or subsidence'
+'823':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The road surface could not be seen due to flood waters, a large puddle, or a ford'
+'824':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road works were not adequately lit'
+'825':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road works were not adequately signposted'
+'826':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'A roadside object fell on a vehicle'
+'827':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'An object was flicked up by a vehicle'
+'830':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Visibility on the road was limited'
+'831':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Visibility was limited on a curve'
+'832':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Visibility was limited due to a crest in the road'
+'833':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Visibility was limited due to a building'
+'834':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Trees were limiting visibility on the road'
+'835':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'A hedge or fence prevented adequate visibility'
+'836':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Scrub or long grass prevented adequate visibility'
+'837':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'A bank prevented adequate visibility'
+'838':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'A temporary obstruction, dust, or smoke affected visibility'
+'839':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'A parked vehicle reduced visibility'
+'840':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was an issue with signs and/or signals'
+'841':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road signs or signals were damaged, removed, or malfunctioned'
+'842':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road signs or signals were poorly located'
+'843':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road signs or signals were ineffective or inadequate'
+'844':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road signs or signals were necessary'
+'845':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road signals were turned off'
+'850':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was an issue with road markings'
+'851':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road markings were faded'
+'852':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road markings were difficult to see given the weather conditions'
+'853':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road markings were necessary'
+'854':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Road markings were not visible due to geometry or due to other vehicles'
+'855':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Old road markings had not been adequately removed'
+'860':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was an issue with street lighting'
+'861':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Street lighting failed'
+'862':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Street lighting was inadequate'
+'863':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'Street lighting was causing glare on the wet road'
+'864':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The pedestrian crossing was not adequately lit'
+'870':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was an issue with raised traffic islands or a roundabout'
+'871':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The raised traffic island was difficult to see'
+'872':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'The raised traffic island was ineffective, poorly located, or poorly designed'
+'873':
+  Category: Road
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was a cyclist pinch point preventing motorists from giving cyclists 1.5 metres'
+'900':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'The weather was shit'
+'901':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was heavy rain'
+'902':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'The sun was dazzling'
+'903':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was strong wind'
+'904':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was fog or mist'
+'905':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was snow, sleet or hail'
+'910':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'An animal contributed to the accident'
+'911':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'A pet rushed out, or was playing on the road'
+'912':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was a stray farm animal'
+'913':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was a farm animal being attended to, but there was inadequate warning or something unexpected happened'
+'914':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was a farm animal being attended to, but it was out of control'
+'915':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was a wild animal'
+'920':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'There was a change of land use'
+'921':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving the parking area of a roadside stall'
+'922':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving the forecourt of a service station'
+'923':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving the parking area of a liquor outlet'
+'924':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving the parking area of a takeaway food store'
+'925':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving the parking area of a shopping complex'
+'926':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving a car parking building or lot'
+'927':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving a commercial area'
+'928':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving an industrial area'
+'929':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving a private house or farm'
+'930':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving a non-commercial area'
+'931':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'It occurred while entering or leaving the parking area for a mobile shop or vendor'
+'970':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'FALSE'
+'977':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'FALSE'
+'978':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'FALSE'
+'979':
+  Category: Miscellaneous
+  'Requires Subject': 'FALSE'
+  Pretty: 'FALSE'
+'981':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'swung wide on a bend or intersection'
+'982':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control in a head-on collision'
+'983':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control when changing lanes'
+'984':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'cut in'
+'985':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'lost control at red or amber arrows'
+'986':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'went the wrong way up a one-way street or made some other forbidden movement'
+'987':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the speed of another vehicle'
+'988':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'misjudged the distance to, size, or position of a vehicle'
+'989':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'was not able to regain control during a skid'
+'990':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'had pre-existing poor vision or an illness'
+'991':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'had poor vision in the face of traffic'
+'992':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'opened their door in the path of someone'
+'993':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a passenger interfere with the driver'
+'994':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a physical disability or was elderly'
+'995':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'had an unattended child (or children)'
+'996':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'committed suicide'
+'997':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'did something miscellaneous wrong'
+'998':
+  Category: Miscellaneous
+  'Requires Subject': 'TRUE'
+  Pretty: 'had a faulty bicycle'

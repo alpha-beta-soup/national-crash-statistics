@@ -1,0 +1,64 @@
+'4':
+  display_text: 'driver of the <strong>SUV/4X4</strong>'
+  icon: SUV-icon.svg
+  title: '4X4 or SU'
+C:
+  display_text: 'driver of the <strong>car</strong>'
+  icon: Car-2-icon.svg
+  title: Car
+V:
+  display_text: 'driver of the <strong>van/ute</strong>'
+  icon: Transport-Bus-2-icon.svg
+  title: 'Van or Ute'
+X:
+  display_text: '<strong>taxi/taxi van driver</strong>'
+  icon: Taxi-2-icon.sv
+  title: 'Taxi or Taxi Van'
+B:
+  display_text: '<strong>bus driver</strong>'
+  icon: Transport-Bus-3-icon.svg
+  title: Bus
+L:
+  display_text: '<strong>school bus driver</strong>'
+  icon: Transport-Bus-4-icon.svg
+  title: 'School Bus'
+T:
+  display_text: '<strong>truck driver</strong>'
+  icon: Transport-Truck-2-icon.svg
+  title: Truck
+M:
+  display_text: '<strong>motorcyclist</strong>'
+  icon: motorcycle-icon.svg
+  title: Motorcycle
+P:
+  display_text: '<strong>moped rider</strong>'
+  icon: moped-icon.svg
+  title: Moped
+S:
+  display_text: '<strong>cyclist</strong>'
+  icon: bicycle-icon.svg
+  title: Bicycle
+O:
+  display_text: 'driver of the <strong>vehicle</strong> of unknown type'
+  icon: skateboard-icon.svg
+  title: 'Miscellaneous Vehicle'
+U:
+  display_text: 'driver of the <strong>vehicle</strong> of unknown type'
+  icon: skateboard-icon.svg
+  title: 'Miscellaneous Vehicle'
+E:
+  display_text: '<strong>pedestrian</strong>'
+  icon: pedestrian-icon.svg
+  title: Pedestrian
+K:
+  display_text: '<strong>skater</strong>'
+  icon: skateboard-icon.svg
+  title: 'Skateboard, inline skater, etc.'
+Q:
+  display_text: '<strong>equestrian</strong>'
+  icon: equestrian-icon.svg
+  title: Equestrian
+H:
+  display_text: '<strong>wheeled pedestrian</strong>'
+  icon: wheelchair-icon.svg
+  title: 'Wheeled Pedestrian'

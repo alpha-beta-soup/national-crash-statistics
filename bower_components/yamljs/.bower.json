@@ -1,0 +1,15 @@
+{
+  "name": "yamljs",
+  "homepage": "https://github.com/klederson/yaml.js",
+  "version": "0.1.5",
+  "_release": "0.1.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.5",
+    "commit": "c5a6a8601d31508bb3e5880b310b2918834e89c9"
+  },
+  "_source": "git://github.com/klederson/yaml.js.git",
+  "_target": "~0.1.5",
+  "_originalSource": "yamljs",
+  "_direct": true
+}

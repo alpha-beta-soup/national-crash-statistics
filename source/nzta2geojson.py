@@ -624,7 +624,9 @@ class nztacrash:
                 'vehicles': self.get_number_of_vehicles(), # {'C': 2, 'T': 1}
                 'modes': self.mapVehicles(), # {'A': 'C', 'B': 'T'}
                 'unixt': self.get_unix_time(),
-                'chathams': 1 if self.chathams else 0
+                'chathams': 1 if self.chathams else 0,
+                'light': self.light, # ['D', 'N']
+                'weather': self.wthr_a # ['L', ' ']
             },
             'geometry': {
                 'type': 'Point',

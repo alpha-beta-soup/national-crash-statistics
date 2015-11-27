@@ -1,0 +1,30 @@
+F:
+  decoded: fine
+  icons:
+    day:
+      icon: weather-sun-icon.svg
+      title: clear day
+    night:
+      icon: weather-moon-icon.svg
+      title: clear night
+M:
+  decoded: mist/fog
+  icons:
+    day:
+      icon: Fog-Day-icon.svg
+      title: day fog
+    night:
+      icon: Fog-Night-icon.svg
+      title: night fog
+L:
+  decoded: light rain
+  icon: weather-little-rain-icon.svg
+  title: light rain
+H:
+  decoded: heavy rain
+  icon: weather-downpour-icon.svg
+  title: heavy rain
+S:
+  decoded: snow
+  icon: weather-snow-icon.svg
+  title: snow

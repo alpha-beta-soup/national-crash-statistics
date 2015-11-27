@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_decoder, get_map, get_tileLayer, holidays, injuryColours, makeElem, map, mode_decoder, onEachFeature, sidebar_hide, special, stringify_number;
+var boolean_properties, cause_decoder, chevron_control, crashes, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_decoders, get_map, get_tileLayer, get_weather_icons, holidays, injuryColours, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, sidebar_hide, special, stringify_number, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -110,14 +110,50 @@ get_causes_text = function(causes, modes, vehicles) {
   return causes_text.join('');
 };
 
+make_img = function(src, title) {
+  var img;
+  img = document.createElement('img');
+  img.src = src;
+  img.title = title;
+  return img;
+};
+
+get_weather_icons = function(weather, light, dy) {
+  var day, img, title, weather_icons;
+  console.log(weather, light, dy);
+  console.log(weather_decoder_1);
+  console.log(weather_decoder_2);
+  console.log(light_decoder);
+  weather_icons = [];
+  day = dy ? 'day' : 'night';
+  if (weather_decoder_1[weather[0]].hasOwnProperty('icon')) {
+    title = weather_decoder_1[weather[0]]['title'];
+    img = weather_decoder_1[weather[0]]['icon'];
+  } else if (weather_decoder_1[weather[0]].hasOwnProperty('icons')) {
+    title = weather_decoder_1[weather[0]]['icons'][day]['title'];
+    img = weather_decoder_1[weather[0]]['icons'][day]['icon'];
+  }
+  if ((title != null) && (img != null)) {
+    weather_icons.push(make_img('./icons/' + img, title).outerHTML);
+  }
+  if (!!weather[1].trim()) {
+    title = weather_decoder_2[weather[1]]['title'];
+    img = weather_decoder_2[weather[1]]['icon'];
+    weather_icons.push(make_img('./icons/' + img, title).outerHTML);
+  }
+  console.log(weather_icons.join(''));
+  return weather_icons.join('');
+};
+
 getPopup = function(feature) {
   var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, utcoff, vehicles_and_injuries;
+  console.log(feature.properties.e);
   utcoff = !feature.properties.chathams ? '+12:00' : '+12:45';
   dt = moment(feature.properties.unixt).utcOffset(utcoff);
   crash_location = makeElem('span', feature.properties.t, 'crash-location');
   crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date');
   crash_time = makeElem('span', dt.format('H:mm'), 'time');
-  environment_icons = makeElem('span', makeElem('div', feature.properties.e, void 0, 'environment-icons'));
+  environment_icons = makeElem('span', makeElem('div', get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy), void 0, 'environment-icons'));
   road = makeElem('span', feature.properties.r, 'road');
   streetview = makeElem('span', makeElem('div', feature.properties.s, void 0, 'streetview-container'));
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, void 0, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, void 0, 'injury-icons').outerHTML + makeElem('div', void 0, void 0, 'clear').outerHTML, void 0, 'vehicle-injury'));
@@ -233,16 +269,31 @@ cause_decoder = void 0;
 
 mode_decoder = void 0;
 
-get_decoder = function() {
-  $.getJSON('./data/decoders/cause-decoder.json', function(data) {
+weather_decoder_1 = void 0;
+
+weather_decoder_2 = void 0;
+
+light_decoder = void 0;
+
+get_decoders = function() {
+  YAML.load('./data/decoders/cause-decoder.yaml', function(data) {
     return cause_decoder = data;
   });
-  return $.getJSON('./data/decoders/mode-decoder.json', function(data) {
+  YAML.load('./data/decoders/mode-decoder.yaml', function(data) {
     return mode_decoder = data;
+  });
+  YAML.load('./data/decoders/weather-decoder-1.yaml', function(data) {
+    return weather_decoder_1 = data;
+  });
+  YAML.load('./data/decoders/weather-decoder-2.yaml', function(data) {
+    return weather_decoder_2 = data;
+  });
+  return YAML.load('./data/decoders/light-decoder.yaml', function(data) {
+    return light_decoder = data;
   });
 };
 
-get_decoder();
+get_decoders();
 
 map = get_map();
 

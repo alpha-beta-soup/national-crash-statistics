@@ -83,14 +83,51 @@ get_causes_text = (causes, modes, vehicles) ->
         causes_text.push cause_decoder[expl]['Pretty'] + '.<br>'
   return causes_text.join('')
 
+make_img = (src, title) ->
+  img =  document.createElement('img')
+  img.src = src
+  img.title = title
+  return img
+
+get_weather_icons = (weather, light, dy) ->
+  # TODO light?
+  # TODO replicating/improving the weather info in feature.properties.e
+  console.log weather, light, dy
+  console.log weather_decoder_1
+  console.log weather_decoder_2
+  console.log light_decoder
+  weather_icons = []
+
+  # First weather icon
+  day = if dy then 'day' else 'night'
+  if weather_decoder_1[weather[0]].hasOwnProperty('icon')
+    title = weather_decoder_1[weather[0]]['title']
+    img = weather_decoder_1[weather[0]]['icon']
+  else if weather_decoder_1[weather[0]].hasOwnProperty('icons')
+    title = weather_decoder_1[weather[0]]['icons'][day]['title']
+    img = weather_decoder_1[weather[0]]['icons'][day]['icon']
+  if title? and img?
+    weather_icons.push make_img('./icons/' + img, title).outerHTML
+
+  # Optional second weather icon
+  if !!weather[1].trim()
+    title = weather_decoder_2[weather[1]]['title']
+    img = weather_decoder_2[weather[1]]['icon']
+    weather_icons.push make_img('./icons/' + img, title).outerHTML
+
+  console.log weather_icons.join('')
+  return weather_icons.join('')
+
 getPopup = (feature) ->
-  # Decode the values in feature.properties.causes_dict.A
+  console.log feature.properties.e
+  # get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy)
   utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
   dt = moment(feature.properties.unixt).utcOffset(utcoff)
   crash_location = makeElem('span', feature.properties.t, 'crash-location')
   crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date')
   crash_time = makeElem('span', dt.format('H:mm'), 'time')
-  environment_icons = makeElem('span', makeElem('div', feature.properties.e, undefined, 'environment-icons'))
+  # environment_icons = makeElem('span', makeElem('div', feature.properties.e, undefined, 'environment-icons'))
+  environment_icons = makeElem('span', makeElem('div', get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy), undefined, 'environment-icons'))
   road = makeElem('span', feature.properties.r, 'road')
   streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
@@ -188,16 +225,25 @@ $(document).ready ->
   chevron_control()
   return
 
-# Load the JSON decoders
+# Load the YAML/JSON decoders
 cause_decoder = undefined
 mode_decoder = undefined
-get_decoder = () ->
-  $.getJSON './data/decoders/cause-decoder.json', (data) ->
+weather_decoder_1 = undefined
+weather_decoder_2 = undefined
+light_decoder = undefined
+get_decoders = () ->
+  YAML.load './data/decoders/cause-decoder.yaml', (data) ->
     cause_decoder = data
-  $.getJSON './data/decoders/mode-decoder.json', (data) ->
+  YAML.load './data/decoders/mode-decoder.yaml', (data) ->
     mode_decoder = data
+  YAML.load './data/decoders/weather-decoder-1.yaml', (data) ->
+    weather_decoder_1 = data
+  YAML.load './data/decoders/weather-decoder-2.yaml', (data) ->
+    weather_decoder_2 = data
+  YAML.load './data/decoders/light-decoder.yaml', (data) ->
+    light_decoder = data
 
-get_decoder()
+get_decoders()
 map = get_map()
 get_tileLayer().addTo map
 

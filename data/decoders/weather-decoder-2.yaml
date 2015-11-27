@@ -1,0 +1,8 @@
+F:
+  decoded: frost
+  icon: weather-frost-icon.svg
+  title: frost
+S:
+  decoded: strong wind
+  icon: 05-strong-wind-weather-icon.png
+  title: strong winds
