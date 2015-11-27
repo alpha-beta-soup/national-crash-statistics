@@ -42,24 +42,6 @@ def formatDate(datestring):
             # Poorly formatted date in source data
             return None
 
-def ordinal(n):
-    return str(n)+("th" if 4<=n%100<=20 else {1:"st",2:"nd",3:"rd"}.get(n%10, "th"))
-
-def formatNiceDate(datetime):
-    '''Takes a datetime.datetime (e.g. datetime(2014,1,1)) and returns a nice
-    string representation (e.g. "1st of January 2014"'''
-    if empty(datetime):
-        return None
-    return ordinal(datetime.day) + " %s %d" % (datetime.strftime("%B"), datetime.year)
-
-def formatNiceTime(time):
-    '''Takes a datetime.time (e.g. time(12,0,0)) and returns a nice string representation
-    (e.g. 12:00). Seconds are ignored, and not even considered for rounding.'''
-    if empty(time):
-        return ''
-    t = str(time).split(":")
-    return "%s:%s" % (t[0],t[1])
-
 def formatCrashTime(crashtime, dateobj):
     '''Returns a datetime.time object when given a time as a string from the
     `row`. These are purportedly recorded "in 24-hour time", but are lacking

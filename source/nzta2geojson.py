@@ -14,6 +14,7 @@ import generalFunctions as genFunc
 import re
 import logging
 import datetime
+from calendar import timegm
 
 import pytz
 import pyproj
@@ -57,7 +58,6 @@ class nztacrash:
         self.side_road = self.get_side_road()
         self.crash_id = genFunc.formatString(row[6])
         self.crash_date = genFunc.formatDate(row[7])
-        self.crash_dow = self.get_crash_dow()
         self.crash_time = genFunc.formatCrashTime(row[9], self.crash_date) # Returns a datetime.datetime.time() object
         self.crash_datetime = self.get_crash_datetime()
         self.mvmt = genFunc.formatString(row[10])
@@ -200,14 +200,6 @@ class nztacrash:
         crash_road = genFunc.check_offroad(crash_road)
         crash_road = genFunc.streetExpander(crash_road,self.streetdecoder)
         return crash_road
-
-    def get_crash_dow(self):
-        '''Returns a full text representation of the English day of the week,
-        e.g. "Monday"'''
-        if self.crash_date != None:
-            return self.crash_date.strftime("%A")
-        else:
-            return None
 
     def get_crash_datetime(self, as_utc=False):
         '''Returns a datetime.datetime object expressing the date and time of the
@@ -606,9 +598,6 @@ class nztacrash:
             'type': 'Feature',
             'properties': {
                 't': self.tla_name, # Name of Territorial Local Authority
-                'd': self.crash_dow, # Crash daw of the week
-                'dt': genFunc.formatNiceDate(self.crash_date), # The date, nicely formatted
-                'ti': genFunc.formatNiceTime(self.crash_time), # The time HH:MM
                 's': self.__streetview__(), # The Streetview img container and call
                 'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
                 'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon() + self.moonIcon(), # The environment icon imgs
@@ -633,13 +622,25 @@ class nztacrash:
                 'dy': self.daytime, # Daytime
                 'causes': self.causesdict, # {'A': [100,101], 'Environment': [400]}
                 'vehicles': self.get_number_of_vehicles(), # {'C': 2, 'T': 1}
-                'modes': self.mapVehicles() # {'A': 'C', 'B': 'T'}
+                'modes': self.mapVehicles(), # {'A': 'C', 'B': 'T'}
+                'unixt': self.get_unix_time(),
+                'chathams': 1 if self.chathams else 0
             },
             'geometry': {
                 'type': 'Point',
                 'coordinates': (self.lon, self.lat)
             }
         }
+
+    def get_unix_time(self):
+        '''
+        Returns the datetime of the crash as a POSIX timestamp
+        '''
+        dtutc = self.get_crash_datetime(as_utc=True)
+        if dtutc is not None:
+            return timegm(dtutc.utctimetuple()) * 1000
+        else:
+            return None
 
     def decodeMovement(self):
         '''Decodes self.mvmt into a human-readable form.

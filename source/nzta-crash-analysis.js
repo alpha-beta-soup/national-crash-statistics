@@ -111,10 +111,12 @@ get_causes_text = function(causes, modes, vehicles) {
 };
 
 getPopup = function(feature) {
-  var causes_text, crash_date, crash_location, crash_time, e, environment_icons, road, streetview, vehicles_and_injuries;
+  var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, utcoff, vehicles_and_injuries;
+  utcoff = !feature.properties.chathams ? '+12:00' : '+12:45';
+  dt = moment(feature.properties.unixt).utcOffset(utcoff);
   crash_location = makeElem('span', feature.properties.t, 'crash-location');
-  crash_date = makeElem('span', [feature.properties.d, feature.properties.dt].join(', '), 'date');
-  crash_time = makeElem('span', feature.properties.ti, 'time');
+  crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date');
+  crash_time = makeElem('span', dt.format('H:mm'), 'time');
   environment_icons = makeElem('span', makeElem('div', feature.properties.e, void 0, 'environment-icons'));
   road = makeElem('span', feature.properties.r, 'road');
   streetview = makeElem('span', makeElem('div', feature.properties.s, void 0, 'streetview-container'));

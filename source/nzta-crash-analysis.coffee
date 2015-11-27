@@ -85,9 +85,11 @@ get_causes_text = (causes, modes, vehicles) ->
 
 getPopup = (feature) ->
   # Decode the values in feature.properties.causes_dict.A
+  utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
+  dt = moment(feature.properties.unixt).utcOffset(utcoff)
   crash_location = makeElem('span', feature.properties.t, 'crash-location')
-  crash_date = makeElem('span', [feature.properties.d, feature.properties.dt].join(', '), 'date')
-  crash_time = makeElem('span', feature.properties.ti, 'time')
+  crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date')
+  crash_time = makeElem('span', dt.format('H:mm'), 'time')
   environment_icons = makeElem('span', makeElem('div', feature.properties.e, undefined, 'environment-icons'))
   road = makeElem('span', feature.properties.r, 'road')
   streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
