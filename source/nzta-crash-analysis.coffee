@@ -49,13 +49,20 @@ makeElem = (elem, inner, _class, _id) ->
       e.innerHTML = inner.outerHTML
   return e
 
+make_img = (src, title, alt) ->
+  img =  document.createElement('img')
+  img.src = src
+  img.title = title
+  img.alt = if alt? then alt else title
+  return img
+
 get_causes_text = (causes, modes, vehicles) ->
   # TODO when there are more given parties than listed modes?
   # TODO make more elegant
   causes_text = []
   modes_n = {}
-  if !cause_decoder or !mode_decoder
-    return
+  if !cause_decoder? or !mode_decoder?
+    return ''
   for party, explanations of causes
     mode = if modes.hasOwnProperty(party) then modes[party] else null
     if mode?
@@ -83,21 +90,11 @@ get_causes_text = (causes, modes, vehicles) ->
         causes_text.push cause_decoder[expl]['Pretty'] + '.<br>'
   return causes_text.join('')
 
-make_img = (src, title) ->
-  img =  document.createElement('img')
-  img.src = src
-  img.title = title
-  return img
-
 get_weather_icons = (weather, light, dy) ->
-  # TODO light?
-  # TODO replicating/improving the weather info in feature.properties.e
-  console.log weather, light, dy
-  console.log weather_decoder_1
-  console.log weather_decoder_2
-  console.log light_decoder
+  # TODO light? (bright sun, dark, overcast, twilight)
+  if !weather_decoder_1? or !weather_decoder_2?
+    return ''
   weather_icons = []
-
   # First weather icon
   day = if dy then 'day' else 'night'
   if weather_decoder_1[weather[0]].hasOwnProperty('icon')
@@ -108,26 +105,78 @@ get_weather_icons = (weather, light, dy) ->
     img = weather_decoder_1[weather[0]]['icons'][day]['icon']
   if title? and img?
     weather_icons.push make_img('./icons/' + img, title).outerHTML
-
   # Optional second weather icon
-  if !!weather[1].trim()
+  if weather.length > 1
     title = weather_decoder_2[weather[1]]['title']
     img = weather_decoder_2[weather[1]]['icon']
-    weather_icons.push make_img('./icons/' + img, title).outerHTML
+    weather_icons.push make_img("./icons/" + img, title).outerHTML
+  return weather_icons.join("")
 
-  console.log weather_icons.join('')
-  return weather_icons.join('')
+get_speed_limit_icon = (speedlim) ->
+  if speedlim in ['', 'U']
+    return ''
+  else if speedlim is 'LSZ'
+    # Limited speed zone
+    # Could not be set since 2003, and was progressively replaced until 2009
+    # It is now illegal
+    title = 'Limited speed zone'
+  else
+    title = "#{speedlim}km/h speed limit"
+  if speedlim?
+    icon = "./icons/speed-limits/limit_#{speedlim}.svg"
+    return make_img(icon, title).outerHTML
+
+get_straightforward_icon = (decoder, value, icon_path) ->
+  if !decoder? or !value
+    return ''
+  if (!decoder.hasOwnProperty value) or (!decoder[value]['icon']?)
+    return ''
+  icon = decoder[value]['icon']
+  title = decoder[value]['title']
+  return make_img("#{icon_path}/#{icon}", title).outerHTML
+
+get_child_injured_icon = (childage) ->
+  if !childage
+    return ''
+  icon = "./icons/otherchildren.png"
+  article = if childage in [8, 11] then 'an' else 'a'
+  if childage == 1
+    child = 'infant'
+  else if childage < 13
+    child = 'child'
+  else if childage >=13 and childage < 20
+    child = 'teenager'
+  title = "#{article} #{childage} year old #{child} was harmed"
+  return make_img("./icons/curves/#{icon}", title).outerHTML
+
+get_moon_icon = (moon) ->
+  if !moon
+    return ''
+  i = moon['moonphase']
+  icon = "./icons/moon/m#{i}.svg"
+  title = moon['moontext'] + ' moon'
+  return make_img(icon, title).outerHTML
 
 getPopup = (feature) ->
-  console.log feature.properties.e
-  # get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy)
   utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
   dt = moment(feature.properties.unixt).utcOffset(utcoff)
   crash_location = makeElem('span', feature.properties.t, 'crash-location')
   crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date')
   crash_time = makeElem('span', dt.format('H:mm'), 'time')
-  # environment_icons = makeElem('span', makeElem('div', feature.properties.e, undefined, 'environment-icons'))
-  environment_icons = makeElem('span', makeElem('div', get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy), undefined, 'environment-icons'))
+  environment_icons = makeElem('span',
+    makeElem(
+      'div',
+      get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy) +
+      get_speed_limit_icon(feature.properties.speedlim) +
+      get_straightforward_icon(traffic_control_decoder, feature.properties.traffic_control, './icons/controls') +
+      get_straightforward_icon(intersection_decoder, feature.properties.intersection, './icons/junctions') +
+      get_straightforward_icon(curve_decoder, feature.properties.curve, './icons/curves') +
+      get_child_injured_icon(feature.properties.childage) +
+      get_moon_icon(feature.properties.moon)
+      , undefined,
+      'environment-icons'
+    )
+  )
   road = makeElem('span', feature.properties.r, 'road')
   streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
@@ -231,6 +280,9 @@ mode_decoder = undefined
 weather_decoder_1 = undefined
 weather_decoder_2 = undefined
 light_decoder = undefined
+intersection_decoder = undefined
+traffic_control_decoder = undefined
+curve_decoder = undefined
 get_decoders = () ->
   YAML.load './data/decoders/cause-decoder.yaml', (data) ->
     cause_decoder = data
@@ -242,6 +294,13 @@ get_decoders = () ->
     weather_decoder_2 = data
   YAML.load './data/decoders/light-decoder.yaml', (data) ->
     light_decoder = data
+  YAML.load './data/decoders/intersection-decoder.yaml', (data) ->
+    intersection_decoder = data
+  YAML.load './data/decoders/traffic-control-decoder.yaml', (data) ->
+    traffic_control_decoder = data
+  YAML.load './data/decoders/curve-decoder.yaml', (data) ->
+    curve_decoder = data
+  return
 
 get_decoders()
 map = get_map()

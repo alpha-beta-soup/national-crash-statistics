@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_decoders, get_map, get_tileLayer, get_weather_icons, holidays, injuryColours, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, sidebar_hide, special, stringify_number, weather_decoder_1, weather_decoder_2;
+var boolean_properties, cause_decoder, chevron_control, crashes, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_map, get_moon_icon, get_speed_limit_icon, get_straightforward_icon, get_tileLayer, get_weather_icons, holidays, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, sidebar_hide, special, stringify_number, traffic_control_decoder, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -31,21 +31,21 @@ stringify_number = function(n) {
 };
 
 getPointStyleOptions = function(feature) {
-  var classes, holiday, i, j, len, len1, options, prop;
+  var classes, holiday, j, k, len, len1, options, prop;
   options = {};
   options.radius = 5;
   options.fillOpacity = 0.9;
   options.stroke = false;
   options.fillColor = injuryColours[feature.properties.ij];
   classes = [feature.properties.ij];
-  for (i = 0, len = boolean_properties.length; i < len; i++) {
-    prop = boolean_properties[i];
+  for (j = 0, len = boolean_properties.length; j < len; j++) {
+    prop = boolean_properties[j];
     if ((feature.properties[prop] != null) && feature.properties[prop]) {
       classes.push(prop);
     }
   }
-  for (j = 0, len1 = holidays.length; j < len1; j++) {
-    holiday = holidays[j];
+  for (k = 0, len1 = holidays.length; k < len1; k++) {
+    holiday = holidays[k];
     if (feature.properties.h === holiday[0]) {
       classes.push(holiday[1]);
     }
@@ -73,12 +73,21 @@ makeElem = function(elem, inner, _class, _id) {
   return e;
 };
 
+make_img = function(src, title, alt) {
+  var img;
+  img = document.createElement('img');
+  img.src = src;
+  img.title = title;
+  img.alt = alt != null ? alt : title;
+  return img;
+};
+
 get_causes_text = function(causes, modes, vehicles) {
-  var causes_text, expl, explanations, i, len, mode, modes_n, n, party, t;
+  var causes_text, expl, explanations, j, len, mode, modes_n, n, party, t;
   causes_text = [];
   modes_n = {};
-  if (!cause_decoder || !mode_decoder) {
-    return;
+  if ((typeof cause_decoder === "undefined" || cause_decoder === null) || (typeof mode_decoder === "undefined" || mode_decoder === null)) {
+    return '';
   }
   for (party in causes) {
     explanations = causes[party];
@@ -90,8 +99,8 @@ get_causes_text = function(causes, modes, vehicles) {
         modes_n[mode] = 1;
       }
     }
-    for (i = 0, len = explanations.length; i < len; i++) {
-      expl = explanations[i];
+    for (j = 0, len = explanations.length; j < len; j++) {
+      expl = explanations[j];
       if (mode != null) {
         if (modes_n[mode] > 1) {
           n = stringify_number(modes_n[mode]);
@@ -110,20 +119,11 @@ get_causes_text = function(causes, modes, vehicles) {
   return causes_text.join('');
 };
 
-make_img = function(src, title) {
-  var img;
-  img = document.createElement('img');
-  img.src = src;
-  img.title = title;
-  return img;
-};
-
 get_weather_icons = function(weather, light, dy) {
   var day, img, title, weather_icons;
-  console.log(weather, light, dy);
-  console.log(weather_decoder_1);
-  console.log(weather_decoder_2);
-  console.log(light_decoder);
+  if ((typeof weather_decoder_1 === "undefined" || weather_decoder_1 === null) || (typeof weather_decoder_2 === "undefined" || weather_decoder_2 === null)) {
+    return '';
+  }
   weather_icons = [];
   day = dy ? 'day' : 'night';
   if (weather_decoder_1[weather[0]].hasOwnProperty('icon')) {
@@ -136,34 +136,89 @@ get_weather_icons = function(weather, light, dy) {
   if ((title != null) && (img != null)) {
     weather_icons.push(make_img('./icons/' + img, title).outerHTML);
   }
-  if (!!weather[1].trim()) {
+  if (weather.length > 1) {
     title = weather_decoder_2[weather[1]]['title'];
     img = weather_decoder_2[weather[1]]['icon'];
-    weather_icons.push(make_img('./icons/' + img, title).outerHTML);
+    weather_icons.push(make_img("./icons/" + img, title).outerHTML);
   }
-  console.log(weather_icons.join(''));
-  return weather_icons.join('');
+  return weather_icons.join("");
+};
+
+get_speed_limit_icon = function(speedlim) {
+  var icon, title;
+  if (speedlim === '' || speedlim === 'U') {
+    return '';
+  } else if (speedlim === 'LSZ') {
+    title = 'Limited speed zone';
+  } else {
+    title = speedlim + "km/h speed limit";
+  }
+  if (speedlim != null) {
+    icon = "./icons/speed-limits/limit_" + speedlim + ".svg";
+    return make_img(icon, title).outerHTML;
+  }
+};
+
+get_straightforward_icon = function(decoder, value, icon_path) {
+  var icon, title;
+  if ((decoder == null) || !value) {
+    return '';
+  }
+  if ((!decoder.hasOwnProperty(value)) || (decoder[value]['icon'] == null)) {
+    return '';
+  }
+  icon = decoder[value]['icon'];
+  title = decoder[value]['title'];
+  return make_img(icon_path + "/" + icon, title).outerHTML;
+};
+
+get_child_injured_icon = function(childage) {
+  var article, child, icon, title;
+  if (!childage) {
+    return '';
+  }
+  icon = "./icons/otherchildren.png";
+  article = childage === 8 || childage === 11 ? 'an' : 'a';
+  if (childage === 1) {
+    child = 'infant';
+  } else if (childage < 13) {
+    child = 'child';
+  } else if (childage >= 13 && childage < 20) {
+    child = 'teenager';
+  }
+  title = article + " " + childage + " year old " + child + " was harmed";
+  return make_img("./icons/curves/" + icon, title).outerHTML;
+};
+
+get_moon_icon = function(moon) {
+  var i, icon, title;
+  if (!moon) {
+    return '';
+  }
+  i = moon['moonphase'];
+  icon = "./icons/moon/m" + i + ".svg";
+  title = moon['moontext'] + ' moon';
+  return make_img(icon, title).outerHTML;
 };
 
 getPopup = function(feature) {
   var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, utcoff, vehicles_and_injuries;
-  console.log(feature.properties.e);
   utcoff = !feature.properties.chathams ? '+12:00' : '+12:45';
   dt = moment(feature.properties.unixt).utcOffset(utcoff);
   crash_location = makeElem('span', feature.properties.t, 'crash-location');
   crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date');
   crash_time = makeElem('span', dt.format('H:mm'), 'time');
-  environment_icons = makeElem('span', makeElem('div', get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy), void 0, 'environment-icons'));
+  environment_icons = makeElem('span', makeElem('div', get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy) + get_speed_limit_icon(feature.properties.speedlim) + get_straightforward_icon(traffic_control_decoder, feature.properties.traffic_control, './icons/controls') + get_straightforward_icon(intersection_decoder, feature.properties.intersection, './icons/junctions') + get_straightforward_icon(curve_decoder, feature.properties.curve, './icons/curves') + get_child_injured_icon(feature.properties.childage) + get_moon_icon(feature.properties.moon), void 0, 'environment-icons'));
   road = makeElem('span', feature.properties.r, 'road');
   streetview = makeElem('span', makeElem('div', feature.properties.s, void 0, 'streetview-container'));
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, void 0, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, void 0, 'injury-icons').outerHTML + makeElem('div', void 0, void 0, 'clear').outerHTML, void 0, 'vehicle-injury'));
   causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text');
   return ((function() {
-    var i, len, ref, results;
+    var j, len, ref, results;
     ref = [crash_location, crash_date, crash_time, environment_icons, road, streetview, vehicles_and_injuries, causes_text];
     results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      e = ref[i];
+    for (j = 0, len = ref.length; j < len; j++) {
+      e = ref[j];
       results.push(e.outerHTML);
     }
     return results;
@@ -275,6 +330,12 @@ weather_decoder_2 = void 0;
 
 light_decoder = void 0;
 
+intersection_decoder = void 0;
+
+traffic_control_decoder = void 0;
+
+curve_decoder = void 0;
+
 get_decoders = function() {
   YAML.load('./data/decoders/cause-decoder.yaml', function(data) {
     return cause_decoder = data;
@@ -288,8 +349,17 @@ get_decoders = function() {
   YAML.load('./data/decoders/weather-decoder-2.yaml', function(data) {
     return weather_decoder_2 = data;
   });
-  return YAML.load('./data/decoders/light-decoder.yaml', function(data) {
+  YAML.load('./data/decoders/light-decoder.yaml', function(data) {
     return light_decoder = data;
+  });
+  YAML.load('./data/decoders/intersection-decoder.yaml', function(data) {
+    return intersection_decoder = data;
+  });
+  YAML.load('./data/decoders/traffic-control-decoder.yaml', function(data) {
+    return traffic_control_decoder = data;
+  });
+  YAML.load('./data/decoders/curve-decoder.yaml', function(data) {
+    return curve_decoder = data;
   });
 };
 

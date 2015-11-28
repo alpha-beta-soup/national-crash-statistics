@@ -1,0 +1,18 @@
+D:
+  icon: driveway-icon_v2.png
+  title: driveway
+R:
+  icon: roundabout-icon_v2.png
+  title: roundabout
+X:
+  icon: crossroads-icon_v2.png
+  title: crossroads
+T:
+  icon: t-intersection-icon_v2.png
+  title: T-intersection
+Y:
+  icon: y-intersection_v2.png
+  title: Y-intersection
+M:
+  icon: multi-leg-icon_v2.png
+  title: multi-leg instersection

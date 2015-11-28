@@ -1,0 +1,12 @@
+R:
+  title: straight road
+  icon:
+E:
+  title: road with a slight curve
+  icon: easy-curve-icon_v2.png
+M:
+  title: road with a moderate curve
+  icon: moderate-curve-icon_v2.png
+S:
+  title: road with a severe bend
+  icon: severe-curve-icon_v2.png

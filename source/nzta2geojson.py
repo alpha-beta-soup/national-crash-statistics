@@ -122,6 +122,7 @@ class nztacrash:
         self.wthr_a_decoded = self.decodeWeather()
         self.junc_type_decoded = self.decodeJunction()
         self.daytime = self.get_daylight()
+        self.moon = self.get_moon()
 
         # Some booleans (good for filters)
         if self.crash_fatal_cnt > 0:
@@ -384,38 +385,6 @@ class nztacrash:
         else:
             return None
 
-    def get_injured_child_icon(self):
-        '''
-        See method self.get_injured_child().
-        This method returns the path to an icon indicating that the crash
-        involved a child, with the hover text including their age.
-        '''
-        if self.get_injured_child() == True:
-            base = './icons/other'
-            icon = 'children.png'
-            age = self.get_injured_child_age()
-            article = 'an' if age in [8, 11] else 'a'
-            if age == 1:
-                title = '{a} one year old infant was harmed'.format(
-                    a=article
-                )
-            elif age < 13:
-                title = '{a} {age} year old child was harmed'.format(
-                    a=article, age=age
-                )
-            elif age >= 13 and age < 20:
-                title = '{a} {age} year old teenager was harmed'.format(
-                    a=article, age=age
-                )
-            else:
-                # Nothing else prepared
-                # TODO log
-                return ''
-            return '<img src="%s/%s" title="%s"> ' % (base,icon,title)
-        else:
-            # Return an empty string
-            return ''
-
     def __vehicle_icons__(self):
         '''Returns a series of <img> tags and paths representing icons of the
         vehicles and people involved in the accident.'''
@@ -491,72 +460,6 @@ class nztacrash:
         else:
             return ''
 
-    def trafficControlIcon(self):
-        if self.traf_ctrl not in ['T','S','G','P']:
-            if self.traf_ctrl != None:
-                if len(self.traf_ctrl) > 1:
-                    # Only one type of control is anticipated
-                    raise Exception
-            return '' # Empty string
-        decoder = {'T': ['Traffic signals', 'traffic-light.png'],
-            'S': ['Stop sign', 'stop-sign.png'],
-            'G': ['Give way sign', 'give-way.png'],
-            'P': ['School patrol', 'school-patrol.png']}
-        if self.traf_ctrl not in decoder.keys():
-            raise Exception
-        base = './icons/controls'
-        title = decoder[self.traf_ctrl][0]
-        icon = '%s/%s' % (base,decoder[self.traf_ctrl][1])
-        return '<img src="%s" title="%s">' % (icon,title)
-
-    def speedLimitIcon(self):
-        if self.spd_lim in ['','U']:
-            # No information, or unknown
-            # Do not return an icon
-            return ''
-        elif self.spd_lim == 'LSZ':
-            # Limited speed zone
-            # Could not be set since 2003, and was progressively replaced until 2009
-            # It is now illegal
-            alt = 'Limited speed zone'
-        else:
-            alt = '%skm/h speed limit' % self.spd_lim
-        base = './icons/speed-limits'
-        title = alt
-        icon = '%s/limit_%s.svg' % (base,self.spd_lim)
-        return '<img src="%s" title="%s">' % (icon,title)
-
-    def curveIcon(self):
-        if self.road_curve in [None,'R']:
-            return '' # Empty string for NULL or straight
-        decoder = {'E': ['Road with a slight curve', 'easy-curve-icon_v2.png'],
-            'M': ['Road with a moderate curve', 'moderate-curve-icon_v2.png'],
-            'S': ['Road with a severe bend', 'severe-curve-icon_v2.png']}
-        if self.road_curve not in decoder.keys():
-            raise Exception
-        base = './icons/curves'
-        title = decoder[self.road_curve][0]
-        icon = '%s/%s' % (base,decoder[self.road_curve][1])
-        return '<img src="%s" title="%s">' % (icon,title)
-
-    def intersectionIcon(self):
-        if self.junc_type == None:
-            return ''
-        decoder = {'D': ['driveway-icon_v2.png', 'Driveway'],
-                   'R': ['roundabout-icon_v2.png', 'Roundabout'],
-                   'X': ['crossroads-icon_v2.png', 'Crossroads'],
-                   'T': ['t-intersection-icon_v2.png', 'T-intersection'],
-                   'Y': ['y-intersection_v2.png', 'Y-intersection'],
-                   'M': ['multi-leg-icon_v2.png', 'Multi-leg instersection']}
-        try:
-            icon = decoder[self.junc_type][0]
-            title = decoder[self.junc_type][1]
-        except KeyError:
-            return ''
-        base = './icons/junctions'
-        icon = '%s/%s' % (base, icon)
-        return '<img src="%s" title="%s">' % (icon,title)
-
     def __streetview__(self, w=300, h=200, fov=120, pitch=-15, alt='Click to go to Google Streetview', title=None):
         '''Creates the Google Streetview API request
         fov : Field of view, max 120
@@ -600,7 +503,6 @@ class nztacrash:
                 't': self.tla_name, # Name of Territorial Local Authority
                 's': self.__streetview__(), # The Streetview img container and call
                 'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-                'e': self.weatherIcon() + self.speedLimitIcon() + self.intersectionIcon() + self.trafficControlIcon() + self.curveIcon() + self.get_injured_child_icon() + self.moonIcon(), # The environment icon imgs
                 'v': self.__vehicle_icons__(), # Vehicle icon imgs
                 'i': self.get_injury_icons(), # Injury icon imgs
                 'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
@@ -625,8 +527,17 @@ class nztacrash:
                 'modes': self.mapVehicles(), # {'A': 'C', 'B': 'T'}
                 'unixt': self.get_unix_time(),
                 'chathams': 1 if self.chathams else 0,
-                'light': self.light, # ['D', 'N']
-                'weather': self.wthr_a # ['L', ' ']
+                'light': [l for l in self.light if l.strip()], # ['D', 'N']
+                'weather': [w for w in self.wthr_a if w.strip()], # ['L']
+                'speedlim': self.spd_lim,
+                'intersection': self.junc_type,
+                'traffic_control': self.traf_ctrl if self.traf_ctrl != 'N' else None,
+                'curve': self.road_curve,
+                'childage': self.get_injured_child_age(),
+                'moon': {
+                    'moonphase': int(self.moon.phase * 26 + 0.5) if self.moon is not None else None,
+                    'moontext': self.moon.phase_text if self.moon is not None else None
+                }
             },
             'geometry': {
                 'type': 'Point',
@@ -837,78 +748,6 @@ class nztacrash:
             return [decoder1[self.wthr_a[0]], decoder2[self.wthr_a[1]]]
         except KeyError:
             return None
-
-    def moonIcon(self, night_only=True):
-        '''Returns an SVG icon representing the phase of the moon when the
-        accident occurred. By default returns empty string if accident occured
-        during daylight.'''
-        if (night_only and not self.daytime) and self.crash_datetime is not None:
-            moon = self.get_moon()
-            base = './icons/moon'
-            return '<img src="{base}/m{phase}.svg" title="{title}">'.format(
-                base=base,
-                phase=int(moon.phase * 26 + 0.5),
-                title=moon.phase_text + ' moon'
-            )
-        else:
-            return ''
-
-    def weatherIcon(self):
-        '''Takes self.wthr_a (a list of strings) and applies a decoder to it,
-        return a list of strings that represent paths to PNG icons that represent
-        the weather.'''
-        if self.light[0] in ['T', 'D']:
-            # If not daytime
-            light = 'Night'
-        else:
-            light = 'Day'
-        decoder1 = {'F': {'Night': ['weather-moon-icon.svg','Clear Night'], 'Day': ['weather-sun-icon.svg','Clear Day']},
-                    'M': {'Night': ['Fog-Night-icon.svg','Night Fog'], 'Day': ['Fog-Day-icon.svg','Day Fog']},
-                    'L': ['weather-little-rain-icon.svg','Light Rain'],
-                    'H': ['weather-downpour-icon.svg','Heavy Rain'],
-                    'S': ['weather-snow-icon.svg','Snow'],
-                    ' ': None}
-        decoder2 = {'F': ['weather-frost-icon.svg','Frost'],
-                    'S': ['05-strong-wind-weaher-icon.png','Strong Winds'],
-                    ' ': None}
-        if len(self.wthr_a) > 2:
-            raise Exception # More than 2 weather indicators are not permitted
-        w1 = self.wthr_a[0]
-        if w1 != ' ':
-            # Get the appropriate icon
-            if w1 in ['F','M']:
-                # Also need the light parameter
-                icon = decoder1[w1][light]
-            else:
-                icon = decoder1[w1]
-            icon1 = icon[0]
-            alt1 = icon[1]
-        else:
-            icon1 = None
-            alt1 = None
-        w2 = self.wthr_a[1]
-        if w2 != ' ':
-            # Get the appropriate secondary icon
-            icon = decoder2[w2]
-            icon2 = icon[0]
-            alt2 = icon[1]
-        else:
-            icon2 = None
-            alt2 = None
-        ret = ''
-        h,w = 30,30
-        hspace = 5
-        base = './icons'
-        title1 = alt1
-        title2 = alt2
-        if icon1 == None and icon2 == None:
-            # No weather data at all
-            return ''
-        if icon1 != None:
-            ret += '<img src="%s/%s" title="%s">' % (base,icon1,title1)
-        if icon2 != None:
-            ret += '<img src="%s/%s" title="%s">' % (base,icon2,title2)
-        return ret
 
     def decodeJunction(self):
         '''Takes self.junc_type (a single-character string) and applies a decoder to

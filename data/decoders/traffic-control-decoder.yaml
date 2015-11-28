@@ -1,0 +1,12 @@
+T:
+  title: traffic signals
+  icon: traffic-light.png
+S:
+  title: stop sign
+  icon: stop-sign.png
+G:
+  title: give way sign
+  icon: give-way.png
+P:
+  title: school patrol
+  icon: school-patrol.png
