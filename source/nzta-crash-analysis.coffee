@@ -172,7 +172,7 @@ getPopup = (feature) ->
       get_straightforward_icon(intersection_decoder, feature.properties.intersection, './icons/junctions') +
       get_straightforward_icon(curve_decoder, feature.properties.curve, './icons/curves') +
       get_child_injured_icon(feature.properties.childage) +
-      get_moon_icon(feature.properties.moon)
+      (if !feature.properties.dy then get_moon_icon(feature.properties.moon) else '')
       , undefined,
       'environment-icons'
     )
