@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_map, get_moon_icon, get_speed_limit_icon, get_straightforward_icon, get_tileLayer, get_weather_icons, holidays, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, sidebar_hide, special, stringify_number, traffic_control_decoder, weather_decoder_1, weather_decoder_2;
+var boolean_properties, cause_decoder, chevron_control, crashes, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_map, get_moon_icon, get_speed_limit_icon, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -14,6 +14,14 @@ boolean_properties = ['to', 'al', 'dr', 'cp', 'dr', 'cp', 'fg', 'sp', 'dd', 'ca'
 holidays = {
   'Labour Weekend 2014': 'Labour2014',
   'Christmas/New Year 2014-15': 'XmasNY2015'
+};
+
+readStringFromFileAtPath = function(pathOfFileToReadFrom) {
+  var request;
+  request = new XMLHttpRequest();
+  request.open("GET", pathOfFileToReadFrom, false);
+  request.send(null);
+  return request.responseText;
 };
 
 special = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelvth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
@@ -201,6 +209,25 @@ get_moon_icon = function(moon) {
   return make_img(icon, title).outerHTML;
 };
 
+get_streetview = function(lon, lat, fov, pitch) {
+  var a, h, img, link, title, w;
+  h = 200;
+  w = 300;
+  fov = fov != null ? Math.max(fov, 120) : 120;
+  pitch = pitch != null ? pitch : -15;
+  link = "http://maps.google.com/?cbll=" + lat + "," + lon + "&cbp=12,20.09,,0,5&layer=c";
+  title = "Cick to go to Google Streetview";
+  a = document.createElement('a');
+  a.title = title;
+  a.alt = title;
+  a.target = "_blank";
+  img = document.createElement('img');
+  img.src = "https://maps.googleapis.com/maps/api/streetview?size=" + w + "x" + h + "&location=" + lat + "," + lon + "&pitch=" + pitch + "&key=" + streetview_key;
+  a.innerHTML = img.outerHTML;
+  console.log(a);
+  return a.outerHTML;
+};
+
 getPopup = function(feature) {
   var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, utcoff, vehicles_and_injuries;
   utcoff = !feature.properties.chathams ? '+12:00' : '+12:45';
@@ -210,7 +237,7 @@ getPopup = function(feature) {
   crash_time = makeElem('span', dt.format('H:mm'), 'time');
   environment_icons = makeElem('span', makeElem('div', get_weather_icons(feature.properties.weather, feature.properties.light, feature.properties.dy) + get_speed_limit_icon(feature.properties.speedlim) + get_straightforward_icon(traffic_control_decoder, feature.properties.traffic_control, './icons/controls') + get_straightforward_icon(intersection_decoder, feature.properties.intersection, './icons/junctions') + get_straightforward_icon(curve_decoder, feature.properties.curve, './icons/curves') + get_child_injured_icon(feature.properties.childage) + (!feature.properties.dy ? get_moon_icon(feature.properties.moon) : ''), void 0, 'environment-icons'));
   road = makeElem('span', feature.properties.r, 'road');
-  streetview = makeElem('span', makeElem('div', feature.properties.s, void 0, 'streetview-container'));
+  streetview = makeElem('span', makeElem('div', get_streetview(feature.geometry.coordinates[0], feature.geometry.coordinates[1]), void 0, 'streetview-container'));
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, void 0, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, void 0, 'injury-icons').outerHTML + makeElem('div', void 0, void 0, 'clear').outerHTML, void 0, 'vehicle-injury'));
   causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text');
   return ((function() {
@@ -336,6 +363,8 @@ traffic_control_decoder = void 0;
 
 curve_decoder = void 0;
 
+streetview_key = void 0;
+
 get_decoders = function() {
   YAML.load('./data/decoders/cause-decoder.yaml', function(data) {
     return cause_decoder = data;
@@ -361,6 +390,7 @@ get_decoders = function() {
   YAML.load('./data/decoders/curve-decoder.yaml', function(data) {
     return curve_decoder = data;
   });
+  streetview_key = readStringFromFileAtPath('./source/google-streetview-api-key');
 };
 
 get_decoders();

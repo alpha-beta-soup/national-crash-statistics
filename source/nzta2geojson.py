@@ -104,9 +104,6 @@ class nztacrash:
             logging.warning('Crash does not have XY location, so is not added to GeoJSON')
             self.lat, self.lon = None, None
 
-        # Google Streetview API key
-        self.api = open('google-streetview-api-key','r').read()
-
         # Derived and associated data
         self.keyvehicle = self.getKeyVehicle(decode=False)
         self.keyvehicle_decoded = self.getKeyVehicle(decode=True)
@@ -460,35 +457,6 @@ class nztacrash:
         else:
             return ''
 
-    def __streetview__(self, w=300, h=200, fov=120, pitch=-15, alt='Click to go to Google Streetview', title=None):
-        '''Creates the Google Streetview API request
-        fov : Field of view, max 120
-        pitch : Up or down angle relative to the Streetview vehicle'''
-        if self.hasLocation == False:
-            return None
-        # Params for the Streetview API (not styling)
-        h = 200
-        w = 300
-        fov = 120 # Field of view, max 120
-        pitch = -15 # Up or down angle relative to the Streetview vehicle
-        link = 'http://maps.google.com/?cbll={lat},{lon}&cbp=12,20.09,,0,5&layer=c'.format(
-            lat=self.lat,
-            lon=self.lon
-        )
-        alt = 'Click to go to Google Streetview'
-        if title is None:
-            title = alt
-        return '<a href="{link}" title="{title}" target="_blank"><img src="https://maps.googleapis.com/maps/api/streetview?size={w}x{h}&location={lat},{lon}&pitch={pitch}&key={key}"></a>'.format(
-            link=link,
-            title=title,
-            w=w,
-            h=h,
-            lat=self.lat,
-            lon=self.lon,
-            pitch=pitch,
-            key=self.api
-        )
-
     def __geo_interface__(self):
         '''geojson
         Returns a geojson object representing the point.
@@ -501,7 +469,6 @@ class nztacrash:
             'type': 'Feature',
             'properties': {
                 't': self.tla_name, # Name of Territorial Local Authority
-                's': self.__streetview__(), # The Streetview img container and call
                 'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
                 'v': self.__vehicle_icons__(), # Vehicle icon imgs
                 'i': self.get_injury_icons(), # Injury icon imgs

@@ -11,6 +11,12 @@ holidays = {
   'Christmas/New Year 2014-15': 'XmasNY2015'
 }
 
+readStringFromFileAtPath = (pathOfFileToReadFrom) ->
+  request = new XMLHttpRequest()
+  request.open("GET", pathOfFileToReadFrom, false)
+  request.send(null)
+  return request.responseText
+
 special = ['zeroth','first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelvth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth']
 deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet']
 stringify_number = (n) ->
@@ -157,6 +163,23 @@ get_moon_icon = (moon) ->
   title = moon['moontext'] + ' moon'
   return make_img(icon, title).outerHTML
 
+get_streetview = (lon, lat, fov, pitch) ->
+  h = 200
+  w = 300
+  fov = if fov? then Math.max(fov, 120) else 120 # Field of view, max 120
+  pitch = if pitch? then pitch else -15 # Up or down angle relate to Streetview vehicle
+  link = "http://maps.google.com/?cbll=#{lat},#{lon}&cbp=12,20.09,,0,5&layer=c"
+  title = "Cick to go to Google Streetview"
+  a = document.createElement('a')
+  a.title = title
+  a.alt = title
+  a.target = "_blank"
+  img = document.createElement('img')
+  img.src = "https://maps.googleapis.com/maps/api/streetview?size=#{w}x#{h}&location=#{lat},#{lon}&pitch=#{pitch}&key=#{streetview_key}"
+  a.innerHTML = img.outerHTML
+  console.log a
+  return a.outerHTML
+
 getPopup = (feature) ->
   utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
   dt = moment(feature.properties.unixt).utcOffset(utcoff)
@@ -178,7 +201,8 @@ getPopup = (feature) ->
     )
   )
   road = makeElem('span', feature.properties.r, 'road')
-  streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
+  # streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
+  streetview = makeElem('span', makeElem('div', get_streetview(feature.geometry.coordinates[0], feature.geometry.coordinates[1]), undefined, 'streetview-container'))
   vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
   causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text')
   return (e.outerHTML for e in [
@@ -283,6 +307,7 @@ light_decoder = undefined
 intersection_decoder = undefined
 traffic_control_decoder = undefined
 curve_decoder = undefined
+streetview_key = undefined
 get_decoders = () ->
   YAML.load './data/decoders/cause-decoder.yaml', (data) ->
     cause_decoder = data
@@ -300,6 +325,7 @@ get_decoders = () ->
     traffic_control_decoder = data
   YAML.load './data/decoders/curve-decoder.yaml', (data) ->
     curve_decoder = data
+  streetview_key = readStringFromFileAtPath './source/google-streetview-api-key'
   return
 
 get_decoders()
