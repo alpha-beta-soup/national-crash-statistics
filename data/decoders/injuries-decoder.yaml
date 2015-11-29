@@ -1,0 +1,9 @@
+f:
+  title: fatal injury
+  icon: RedMan2.svg
+s:
+  title: severe injury
+  icon: OrangeMan2.svg
+m:
+  title: minor injury
+  icon: YellowMan2.svg

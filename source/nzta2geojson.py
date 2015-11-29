@@ -394,20 +394,26 @@ class nztacrash:
         else:
             return '' # no data
 
-    def get_injury_icons(self):
+    def get_injury_counts(self):
+        '''Returns a dictionary like:
+        {'f': 1, 's': 2, 'm': 1}
+        which indicates the types and numbers of injuries in the accident.
+        (f: fatal, s: severe, m: minor). If a category is 0, the
+        key is not included. No injury category is never included (there is no
+        count of the total number of involved persons in the source data).
+        Returns None if there were no injuries at all.
+        '''
         if self.injuries_none:
             return None
-        base = './icons/injuries'
-        icons = {'fatal': 'RedMan2.svg',
-                 'severe': 'OrangeMan2.svg',
-                 'minor': 'YellowMan2.svg'}
-        ret = ''
-        def add_img(alt,title,icon,multiplier):
-            return '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
-        ret += add_img('Fatality','Fatality',icons['fatal'],self.crash_fatal_cnt)
-        ret += add_img('Severe injury','Severe injury',icons['severe'],self.crash_sev_cnt)
-        ret += add_img('Minor injury','Minor injury',icons['minor'],self.crash_min_cnt)
-        return ret
+        d = {
+            'f': self.crash_fatal_cnt,
+            's': self.crash_sev_cnt,
+            'm': self.crash_min_cnt
+        }
+        for ij in d.keys():
+            if d[ij] <= 0:
+                d.pop(ij)
+        return d
 
     def speedingIcon(self):
         '''If speeding was a factor, returns the HTML <img> tag for the speeding icon,
@@ -434,7 +440,6 @@ class nztacrash:
             'properties': {
                 't': self.tla_name, # Name of Territorial Local Authority
                 'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-                'i': self.get_injury_icons(), # Injury icon imgs
                 'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
                 'cy': self.cyclist, # Cyclist Boolean
                 'pd': self.pedestrian, # Pedestrian Boolean
@@ -467,7 +472,8 @@ class nztacrash:
                 'moon': {
                     'moonphase': int(self.moon.phase * 26 + 0.5) if self.moon is not None else None,
                     'moontext': self.moon.phase_text if self.moon is not None else None
-                }
+                },
+                'injuries': self.get_injury_counts()
             },
             'geometry': {
                 'type': 'Point',

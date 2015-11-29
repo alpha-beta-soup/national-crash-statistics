@@ -180,15 +180,16 @@ get_streetview = (lon, lat, fov, pitch) ->
   a.innerHTML = img.outerHTML
   return a.outerHTML
 
-get_vehicle_icons = (vehicles) ->
-  if !vehicles?
+get_straightforwad_multiple_icons = (values, decoder, icon_path) ->
+  console.log values, decoder, icon_path
+  if !values? or !values or !decoder?
     return ''
   icons = []
-  for mode, n of vehicles
-    icon = mode_decoder[mode]['icon']
-    title = mode_decoder[mode]['title']
+  for v, n of values
+    icon = decoder[v]['icon']
+    title = decoder[v]['title']
     for i in [1..n]
-      icons.push make_img("./icons/transport/#{icon}", title).outerHTML
+      icons.push make_img("#{icon_path}#{icon}", title).outerHTML
   return icons.join('')
 
 getPopup = (feature) ->
@@ -213,7 +214,21 @@ getPopup = (feature) ->
   )
   road = makeElem('span', feature.properties.r, 'road')
   streetview = makeElem('span', makeElem('div', get_streetview(feature.geometry.coordinates[0], feature.geometry.coordinates[1]), undefined, 'streetview-container'))
-  vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', get_vehicle_icons(feature.properties.vehicles), undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
+  vehicles_and_injuries = makeElem(
+    'span',
+    makeElem('div',
+      makeElem('div',
+        get_straightforwad_multiple_icons(feature.properties.vehicles, mode_decoder, './icons/transport/'),
+        undefined, 'vehicle-icons'
+      ).outerHTML +
+      makeElem('div',
+        get_straightforwad_multiple_icons(feature.properties.injuries, injuries_decoder, './icons/injuries/'),
+        undefined, 'injury-icons'
+      ).outerHTML +
+      makeElem('div', undefined, undefined, 'clear').outerHTML,
+      undefined, 'vehicle-injury'
+    )
+  )
   causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text')
   return (e.outerHTML for e in [
     crash_location,
@@ -317,6 +332,7 @@ light_decoder = undefined
 intersection_decoder = undefined
 traffic_control_decoder = undefined
 curve_decoder = undefined
+injuries_decoder = undefined
 streetview_key = undefined
 get_decoders = () ->
   YAML.load './data/decoders/cause-decoder.yaml', (data) ->
@@ -335,6 +351,8 @@ get_decoders = () ->
     traffic_control_decoder = data
   YAML.load './data/decoders/curve-decoder.yaml', (data) ->
     curve_decoder = data
+  YAML.load './data/decoders/injuries-decoder.yaml', (data) ->
+    injuries_decoder = data
   streetview_key = readStringFromFileAtPath './source/google-streetview-api-key'
   return
 
