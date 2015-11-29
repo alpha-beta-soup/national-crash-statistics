@@ -174,11 +174,22 @@ get_streetview = (lon, lat, fov, pitch) ->
   a.title = title
   a.alt = title
   a.target = "_blank"
+  a.href = link
   img = document.createElement('img')
   img.src = "https://maps.googleapis.com/maps/api/streetview?size=#{w}x#{h}&location=#{lat},#{lon}&pitch=#{pitch}&key=#{streetview_key}"
   a.innerHTML = img.outerHTML
-  console.log a
   return a.outerHTML
+
+get_vehicle_icons = (vehicles) ->
+  if !vehicles?
+    return ''
+  icons = []
+  for mode, n of vehicles
+    icon = mode_decoder[mode]['icon']
+    title = mode_decoder[mode]['title']
+    for i in [1..n]
+      icons.push make_img("./icons/transport/#{icon}", title).outerHTML
+  return icons.join('')
 
 getPopup = (feature) ->
   utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
@@ -201,9 +212,8 @@ getPopup = (feature) ->
     )
   )
   road = makeElem('span', feature.properties.r, 'road')
-  # streetview = makeElem('span', makeElem('div', feature.properties.s, undefined, 'streetview-container'))
   streetview = makeElem('span', makeElem('div', get_streetview(feature.geometry.coordinates[0], feature.geometry.coordinates[1]), undefined, 'streetview-container'))
-  vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', feature.properties.v, undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
+  vehicles_and_injuries = makeElem('span', makeElem('div', makeElem('div', get_vehicle_icons(feature.properties.vehicles), undefined, 'vehicle-icons').outerHTML + makeElem('div', feature.properties.i, undefined, 'injury-icons').outerHTML + makeElem('div', undefined, undefined, 'clear').outerHTML, undefined, 'vehicle-injury'))
   causes_text = makeElem('span', get_causes_text(feature.properties.causes, feature.properties.modes, feature.properties.vehicles), 'causes-text')
   return (e.outerHTML for e in [
     crash_location,

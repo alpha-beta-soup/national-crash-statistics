@@ -382,42 +382,6 @@ class nztacrash:
         else:
             return None
 
-    def __vehicle_icons__(self):
-        '''Returns a series of <img> tags and paths representing icons of the
-        vehicles and people involved in the accident.'''
-        vehicles = self.get_number_of_vehicles()
-        if vehicles in [None,'',' ']:
-            return None
-        base = './icons/transport'
-        h,w = 30,30
-        hspace = 10
-        default = 'Car-2-icon.svg'
-        other = 'skateboard-icon.svg'
-        decoder = {'C': [default, 'Car'],
-                   'V': ['Transport-Bus-2-icon.svg', 'Van or Ute'],
-                   'X': ['Taxi-2-icon.svg', 'Taxi or Taxi Van'],
-                   'B': ['Transport-Bus-3-icon.svg', 'Bus'],
-                   'L': ['Transport-Bus-4-icon.svg', 'School Bus'],
-                   '4': ['SUV-icon.svg', '4X4 or SUV'],
-                   'T': ['Transport-Truck-2-icon.svg', 'Truck'],
-                   'M': ['motorcycle-icon.svg', 'Motorcycle'],
-                   'P': ['moped-icon.svg', 'Moped'],
-                   'S': ['bicycle-icon.svg', 'Bicycle'],
-                   'O': [other, 'Miscellaneous Vehicle'],
-                   'U': [other, 'Miscellaneous Vehicle'],
-                   'E': ['pedestrian-icon.svg', 'Pedestrian'],
-                   'K': [other, 'Skateboard, inline skater, etc.'],
-                   'Q': ['equestrian-icon.svg', 'equestrian'],
-                   'H': ['wheelchair-icon.svg', 'Wheeled Pedestrian']}
-        ret = ''
-        for v in vehicles.keys():
-            icon = decoder[v][0]
-            alt = decoder[v][1]
-            title = alt
-            multiplier = vehicles[v]
-            ret += '<img src="%s/%s" title="%s"> ' % (base,icon,title) * multiplier
-        return ret
-
     def get_worst_injury_text(self):
         if self.worst_fatal:
             return 'f' # Fatal
@@ -470,7 +434,6 @@ class nztacrash:
             'properties': {
                 't': self.tla_name, # Name of Territorial Local Authority
                 'r': genFunc.formatNiceRoad(self.get_crashroad()), # The road, nicely formatted
-                'v': self.__vehicle_icons__(), # Vehicle icon imgs
                 'i': self.get_injury_icons(), # Injury icon imgs
                 'h': self.holiday_name, # Name of holiday period, if the crash was injurious and occured during one
                 'cy': self.cyclist, # Cyclist Boolean
