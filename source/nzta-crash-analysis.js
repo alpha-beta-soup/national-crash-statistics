@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, weather_decoder_1, weather_decoder_2;
+var boolean_properties, cause_decoder, chevron_control, crashes, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -127,9 +127,39 @@ get_causes_text = function(causes, modes, vehicles) {
   return causes_text.join('');
 };
 
+get_straightforward_icon = function(decoder, value, icon_path) {
+  var icon, title;
+  if ((decoder == null) || !value) {
+    return '';
+  }
+  if ((!decoder.hasOwnProperty(value)) || (decoder[value]['icon'] == null)) {
+    return '';
+  }
+  icon = decoder[value]['icon'];
+  title = decoder[value]['title'];
+  return make_img(icon_path + "/" + icon, title).outerHTML;
+};
+
+get_straightforwad_multiple_icons = function(values, decoder, icon_path) {
+  var i, icon, icons, j, n, ref, title, v;
+  if ((values == null) || !values || (decoder == null)) {
+    return '';
+  }
+  icons = [];
+  for (v in values) {
+    n = values[v];
+    icon = decoder[v]['icon'];
+    title = decoder[v]['title'];
+    for (i = j = 1, ref = n; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+      icons.push(make_img("" + icon_path + icon, title).outerHTML);
+    }
+  }
+  return icons.join('');
+};
+
 get_weather_icons = function(weather, light, dy) {
   var day, img, title, weather_icons;
-  if ((typeof weather_decoder_1 === "undefined" || weather_decoder_1 === null) || (typeof weather_decoder_2 === "undefined" || weather_decoder_2 === null)) {
+  if ((typeof weather_decoder_1 === "undefined" || weather_decoder_1 === null) || (typeof weather_decoder_2 === "undefined" || weather_decoder_2 === null) || weather.length === 0) {
     return '';
   }
   weather_icons = [];
@@ -165,19 +195,6 @@ get_speed_limit_icon = function(speedlim) {
     icon = "./icons/speed-limits/limit_" + speedlim + ".svg";
     return make_img(icon, title).outerHTML;
   }
-};
-
-get_straightforward_icon = function(decoder, value, icon_path) {
-  var icon, title;
-  if ((decoder == null) || !value) {
-    return '';
-  }
-  if ((!decoder.hasOwnProperty(value)) || (decoder[value]['icon'] == null)) {
-    return '';
-  }
-  icon = decoder[value]['icon'];
-  title = decoder[value]['title'];
-  return make_img(icon_path + "/" + icon, title).outerHTML;
 };
 
 get_child_injured_icon = function(childage) {
@@ -228,24 +245,6 @@ get_streetview = function(lon, lat, fov, pitch) {
   return a.outerHTML;
 };
 
-get_straightforwad_multiple_icons = function(values, decoder, icon_path) {
-  var i, icon, icons, j, n, ref, title, v;
-  console.log(values, decoder, icon_path);
-  if ((values == null) || !values || (decoder == null)) {
-    return '';
-  }
-  icons = [];
-  for (v in values) {
-    n = values[v];
-    icon = decoder[v]['icon'];
-    title = decoder[v]['title'];
-    for (i = j = 1, ref = n; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-      icons.push(make_img("" + icon_path + icon, title).outerHTML);
-    }
-  }
-  return icons.join('');
-};
-
 getPopup = function(feature) {
   var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, utcoff, vehicles_and_injuries;
   utcoff = !feature.properties.chathams ? '+12:00' : '+12:45';
@@ -270,18 +269,36 @@ getPopup = function(feature) {
   })()).join('');
 };
 
-get_map = function(mapdiv, centre, zoom) {
+get_map = function(fg, bg, mapdiv, centre, zoom) {
   var map;
   mapdiv = mapdiv != null ? mapdiv : 'map';
   centre = centre != null ? centre : [-41.17, 174.46];
   zoom = zoom != null ? zoom : 6;
-  return map = L.map(mapdiv, {
+  map = L.map(mapdiv, {
     continuousWorld: true,
-    worldCopyJump: true
-  }).setView(centre, zoom);
+    worldCopyJump: true,
+    layers: bg != null ? [fg, bg] : [fg]
+  }).setView(centre, zoom).on('zoomend', function() {
+    var z;
+    z = map.getZoom();
+    if (z < 12) {
+      return bg.setOpacity(0);
+    } else if (z >= 12 && z < 16) {
+      return bg.setOpacity(0.4);
+    } else if (z === 16) {
+      return bg.setOpacity(0.5);
+    } else if (z === 17) {
+      return bg.setOpacity(0.6);
+    } else if (z >= 18 && z < 20) {
+      return bg.setOpacity(0.7);
+    } else if (z >= 20) {
+      return bg.setOpacity(0.8);
+    }
+  });
+  return map;
 };
 
-get_attribution = function(nzta, stamen, osm) {
+get_attribution = function(nzta, stamen, osm, linz) {
   var attr;
   attr = [];
   if (nzta || (nzta == null)) {
@@ -293,15 +310,33 @@ get_attribution = function(nzta, stamen, osm) {
   if (osm || (osm == null)) {
     attr.push('Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>');
   }
+  if (linz || (linz == null)) {
+    attr.push('Imagery <a href="http://www.linz.govt.nz/data/licensing-and-using-data/attributing-aerial-imagery-data">sourced from LINZ CC-BY 3.0</a>');
+  }
   return attr.join(' | ');
 };
 
 get_tileLayer = function(maxZoom, minZoom) {
   return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
-    maxZoom: maxZoom != null ? maxZoom : 18,
+    maxZoom: maxZoom != null ? maxZoom : 21,
     minZoom: minZoom != null ? minZoom : 5,
     attribution: get_attribution()
   });
+};
+
+get_foreground_layer = function(maxZoom, minZoom) {
+  var epsg, key, mask, set, url, v;
+  key = "20865bd31bcc4e4dbea2181b9a23d825";
+  epsg = "3857";
+  v = 4;
+  set = 2;
+  url = "http://tiles-{s}.data-cdn.linz.govt.nz/services;key=" + key + "/tiles/v" + v + "/set=" + set + "/EPSG:" + epsg + "/{z}/{x}/{y}.png";
+  mask = L.tileLayer(url, {
+    maxZoom: maxZoom != null ? maxZoom : 21,
+    minZoom: minZoom != null ? minZoom : 12,
+    opacity: 0.7
+  });
+  return mask;
 };
 
 onEachFeature = function(feature, layer) {
@@ -418,9 +453,7 @@ get_decoders = function() {
 
 get_decoders();
 
-map = get_map();
-
-get_tileLayer().addTo(map);
+map = get_map(get_tileLayer(), get_foreground_layer());
 
 new L.GeoJSON.AJAX(crashes, {
   pointToLayer: function(feature, latlng) {

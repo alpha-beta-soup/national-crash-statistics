@@ -96,9 +96,29 @@ get_causes_text = (causes, modes, vehicles) ->
         causes_text.push cause_decoder[expl]['Pretty'] + '.<br>'
   return causes_text.join('')
 
+get_straightforward_icon = (decoder, value, icon_path) ->
+  if !decoder? or !value
+    return ''
+  if (!decoder.hasOwnProperty value) or (!decoder[value]['icon']?)
+    return ''
+  icon = decoder[value]['icon']
+  title = decoder[value]['title']
+  return make_img("#{icon_path}/#{icon}", title).outerHTML
+
+get_straightforwad_multiple_icons = (values, decoder, icon_path) ->
+  if !values? or !values or !decoder?
+    return ''
+  icons = []
+  for v, n of values
+    icon = decoder[v]['icon']
+    title = decoder[v]['title']
+    for i in [1..n]
+      icons.push make_img("#{icon_path}#{icon}", title).outerHTML
+  return icons.join('')
+
 get_weather_icons = (weather, light, dy) ->
   # TODO light? (bright sun, dark, overcast, twilight)
-  if !weather_decoder_1? or !weather_decoder_2?
+  if !weather_decoder_1? or !weather_decoder_2? or weather.length == 0
     return ''
   weather_icons = []
   # First weather icon
@@ -131,15 +151,6 @@ get_speed_limit_icon = (speedlim) ->
   if speedlim?
     icon = "./icons/speed-limits/limit_#{speedlim}.svg"
     return make_img(icon, title).outerHTML
-
-get_straightforward_icon = (decoder, value, icon_path) ->
-  if !decoder? or !value
-    return ''
-  if (!decoder.hasOwnProperty value) or (!decoder[value]['icon']?)
-    return ''
-  icon = decoder[value]['icon']
-  title = decoder[value]['title']
-  return make_img("#{icon_path}/#{icon}", title).outerHTML
 
 get_child_injured_icon = (childage) ->
   if !childage
@@ -179,18 +190,6 @@ get_streetview = (lon, lat, fov, pitch) ->
   img.src = "https://maps.googleapis.com/maps/api/streetview?size=#{w}x#{h}&location=#{lat},#{lon}&pitch=#{pitch}&key=#{streetview_key}"
   a.innerHTML = img.outerHTML
   return a.outerHTML
-
-get_straightforwad_multiple_icons = (values, decoder, icon_path) ->
-  console.log values, decoder, icon_path
-  if !values? or !values or !decoder?
-    return ''
-  icons = []
-  for v, n of values
-    icon = decoder[v]['icon']
-    title = decoder[v]['title']
-    for i in [1..n]
-      icons.push make_img("#{icon_path}#{icon}", title).outerHTML
-  return icons.join('')
 
 getPopup = (feature) ->
   utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
@@ -241,16 +240,33 @@ getPopup = (feature) ->
     causes_text
   ]).join('')
 
-get_map = (mapdiv, centre, zoom) ->
+get_map = (fg, bg, mapdiv, centre, zoom) ->
   mapdiv = if mapdiv? then mapdiv else 'map'
   centre = if centre? then centre else [-41.17, 174.46]
   zoom = if zoom? then zoom else 6
   map = L.map mapdiv,
     continuousWorld: true
     worldCopyJump: true
+    layers: if bg? then [fg, bg] else [fg]
   .setView centre, zoom
+  .on 'zoomend', ->
+    z = map.getZoom()
+    if z < 12
+      bg.setOpacity 0
+    else if z >= 12 and z < 16
+      bg.setOpacity 0.4
+    else if z == 16
+      bg.setOpacity 0.5
+    else if z == 17
+      bg.setOpacity 0.6
+    else if (z >= 18 and z < 20)
+      bg.setOpacity 0.7
+    else if z >= 20
+      bg.setOpacity 0.8
 
-get_attribution = (nzta, stamen, osm) ->
+  return map
+
+get_attribution = (nzta, stamen, osm, linz) ->
   attr = []
   if nzta or !nzta?
     attr.push 'Crash data from <a href="http://www.nzta.govt.nz/resources/crash-analysis-reports/">NZTA</a>, under <a href="https://creativecommons.org/licenses/by/3.0/nz/">CC BY 3.0 NZ</a>, presented with changes'
@@ -258,13 +274,27 @@ get_attribution = (nzta, stamen, osm) ->
     attr.push 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>'
   if osm or !osm?
     attr.push 'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
+  if linz or !linz?
+    attr.push 'Imagery <a href="http://www.linz.govt.nz/data/licensing-and-using-data/attributing-aerial-imagery-data">sourced from LINZ CC-BY 3.0</a>'
   return attr.join(' | ')
 
 get_tileLayer = (maxZoom, minZoom) ->
   L.tileLayer 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png',
-    maxZoom: if maxZoom? then maxZoom else 18
+    maxZoom: if maxZoom? then maxZoom else 21
     minZoom: if minZoom? then minZoom else 5
     attribution: get_attribution()
+
+get_foreground_layer = (maxZoom, minZoom) ->
+  key = "20865bd31bcc4e4dbea2181b9a23d825"
+  epsg = "3857"
+  v = 4
+  set = 2
+  url = "http://tiles-{s}.data-cdn.linz.govt.nz/services;key=#{key}/tiles/v#{v}/set=#{set}/EPSG:#{epsg}/{z}/{x}/{y}.png"
+  mask = L.tileLayer url,
+    maxZoom: if maxZoom? then maxZoom else 21
+    minZoom: if minZoom? then minZoom else 12
+    opacity: 0.7
+  return mask
 
 onEachFeature = (feature, layer) ->
   # bind click
@@ -357,8 +387,7 @@ get_decoders = () ->
   return
 
 get_decoders()
-map = get_map()
-get_tileLayer().addTo map
+map = get_map(get_tileLayer(), get_foreground_layer())
 
 new L.GeoJSON.AJAX crashes,
   pointToLayer: (feature, latlng) ->
