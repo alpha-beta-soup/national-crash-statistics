@@ -12,7 +12,7 @@ V:
   title: 'Van or Ute'
 X:
   display_text: '<strong>taxi/taxi van driver</strong>'
-  icon: Taxi-2-icon.sv
+  icon: Taxi-2-icon.svg
   title: 'Taxi or Taxi Van'
 B:
   display_text: '<strong>bus driver</strong>'
