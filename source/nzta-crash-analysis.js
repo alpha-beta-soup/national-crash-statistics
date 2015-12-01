@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, weather_decoder_1, weather_decoder_2;
+var boolean_properties, cause_decoder, chevron_control, crashes, crashgeojson, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_time_slider, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, slider, special, streetview_key, stringify_number, traffic_control_decoder, utc_offset, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -41,6 +41,7 @@ stringify_number = function(n) {
 getPointStyleOptions = function(feature) {
   var classes, holiday, j, k, len, len1, options, prop;
   options = {};
+  options.itme = moment(feature.properties.unixt).utcOffset(utc_offset(feature));
   options.radius = 5;
   options.fillOpacity = 0.9;
   options.stroke = false;
@@ -245,10 +246,17 @@ get_streetview = function(lon, lat, fov, pitch) {
   return a.outerHTML;
 };
 
+utc_offset = function(feature) {
+  if (!feature.properties.chathams) {
+    return '+12:00';
+  } else {
+    return '+12:45';
+  }
+};
+
 getPopup = function(feature) {
-  var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, utcoff, vehicles_and_injuries;
-  utcoff = !feature.properties.chathams ? '+12:00' : '+12:45';
-  dt = moment(feature.properties.unixt).utcOffset(utcoff);
+  var causes_text, crash_date, crash_location, crash_time, dt, e, environment_icons, road, streetview, vehicles_and_injuries;
+  dt = moment(feature.properties.unixt).utcOffset(utc_offset(feature));
   crash_location = makeElem('span', feature.properties.t, 'crash-location');
   crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date');
   crash_time = makeElem('span', dt.format('H:mm'), 'time');
@@ -320,7 +328,9 @@ get_tileLayer = function(maxZoom, minZoom) {
   return L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
     maxZoom: maxZoom != null ? maxZoom : 21,
     minZoom: minZoom != null ? minZoom : 5,
-    attribution: get_attribution()
+    attribution: get_attribution(),
+    detectRetina: true,
+    reuseTiles: true
   });
 };
 
@@ -334,9 +344,25 @@ get_foreground_layer = function(maxZoom, minZoom) {
   mask = L.tileLayer(url, {
     maxZoom: maxZoom != null ? maxZoom : 21,
     minZoom: minZoom != null ? minZoom : 12,
-    opacity: 0.7
+    opacity: 0.7,
+    subdomains: ['a', 'b', 'c', 'd'],
+    detectRetina: true,
+    reuseTiles: true
   });
   return mask;
+};
+
+get_time_slider = function() {
+  var sliderControl;
+  if (typeof crashgeojson === "undefined" || crashgeojson === null) {
+    return;
+  }
+  sliderControl = L.control.sliderControl({
+    position: "bottomleft",
+    layer: crashgeojson,
+    range: true
+  });
+  return sliderControl;
 };
 
 onEachFeature = function(feature, layer) {
@@ -455,7 +481,7 @@ get_decoders();
 
 map = get_map(get_tileLayer(), get_foreground_layer());
 
-new L.GeoJSON.AJAX(crashes, {
+crashgeojson = new L.GeoJSON.AJAX(crashes, {
   pointToLayer: function(feature, latlng) {
     var cm;
     return cm = new L.CircleMarker(latlng, getPointStyleOptions(feature));
@@ -465,3 +491,10 @@ new L.GeoJSON.AJAX(crashes, {
   },
   onEachFeature: onEachFeature
 }).addTo(map);
+
+if (crashgeojson != null) {
+  slider = get_time_slider();
+  map.addControl(slider);
+  console.log(slider);
+  slider.startSlider();
+}

@@ -28,6 +28,7 @@ stringify_number = (n) ->
 
 getPointStyleOptions = (feature) ->
   options = {}
+  options.itme = moment(feature.properties.unixt).utcOffset(utc_offset(feature))
   options.radius = 5
   options.fillOpacity = 0.9
   options.stroke = false
@@ -191,9 +192,11 @@ get_streetview = (lon, lat, fov, pitch) ->
   a.innerHTML = img.outerHTML
   return a.outerHTML
 
+utc_offset = (feature) ->
+  if !feature.properties.chathams then '+12:00' else '+12:45'
+
 getPopup = (feature) ->
-  utcoff = if !feature.properties.chathams then '+12:00' else '+12:45'
-  dt = moment(feature.properties.unixt).utcOffset(utcoff)
+  dt = moment(feature.properties.unixt).utcOffset(utc_offset(feature))
   crash_location = makeElem('span', feature.properties.t, 'crash-location')
   crash_date = makeElem('span', dt.format('dddd, Do MMMM YYYY'), 'date')
   crash_time = makeElem('span', dt.format('H:mm'), 'time')
@@ -283,6 +286,8 @@ get_tileLayer = (maxZoom, minZoom) ->
     maxZoom: if maxZoom? then maxZoom else 21
     minZoom: if minZoom? then minZoom else 5
     attribution: get_attribution()
+    detectRetina: true
+    reuseTiles: true
 
 get_foreground_layer = (maxZoom, minZoom) ->
   key = "20865bd31bcc4e4dbea2181b9a23d825"
@@ -294,7 +299,19 @@ get_foreground_layer = (maxZoom, minZoom) ->
     maxZoom: if maxZoom? then maxZoom else 21
     minZoom: if minZoom? then minZoom else 12
     opacity: 0.7
+    subdomains: ['a', 'b', 'c', 'd']
+    detectRetina: true
+    reuseTiles: true
   return mask
+
+get_time_slider = () ->
+  if !crashgeojson?
+    return
+  sliderControl = L.control.sliderControl
+    position: "bottomleft"
+    layer: crashgeojson
+    range: true
+  return sliderControl
 
 onEachFeature = (feature, layer) ->
   # bind click
@@ -389,10 +406,18 @@ get_decoders = () ->
 get_decoders()
 map = get_map(get_tileLayer(), get_foreground_layer())
 
-new L.GeoJSON.AJAX crashes,
+crashgeojson = new L.GeoJSON.AJAX crashes,
   pointToLayer: (feature, latlng) ->
     cm = new L.CircleMarker latlng, getPointStyleOptions(feature)
   filter: (feature, layer) ->
     return true
   onEachFeature: onEachFeature
 .addTo map
+
+
+if crashgeojson?
+  slider = get_time_slider()
+  map.addControl slider
+
+  console.log slider
+  slider.startSlider()

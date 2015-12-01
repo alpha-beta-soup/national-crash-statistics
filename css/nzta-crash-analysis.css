@@ -155,6 +155,7 @@ input {
     z-index: 2;
     right: 0px;
     bottom: 0px;
+    padding-bottom: 10px;
 }
 
 #info-button-on-map .glyphicon {
@@ -313,4 +314,12 @@ input {
     align:'left';
     font-weight: normal;
     font-size: 10px;
+}
+
+/* Time slider */
+#leaflet-slider {
+  position: relative;
+  top: -30px;
+  right: -10px;
+  width: 120%;
 }
