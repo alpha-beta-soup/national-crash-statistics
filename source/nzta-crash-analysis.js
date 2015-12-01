@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, crashgeojson, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_time_slider, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, slider, special, streetview_key, stringify_number, traffic_control_decoder, utc_offset, weather_decoder_1, weather_decoder_2;
+var boolean_properties, cause_decoder, chevron_control, crashes, crashgeojson, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, utc_offset, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -41,7 +41,6 @@ stringify_number = function(n) {
 getPointStyleOptions = function(feature) {
   var classes, holiday, j, k, len, len1, options, prop;
   options = {};
-  options.itme = moment(feature.properties.unixt).utcOffset(utc_offset(feature));
   options.radius = 5;
   options.fillOpacity = 0.9;
   options.stroke = false;
@@ -352,19 +351,6 @@ get_foreground_layer = function(maxZoom, minZoom) {
   return mask;
 };
 
-get_time_slider = function() {
-  var sliderControl;
-  if (typeof crashgeojson === "undefined" || crashgeojson === null) {
-    return;
-  }
-  sliderControl = L.control.sliderControl({
-    position: "bottomleft",
-    layer: crashgeojson,
-    range: true
-  });
-  return sliderControl;
-};
-
 onEachFeature = function(feature, layer) {
   layer.on('click', function(e) {
     layer.bindPopup(getPopup(feature), {
@@ -491,10 +477,3 @@ crashgeojson = new L.GeoJSON.AJAX(crashes, {
   },
   onEachFeature: onEachFeature
 }).addTo(map);
-
-if (crashgeojson != null) {
-  slider = get_time_slider();
-  map.addControl(slider);
-  console.log(slider);
-  slider.startSlider();
-}

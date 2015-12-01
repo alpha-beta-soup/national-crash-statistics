@@ -28,7 +28,6 @@ stringify_number = (n) ->
 
 getPointStyleOptions = (feature) ->
   options = {}
-  options.itme = moment(feature.properties.unixt).utcOffset(utc_offset(feature))
   options.radius = 5
   options.fillOpacity = 0.9
   options.stroke = false
@@ -304,15 +303,6 @@ get_foreground_layer = (maxZoom, minZoom) ->
     reuseTiles: true
   return mask
 
-get_time_slider = () ->
-  if !crashgeojson?
-    return
-  sliderControl = L.control.sliderControl
-    position: "bottomleft"
-    layer: crashgeojson
-    range: true
-  return sliderControl
-
 onEachFeature = (feature, layer) ->
   # bind click
   layer.on 'click', (e) ->
@@ -413,11 +403,3 @@ crashgeojson = new L.GeoJSON.AJAX crashes,
     return true
   onEachFeature: onEachFeature
 .addTo map
-
-
-if crashgeojson?
-  slider = get_time_slider()
-  map.addControl slider
-
-  console.log slider
-  slider.startSlider()

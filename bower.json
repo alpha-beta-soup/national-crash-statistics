@@ -20,8 +20,7 @@
     "leaflet-ajax": "~2.0.0",
     "leaflet": "~0.7.7",
     "moment": "~2.10.6",
-    "yamljs": "~0.1.5",
-    "leaflet-slider": "~1.0.4"
+    "yamljs": "~0.1.5"
   },
   "private": true
 }
