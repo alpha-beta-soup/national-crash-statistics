@@ -202,7 +202,7 @@ get_child_injured_icon = function(childage) {
   if (!childage) {
     return '';
   }
-  icon = "./icons/otherchildren.png";
+  icon = "./icons/other/children.png";
   article = childage === 8 || childage === 11 ? 'an' : 'a';
   if (childage === 1) {
     child = 'infant';
@@ -212,7 +212,7 @@ get_child_injured_icon = function(childage) {
     child = 'teenager';
   }
   title = article + " " + childage + " year old " + child + " was harmed";
-  return make_img("./icons/curves/" + icon, title).outerHTML;
+  return make_img("" + icon, title).outerHTML + makeElem('span', childage.toString(), void 0, 'childage').outerHTML;
 };
 
 get_moon_icon = function(moon) {

@@ -155,7 +155,7 @@ get_speed_limit_icon = (speedlim) ->
 get_child_injured_icon = (childage) ->
   if !childage
     return ''
-  icon = "./icons/otherchildren.png"
+  icon = "./icons/other/children.png"
   article = if childage in [8, 11] then 'an' else 'a'
   if childage == 1
     child = 'infant'
@@ -164,7 +164,7 @@ get_child_injured_icon = (childage) ->
   else if childage >=13 and childage < 20
     child = 'teenager'
   title = "#{article} #{childage} year old #{child} was harmed"
-  return make_img("./icons/curves/#{icon}", title).outerHTML
+  return make_img("#{icon}", title).outerHTML + makeElem('span', childage.toString(), undefined, 'childage').outerHTML
 
 get_moon_icon = (moon) ->
   if !moon
