@@ -1,4 +1,7 @@
 *.pyc
 *.hidden
+*.docx
 /archive
 /venv
+server.conf
+Dockerfile
