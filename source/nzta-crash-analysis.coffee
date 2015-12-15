@@ -314,11 +314,10 @@ onEachFeature = (feature, layer) ->
   return
 
 do_feature_count = (bool_filters) ->
-  # TODO total recorded accidents (including non-injury)
   if !bool_filters? or !bool_filters
     return
   bool_filters = (b.replace('.', '') for b in bool_filters)
-  counts = {'f': 0, 's': 0, 'm': 0}
+  counts = {'f': 0, 's': 0, 'm': 0, 'total': 0}
   for crash, i in crashgeojson.toGeoJSON()['features']
     for bf in bool_filters
       valid = yes
@@ -332,6 +331,7 @@ do_feature_count = (bool_filters) ->
           valid = no
           break
     if valid
+      counts['total'] += 1
       # If the crash meets all the boolean criteria
       # candidates.push i
       if crash.properties.injuries?
@@ -369,37 +369,6 @@ sidebar_hide = ->
     do_feature_count(bool_filters)
     return
   return
-
-      # bool_filters = []
-      #
-      # crashes_meeting_criteria = []
-      #
-      #   bool_filters.push val.replace('.', '')
-      #
-      # if crashgeojson?
-      #
-      #   candidates = crashgeojson.toGeoJSON()['features']
-      #
-      #   for bool in bool_filters
-      #
-      #     for candidate, i in candidates
-      #
-      #       if candidate[bool]
-      #
-      #         crashes_meeting_criteria.push candidate
-      #
-      #         candidates.splice(i, 1)
-      #
-      # console.log crashes_meeting_criteria.length
-      #
-      #   # crashes_meeting_criteria.push c for c in crashgeojson.toGeoJSON()['features'] when c
-      #
-      #   # console.log crashgeojson.toGeoJSON()['features']
-      #
-      #   # for crash of crashgeojson.toGeoJSON()['features']
-      #
-      #   #   # console.log crash
-
 
 frontpage_control = () ->
   $('#toMap').click ->

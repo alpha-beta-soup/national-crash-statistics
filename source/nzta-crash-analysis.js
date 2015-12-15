@@ -377,7 +377,8 @@ do_feature_count = function(bool_filters) {
   counts = {
     'f': 0,
     's': 0,
-    'm': 0
+    'm': 0,
+    'total': 0
   };
   ref = crashgeojson.toGeoJSON()['features'];
   for (i = j = 0, len = ref.length; j < len; i = ++j) {
@@ -395,6 +396,7 @@ do_feature_count = function(bool_filters) {
       }
     }
     if (valid) {
+      counts['total'] += 1;
       if (crash.properties.injuries != null) {
         ref1 = ['f', 's', 'm'];
         for (l = 0, len2 = ref1.length; l < len2; l++) {
