@@ -1,4 +1,4 @@
-var boolean_properties, cause_decoder, chevron_control, crashes, crashgeojson, curve_decoder, deca, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, utc_offset, weather_decoder_1, weather_decoder_2;
+var boolean_properties, cause_decoder, chevron_control, crashes, crashgeojson, curve_decoder, deca, do_feature_count, frontpage_control, getPointStyleOptions, getPopup, get_attribution, get_causes_text, get_child_injured_icon, get_decoders, get_foreground_layer, get_map, get_moon_icon, get_speed_limit_icon, get_straightforwad_multiple_icons, get_straightforward_icon, get_streetview, get_tileLayer, get_weather_icons, holidays, injuries_decoder, injuryColours, intersection_decoder, light_decoder, makeElem, make_img, map, mode_decoder, onEachFeature, readStringFromFileAtPath, sidebar_hide, special, streetview_key, stringify_number, traffic_control_decoder, utc_offset, weather_decoder_1, weather_decoder_2;
 
 crashes = './data/data.geojson';
 
@@ -360,9 +360,58 @@ onEachFeature = function(feature, layer) {
   });
 };
 
+do_feature_count = function(bool_filters) {
+  var b, bf, counts, crash, i, ij, j, k, l, len, len1, len2, ref, ref1, valid;
+  if ((bool_filters == null) || !bool_filters) {
+    return;
+  }
+  bool_filters = (function() {
+    var j, len, results;
+    results = [];
+    for (j = 0, len = bool_filters.length; j < len; j++) {
+      b = bool_filters[j];
+      results.push(b.replace('.', ''));
+    }
+    return results;
+  })();
+  counts = {
+    'f': 0,
+    's': 0,
+    'm': 0
+  };
+  ref = crashgeojson.toGeoJSON()['features'];
+  for (i = j = 0, len = ref.length; j < len; i = ++j) {
+    crash = ref[i];
+    for (k = 0, len1 = bool_filters.length; k < len1; k++) {
+      bf = bool_filters[k];
+      valid = true;
+      if (counts.hasOwnProperty(bf)) {
+
+      } else {
+        if (!crash.properties[bf]) {
+          valid = false;
+          break;
+        }
+      }
+    }
+    if (valid) {
+      if (crash.properties.injuries != null) {
+        ref1 = ['f', 's', 'm'];
+        for (l = 0, len2 = ref1.length; l < len2; l++) {
+          ij = ref1[l];
+          if (crash.properties.injuries[ij] != null) {
+            counts[ij] += crash.properties.injuries[ij];
+          }
+        }
+      }
+    }
+  }
+  return alert(JSON.stringify(counts, null, 4));
+};
+
 sidebar_hide = function() {
   $('#checkArray').click(function() {
-    var crashClassSelected;
+    var bool_filters, crashClassSelected;
     $(function() {
       $('#allCheck').on('click', function() {
         $(this).closest('fieldset').find(':checkbox').prop('checked', false);
@@ -370,9 +419,13 @@ sidebar_hide = function() {
     });
     crashClassSelected = 'path';
     $(crashClassSelected).css('display', 'none');
+    bool_filters = [];
     $('#checkArray input[type=checkbox]').each(function() {
+      var val;
       if ($(this).is(':checked')) {
-        crashClassSelected = crashClassSelected + $(this).val();
+        val = $(this).val();
+        bool_filters.push(val);
+        crashClassSelected = crashClassSelected + val;
       }
     });
     $(crashClassSelected).css('display', 'block');
@@ -381,6 +434,7 @@ sidebar_hide = function() {
     } else {
       $('#allCheck').prop('checked', false);
     }
+    do_feature_count(bool_filters);
   });
 };
 

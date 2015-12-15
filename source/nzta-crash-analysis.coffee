@@ -313,8 +313,37 @@ onEachFeature = (feature, layer) ->
     return
   return
 
+do_feature_count = (bool_filters) ->
+  # TODO total recorded accidents (including non-injury)
+  if !bool_filters? or !bool_filters
+    return
+  bool_filters = (b.replace('.', '') for b in bool_filters)
+  counts = {'f': 0, 's': 0, 'm': 0}
+  for crash, i in crashgeojson.toGeoJSON()['features']
+    for bf in bool_filters
+      valid = yes
+      if counts.hasOwnProperty bf
+        # It's an injury filter
+        # Ignore these when counting up all injuries
+      else
+        # It's a standard boolean filter
+        if !crash.properties[bf]
+          # If a crash does not meet any of the criteria, it is not counted
+          valid = no
+          break
+    if valid
+      # If the crash meets all the boolean criteria
+      # candidates.push i
+      if crash.properties.injuries?
+        for ij in ['f', 's', 'm']
+          if crash.properties.injuries[ij]?
+            counts[ij] += crash.properties.injuries[ij]
+  alert JSON.stringify counts, null, 4
+
+
 sidebar_hide = ->
-  #crash selector functionality checks for changes. CSS hide and show. Data called once. If 'All crashes' clicked nothing else can be checked. If others clicked 'All crashes' can't be checked.
+  # crash selector functionality checks for changes.
+  # CSS hide and show. Data called once.
   $('#checkArray').click ->
     $ ->
       $('#allCheck').on 'click', ->
@@ -323,17 +352,54 @@ sidebar_hide = ->
       return
     crashClassSelected = 'path'
     $(crashClassSelected).css 'display', 'none'
+    bool_filters = []
     $('#checkArray input[type=checkbox]').each ->
-      if $(this).is(':checked')
-        crashClassSelected = crashClassSelected + $(this).val()
+      if $(this).is ':checked'
+        val = $(this).val()
+        bool_filters.push val
+        crashClassSelected = crashClassSelected + val
       return
     $(crashClassSelected).css 'display', 'block'
     if crashClassSelected == 'path'
       $('#allCheck').prop 'checked', true
     else
       $('#allCheck').prop 'checked', false
+
+    # Count features
+    do_feature_count(bool_filters)
     return
   return
+
+      # bool_filters = []
+      #
+      # crashes_meeting_criteria = []
+      #
+      #   bool_filters.push val.replace('.', '')
+      #
+      # if crashgeojson?
+      #
+      #   candidates = crashgeojson.toGeoJSON()['features']
+      #
+      #   for bool in bool_filters
+      #
+      #     for candidate, i in candidates
+      #
+      #       if candidate[bool]
+      #
+      #         crashes_meeting_criteria.push candidate
+      #
+      #         candidates.splice(i, 1)
+      #
+      # console.log crashes_meeting_criteria.length
+      #
+      #   # crashes_meeting_criteria.push c for c in crashgeojson.toGeoJSON()['features'] when c
+      #
+      #   # console.log crashgeojson.toGeoJSON()['features']
+      #
+      #   # for crash of crashgeojson.toGeoJSON()['features']
+      #
+      #   #   # console.log crash
+
 
 frontpage_control = () ->
   $('#toMap').click ->
