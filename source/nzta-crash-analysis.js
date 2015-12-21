@@ -361,7 +361,7 @@ onEachFeature = function(feature, layer) {
 };
 
 do_feature_count = function(bool_filters) {
-  var b, bf, counts, crash, i, ij, j, k, l, len, len1, len2, ref, ref1, valid;
+  var b, bf, counts, crash, i, ij, img, j, k, l, len, len1, len2, ref, ref1, valid;
   if ((bool_filters == null) || !bool_filters) {
     return;
   }
@@ -408,7 +408,26 @@ do_feature_count = function(bool_filters) {
       }
     }
   }
-  return alert(JSON.stringify(counts, null, 4));
+  $('#summary').empty();
+  if (counts['f'] > 0) {
+    img = makeElem('img');
+    img.src = './icons/injuries/RedMan2.svg';
+    $('#summary').append(img.outerHTML + ("x " + counts['f']));
+  }
+  if (counts['s'] > 0) {
+    img = makeElem('img');
+    img.src = './icons/injuries/OrangeMan2.svg';
+    $('#summary').append(img.outerHTML + ("x " + counts['s']));
+  }
+  if (counts['m'] > 0) {
+    img = makeElem('img');
+    img.src = './icons/injuries/YellowMan2.svg';
+    $('#summary').append(img.outerHTML + ("x " + counts['m']));
+  }
+  if (counts['total'] > 0) {
+    $('#summary').append("<br>" + counts['total'] + " crashes<br>");
+    return $('#summary').append(makeElem('button', 'Find out more'));
+  }
 };
 
 sidebar_hide = function() {

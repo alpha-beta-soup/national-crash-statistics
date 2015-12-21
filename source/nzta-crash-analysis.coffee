@@ -338,7 +338,24 @@ do_feature_count = (bool_filters) ->
         for ij in ['f', 's', 'm']
           if crash.properties.injuries[ij]?
             counts[ij] += crash.properties.injuries[ij]
-  alert JSON.stringify counts, null, 4
+  # Fill out the summary div
+  $('#summary').empty()
+  if counts['f'] > 0
+    img = makeElem('img')
+    img.src = './icons/injuries/RedMan2.svg'
+    $('#summary').append(img.outerHTML + "x #{counts['f']}")
+  if counts['s'] > 0
+    img = makeElem('img')
+    img.src = './icons/injuries/OrangeMan2.svg'
+    $('#summary').append(img.outerHTML + "x #{counts['s']}")
+  if counts['m'] > 0
+    img = makeElem('img')
+    img.src = './icons/injuries/YellowMan2.svg'
+    $('#summary').append(img.outerHTML + "x #{counts['m']}")
+  if counts['total'] > 0
+    $('#summary').append("<br>#{counts['total']} crashes<br>")
+    $('#summary').append(makeElem('button', 'Find out more'))
+
 
 
 sidebar_hide = ->
